@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web3 Interview Prep - Master Blockchain Development</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/rust.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/solidity.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <span class="logo-icon">⛓️</span>
+                    <span class="logo-text">Web3 Prep</span>
+                </div>
+                <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+            </div>
+            
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Search questions, topics..." class="search-input">
+                <span class="search-icon">🔍</span>
+            </div>
+
+            <nav class="nav-menu">
+                <div class="nav-section">
+                    <div class="nav-item active" data-section="basic">
+                        <span class="nav-icon">📗</span>
+                        <span class="nav-label">Basic</span>
+                        <span class="nav-badge" id="basicProgress">0/32</span>
+                    </div>
+                    <div class="nav-item" data-section="intermediate">
+                        <span class="nav-icon">📘</span>
+                        <span class="nav-label">Intermediate</span>
+                        <span class="nav-badge" id="intermediateProgress">0/42</span>
+                    </div>
+                    <div class="nav-item" data-section="advanced">
+                        <span class="nav-icon">📕</span>
+                        <span class="nav-label">Advanced</span>
+                        <span class="nav-badge" id="advancedProgress">0/36</span>
+                    </div>
+                    <div class="nav-item" data-section="projects">
+                        <span class="nav-icon">🚀</span>
+                        <span class="nav-label">Projects</span>
+                        <span class="nav-badge" id="projectsProgress">0/16</span>
+                    </div>
+                    <div class="nav-item" data-section="rust">
+                        <span class="nav-icon">🦀</span>
+                        <span class="nav-label">Rust Tutorial</span>
+                        <span class="nav-badge" id="rustProgress">0/52</span>
+                    </div>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Quick Access</div>
+                    <div class="nav-item" data-section="bookmarks">
+                        <span class="nav-icon">⭐</span>
+                        <span class="nav-label">Bookmarks</span>
+                        <span class="nav-badge" id="bookmarkCount">0</span>
+                    </div>
+                    <div class="nav-item" data-section="progress">
+                        <span class="nav-icon">📊</span>
+                        <span class="nav-label">Progress</span>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="theme-toggle" id="themeToggle">
+                    <span class="theme-icon">🌙</span>
+                    <span>Dark Mode</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content" id="mainContent">
+            <!-- Search Results (hidden by default) -->
+            <section class="content-section" id="searchResults" style="display: none;">
+                <div class="section-header">
+                    <h1>Search Results</h1>
+                    <p class="section-subtitle" id="searchResultsCount"></p>
+                </div>
+                <div class="questions-list" id="searchResultsList"></div>
+            </section>
+
+            <!-- Basic Section -->
+            <section class="content-section" id="basicSection">
+                <div class="section-header">
+                    <h1>📗 Basic Web3 Concepts</h1>
+                    <p class="section-subtitle">Master the foundational concepts of blockchain and Web3 technology</p>
+                    <div class="section-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="basicProgressBar" style="width: 0%"></div>
+                        </div>
+                        <span class="progress-text" id="basicProgressText">0% Complete</span>
+                    </div>
+                </div>
+                <div class="questions-list" id="basicQuestions"></div>
+            </section>
+
+            <!-- Intermediate Section -->
+            <section class="content-section" id="intermediateSection" style="display: none;">
+                <div class="section-header">
+                    <h1>📘 Intermediate Concepts</h1>
+                    <p class="section-subtitle">Deep dive into smart contracts, DeFi, and Web3 development</p>
+                    <div class="section-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="intermediateProgressBar" style="width: 0%"></div>
+                        </div>
+                        <span class="progress-text" id="intermediateProgressText">0% Complete</span>
+                    </div>
+                </div>
+                <div class="questions-list" id="intermediateQuestions"></div>
+            </section>
+
+            <!-- Advanced Section -->
+            <section class="content-section" id="advancedSection" style="display: none;">
+                <div class="section-header">
+                    <h1>📕 Advanced Topics</h1>
+                    <p class="section-subtitle">Expert-level questions on Layer 2, MEV, security, and more</p>
+                    <div class="section-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="advancedProgressBar" style="width: 0%"></div>
+                        </div>
+                        <span class="progress-text" id="advancedProgressText">0% Complete</span>
+                    </div>
+                </div>
+                <div class="questions-list" id="advancedQuestions"></div>
+            </section>
+
+            <!-- Projects Section -->
+            <section class="content-section" id="projectsSection" style="display: none;">
+                <div class="section-header">
+                    <h1>🚀 Portfolio Projects</h1>
+                    <p class="section-subtitle">Build real-world Web3 applications to showcase your skills</p>
+                    <div class="section-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="projectsProgressBar" style="width: 0%"></div>
+                        </div>
+                        <span class="progress-text" id="projectsProgressText">0% Complete</span>
+                    </div>
+                </div>
+                <div class="projects-grid" id="projectsList"></div>
+            </section>
+
+            <!-- Rust Tutorial Section -->
+            <section class="content-section" id="rustSection" style="display: none;">
+                <div class="section-header">
+                    <h1>🦀 Rust for Web3</h1>
+                    <p class="section-subtitle">Complete Rust tutorial for blockchain development with Substrate & Solana</p>
+                    <div class="section-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="rustProgressBar" style="width: 0%"></div>
+                        </div>
+                        <span class="progress-text" id="rustProgressText">0% Complete</span>
+                    </div>
+                </div>
+                <div class="rust-modules" id="rustModules"></div>
+            </section>
+
+            <!-- Bookmarks Section -->
+            <section class="content-section" id="bookmarksSection" style="display: none;">
+                <div class="section-header">
+                    <h1>⭐ Bookmarked Items</h1>
+                    <p class="section-subtitle">Your saved questions and projects for quick reference</p>
+                </div>
+                <div class="questions-list" id="bookmarksList"></div>
+            </section>
+
+            <!-- Progress Section -->
+            <section class="content-section" id="progressSection" style="display: none;">
+                <div class="section-header">
+                    <h1>📊 Your Progress</h1>
+                    <p class="section-subtitle">Track your learning journey across all sections</p>
+                </div>
+                <div class="progress-dashboard" id="progressDashboard"></div>
+            </section>
+        </main>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+    <script>
+        document.getElementById('themeToggle').addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            const isLight = document.body.classList.contains('light-mode');
+            document.querySelector('.theme-icon').textContent = isLight ? '☀️' : '🌙';
+            document.querySelector('#themeToggle span:last-child').textContent = isLight ? 'Light Mode' : 'Dark Mode';
+        });
+    </script>
+</body>
+</html>
