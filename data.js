@@ -30,6 +30,9 @@ const web3Data = {
 // This function is called after all data scripts are loaded
 
 function initializeWeb3Data() {
+    console.log('Initializing web3Data...');
+    console.log('basicFundamentals defined:', typeof basicFundamentals !== 'undefined');
+    
     // Combine basic questions from all subfiles
     if (typeof basicFundamentals !== 'undefined') web3Data.basic.push(...basicFundamentals);
     if (typeof basicCryptocurrency !== 'undefined') web3Data.basic.push(...basicCryptocurrency);
@@ -149,13 +152,9 @@ function checkAndUseFallback() {
 }
 
 // ============================================================================
-// AUTO-INITIALIZE ON LOAD
+// AUTO-INITIALIZE IMMEDIATELY
 // ============================================================================
-// Wait for DOM and all scripts to load, then initialize
+// Initialize data right away since all data scripts are loaded before this file
 
-if (typeof window !== 'undefined') {
-    window.addEventListener('load', function() {
-        initializeWeb3Data();
-        checkAndUseFallback();
-    });
-}
+initializeWeb3Data();
+checkAndUseFallback();

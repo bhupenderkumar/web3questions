@@ -80,6 +80,9 @@
 
         <!-- Main Content -->
         <main class="main-content" id="mainContent">
+            <!-- Debug Info -->
+            <div id="debugInfo" style="background: #333; padding: 10px; margin: 10px; border-radius: 5px; font-family: monospace; font-size: 12px;"></div>
+            
             <!-- Search Results (hidden by default) -->
             <section class="content-section" id="searchResults" style="display: none;">
                 <div class="section-header">
@@ -146,7 +149,7 @@
                         <span class="progress-text" id="projectsProgressText">0% Complete</span>
                     </div>
                 </div>
-                <div class="projects-grid" id="projectsList"></div>
+                <div class="questions-list" id="projectsList"></div>
             </section>
 
             <!-- Rust Tutorial Section -->
@@ -161,7 +164,7 @@
                         <span class="progress-text" id="rustProgressText">0% Complete</span>
                     </div>
                 </div>
-                <div class="rust-modules" id="rustModules"></div>
+                <div class="questions-list" id="rustQuestions"></div>
             </section>
 
             <!-- Bookmarks Section -->
