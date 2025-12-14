@@ -298,6 +298,30 @@
         navigateTo('searchResults');
     };
 
+    // --- Expand All Functionality ---
+    const expandAllButtons = document.querySelectorAll('.expand-all-btn');
+    expandAllButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const sectionId = btn.dataset.section;
+            const container = document.getElementById(sectionId);
+            if (!container) return;
+
+            const cards = container.querySelectorAll('.question-card');
+            const isExpanded = btn.classList.contains('collapse');
+
+            cards.forEach(card => {
+                if (isExpanded) {
+                    card.classList.remove('expanded');
+                } else {
+                    card.classList.add('expanded');
+                }
+            });
+
+            btn.classList.toggle('collapse', !isExpanded);
+            btn.textContent = isExpanded ? 'Expand All' : 'Collapse All';
+        });
+    });
+
     // --- Init ---
     renderAll();
     hljs.highlightAll();
