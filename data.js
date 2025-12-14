@@ -1,82 +1,161 @@
+// Web3 Question Bank - Main Data File
+// This file loads and combines questions from all category-specific files
+
+// ============================================================================
+// DATA LOADING FOR BROWSER ENVIRONMENT
+// ============================================================================
+// The split data files are loaded via script tags in index.html
+// This file combines all the loaded arrays into a single web3Data object
+
 const web3Data = {
+    // Basic questions - loaded from data/basic/*.js files
+    basic: [],
+    
+    // Intermediate questions - loaded from data/intermediate.js
+    intermediate: [],
+    
+    // Advanced questions - loaded from data/advanced/*.js files
+    advanced: [],
+    
+    // Project-based questions - loaded from data/projects.js
+    projects: [],
+    
+    // Rust/Substrate questions - loaded from data/rust/*.js files
+    rust: []
+};
+
+// ============================================================================
+// INITIALIZATION FUNCTION
+// ============================================================================
+// This function is called after all data scripts are loaded
+
+function initializeWeb3Data() {
+    // Combine basic questions from all subfiles
+    if (typeof basicFundamentals !== 'undefined') web3Data.basic.push(...basicFundamentals);
+    if (typeof basicCryptocurrency !== 'undefined') web3Data.basic.push(...basicCryptocurrency);
+    if (typeof basicWallets !== 'undefined') web3Data.basic.push(...basicWallets);
+    if (typeof basicTransactions !== 'undefined') web3Data.basic.push(...basicTransactions);
+    if (typeof basicConsensus !== 'undefined') web3Data.basic.push(...basicConsensus);
+    if (typeof basicWeb3Intro !== 'undefined') web3Data.basic.push(...basicWeb3Intro);
+    
+    // Combine advanced questions from all subfiles
+    if (typeof advancedSecurity !== 'undefined') web3Data.advanced.push(...advancedSecurity);
+    if (typeof advancedDefi !== 'undefined') web3Data.advanced.push(...advancedDefi);
+    if (typeof advancedLayer2 !== 'undefined') web3Data.advanced.push(...advancedLayer2);
+    if (typeof advancedCryptography !== 'undefined') web3Data.advanced.push(...advancedCryptography);
+    if (typeof advancedEVM !== 'undefined') web3Data.advanced.push(...advancedEVM);
+    
+    // Combine Rust questions from all subfiles
+    if (typeof rustBasics !== 'undefined') web3Data.rust.push(...rustBasics);
+    if (typeof rustSubstrate !== 'undefined') web3Data.rust.push(...rustSubstrate);
+    if (typeof rustSolana !== 'undefined') web3Data.rust.push(...rustSolana);
+    if (typeof rustNear !== 'undefined') web3Data.rust.push(...rustNear);
+    if (typeof rustCosmWasm !== 'undefined') web3Data.rust.push(...rustCosmWasm);
+    
+    // Load intermediate questions
+    if (typeof intermediateQuestions !== 'undefined') web3Data.intermediate.push(...intermediateQuestions);
+    
+    // Load project questions
+    if (typeof projectQuestions !== 'undefined') web3Data.projects.push(...projectQuestions);
+    
+    console.log(`Web3 Data Loaded:
+    - Basic: ${web3Data.basic.length} questions
+    - Intermediate: ${web3Data.intermediate.length} questions
+    - Advanced: ${web3Data.advanced.length} questions
+    - Projects: ${web3Data.projects.length} questions
+    - Rust: ${web3Data.rust.length} questions
+    - Total: ${web3Data.basic.length + web3Data.intermediate.length + web3Data.advanced.length + web3Data.projects.length + web3Data.rust.length} questions`);
+}
+
+// ============================================================================
+// LEGACY FALLBACK DATA (in case scripts don't load)
+// ============================================================================
+// This provides a minimal set of questions if the split files fail to load
+
+const fallbackData = {
     basic: [
         {
             title: "What is a blockchain?",
             tags: ["fundamentals", "difficulty-basic"],
             answer: `
-                <p>A blockchain is a distributed, immutable, and transparent digital ledger that records transactions in a secure and chronological order. It consists of a chain of blocks, where each block contains a list of transactions, a timestamp, and a reference (hash) to the previous block.</p>
+                <p>A blockchain is a distributed, immutable, and transparent digital ledger that records transactions in a secure and chronological order.</p>
                 <strong>Key characteristics:</strong>
                 <ul>
-                    <li><strong>Decentralization:</strong> It's maintained by a network of computers (nodes) rather than a single central authority.</li>
-                    <li><strong>Immutability:</strong> Once a transaction is recorded, it cannot be altered or deleted.</li>
-                    <li><strong>Transparency:</strong> All participants on the network can see the recorded transactions.</li>
+                    <li><strong>Decentralization:</strong> Maintained by a network of computers rather than a central authority</li>
+                    <li><strong>Immutability:</strong> Once recorded, transactions cannot be altered</li>
+                    <li><strong>Transparency:</strong> All participants can see recorded transactions</li>
                 </ul>
-            `
-        },
-        {
-            title: "What is the difference between a centralized and a decentralized network?",
-            tags: ["fundamentals", "difficulty-basic"],
-            answer: `
-                <p>A <strong>centralized network</strong> relies on a single, central server or authority to manage data, traffic, and rules. If the central server fails, the entire network goes down. Examples include traditional banking systems and social media platforms.</p>
-                <p>A <strong>decentralized network</strong> distributes data and workload across multiple computers (nodes). There is no single point of failure, making the network more resilient and censorship-resistant. Blockchains like Bitcoin and Ethereum are examples of decentralized networks.</p>
             `
         }
     ],
     intermediate: [
         {
-            title: "What is an ERC-20 token?",
-            tags: ["tokens", "solidity", "difficulty-intermediate"],
+            title: "What is a smart contract?",
+            tags: ["smart-contracts", "solidity", "difficulty-intermediate"],
             answer: `
-                <p>ERC-20 is a standard for fungible tokens on the Ethereum blockchain. Fungible means that each token is identical and interchangeable, like currency. The standard defines a common set of functions that a token contract must implement, such as:</p>
+                <p>A smart contract is a program stored on a blockchain that automatically executes when predetermined conditions are met.</p>
+                <strong>Key properties:</strong>
                 <ul>
-                    <li><code>totalSupply()</code>: Returns the total token supply.</li>
-                    <li><code>balanceOf(address _owner)</code>: Returns the account balance of another account with address <code>_owner</code>.</li>
-                    <li><code>transfer(address _to, uint256 _value)</code>: Transfers <code>_value</code> amount of tokens to address <code>_to</code>.</li>
-                    <li><code>approve(address _spender, uint256 _value)</code>: Allows <code>_spender</code> to withdraw from your account, multiple times, up to the <code>_value</code> amount.</li>
-                    <li><code>allowance(address _owner, address _spender)</code>: Returns the amount which <code>_spender</code> is still allowed to withdraw from <code>_owner</code>.</li>
+                    <li>Self-executing code on blockchain</li>
+                    <li>Immutable once deployed</li>
+                    <li>Transparent and verifiable</li>
                 </ul>
-                <p>This standardization allows wallets, exchanges, and other dApps to easily interact with any ERC-20 token.</p>
             `
         }
     ],
     advanced: [
         {
-            title: "Explain Maximal Extractable Value (MEV).",
-            tags: ["MEV", "security", "difficulty-advanced"],
+            title: "What is a reentrancy attack?",
+            tags: ["security", "vulnerability", "difficulty-advanced"],
             answer: `
-                <p>Maximal Extractable Value (MEV) refers to the maximum value that can be extracted from block production in excess of the standard block reward and gas fees by including, excluding, and changing the order of transactions in a block.</p>
-                <p>Miners or validators are in a privileged position to reorder, insert, or censor transactions within the blocks they produce. They can use this power to capitalize on profitable opportunities such as arbitrage, front-running, and liquidations.</p>
-                <strong>Example (Arbitrage):</strong>
-                <p>If a token is priced differently on two different decentralized exchanges (DEXs), a searcher can submit a transaction to buy on the cheaper DEX and sell on the more expensive one. A validator can see this transaction in the mempool, copy it, and execute it themselves to capture the profit, effectively front-running the original searcher.</p>
+                <p>A reentrancy attack exploits a vulnerability where a contract calls an external contract before updating its own state.</p>
+                <strong>Prevention:</strong> Use checks-effects-interactions pattern, reentrancy guards, and proper state management.
             `
         }
     ],
     projects: [
         {
-            id: "proj-1",
-            title: "Build a Decentralized Exchange (DEX)",
-            icon: "🔄",
-            description: "Create a simple automated market maker (AMM) style DEX like Uniswap V1.",
-            difficulty: "Intermediate",
-            tech: ["Solidity", "Ethers.js", "React"],
-            features: [
-                "Swap ERC-20 tokens",
-                "Provide liquidity to earn fees",
-                "Implement a pricing formula (x*y=k)",
-                "Frontend to interact with the smart contracts"
-            ]
+            title: "Build a Simple ERC-20 Token",
+            tags: ["solidity", "tokens", "project-beginner"],
+            answer: `
+                <p>Create a basic fungible token following the ERC-20 standard.</p>
+                <strong>Requirements:</strong> Basic Solidity, understanding of token standards.
+            `
         }
     ],
     rust: [
         {
-            title: "Module 1: Rust Fundamentals",
-            icon: "📚",
-            subtitle: "Variables, Data Types, and Functions",
-            lessons: [
-                { id: "rust-1-1", title: "Variables and Mutability", description: "Learn about `let` and `mut`." },
-                { id: "rust-1-2", title: "Scalar and Compound Data Types", description: "Integers, floats, booleans, chars, tuples, and arrays." },
-                { id: "rust-1-3", title: "Functions and Control Flow", description: "Defining functions, `if/else`, and loops." }
-            ]
+            title: "What is ownership in Rust?",
+            tags: ["rust", "difficulty-basic"],
+            answer: `
+                <p>Ownership is Rust's most unique feature for memory safety without garbage collection.</p>
+                <strong>Rules:</strong>
+                <ul>
+                    <li>Each value has exactly one owner</li>
+                    <li>Value is dropped when owner goes out of scope</li>
+                    <li>Ownership can be transferred (moved) or borrowed</li>
+                </ul>
+            `
         }
     ]
 };
+
+// Use fallback if no questions loaded after initialization
+function checkAndUseFallback() {
+    if (web3Data.basic.length === 0) {
+        console.warn('Using fallback data - split files may not have loaded');
+        Object.assign(web3Data, fallbackData);
+    }
+}
+
+// ============================================================================
+// AUTO-INITIALIZE ON LOAD
+// ============================================================================
+// Wait for DOM and all scripts to load, then initialize
+
+if (typeof window !== 'undefined') {
+    window.addEventListener('load', function() {
+        initializeWeb3Data();
+        checkAndUseFallback();
+    });
+}
