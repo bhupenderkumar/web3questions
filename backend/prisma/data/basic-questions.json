@@ -1,0 +1,957 @@
+[
+  {
+    "title": "What is a blockchain?",
+    "answer": "\n            <p>A blockchain is a distributed, immutable, and transparent digital ledger that records transactions in a secure and chronological order. It consists of a chain of blocks, where each block contains a list of transactions, a timestamp, and a reference (hash) to the previous block.</p>\n            <strong>Key characteristics:</strong>\n            <ul>\n                <li><strong>Decentralization:</strong> It's maintained by a network of computers (nodes) rather than a single central authority.</li>\n                <li><strong>Immutability:</strong> Once a transaction is recorded, it cannot be altered or deleted.</li>\n                <li><strong>Transparency:</strong> All participants on the network can see the recorded transactions.</li>\n            </ul>\n        ",
+    "tags": [
+      "fundamentals",
+      "difficulty-basic"
+    ],
+    "order": 0
+  },
+  {
+    "title": "What is the difference between a centralized and a decentralized network?",
+    "answer": "\n            <p>A <strong>centralized network</strong> relies on a single, central server or authority to manage data, traffic, and rules. If the central server fails, the entire network goes down. Examples include traditional banking systems and social media platforms.</p>\n            <p>A <strong>decentralized network</strong> distributes data and workload across multiple computers (nodes). There is no single point of failure, making the network more resilient and censorship-resistant. Blockchains like Bitcoin and Ethereum are examples of decentralized networks.</p>\n            <table>\n                <tr><th>Aspect</th><th>Centralized</th><th>Decentralized</th></tr>\n                <tr><td>Control</td><td>Single entity</td><td>Distributed among participants</td></tr>\n                <tr><td>Single point of failure</td><td>Yes</td><td>No</td></tr>\n                <tr><td>Censorship resistance</td><td>Low</td><td>High</td></tr>\n                <tr><td>Transparency</td><td>Limited</td><td>Full</td></tr>\n            </table>\n        ",
+    "tags": [
+      "fundamentals",
+      "difficulty-basic"
+    ],
+    "order": 1
+  },
+  {
+    "title": "What is a distributed ledger?",
+    "answer": "\n            <p>A <strong>distributed ledger</strong> is a database that is consensually shared, replicated, and synchronized across multiple sites, institutions, or geographies. Unlike a traditional centralized database, there is no central administrator.</p>\n            <p>Each participant (node) in the network maintains an identical copy of the ledger. Changes to the ledger are reflected across all copies almost simultaneously, and the security and accuracy of the ledger is maintained through cryptographic keys and signatures.</p>\n            <strong>Benefits:</strong>\n            <ul>\n                <li>No single point of failure</li>\n                <li>Increased transparency and trust</li>\n                <li>Reduced reconciliation costs</li>\n                <li>Improved security through cryptography</li>\n            </ul>\n        ",
+    "tags": [
+      "fundamentals",
+      "difficulty-basic"
+    ],
+    "order": 2
+  },
+  {
+    "title": "What is a block in blockchain?",
+    "answer": "\n            <p>A <strong>block</strong> is the fundamental unit of a blockchain. It's a data structure that contains a collection of transactions bundled together.</p>\n            <strong>Each block typically contains:</strong>\n            <ul>\n                <li><strong>Block Header:</strong> Contains metadata including previous block hash, timestamp, Merkle root, and nonce</li>\n                <li><strong>Block Body:</strong> Contains the list of transactions</li>\n                <li><strong>Block Hash:</strong> A unique identifier for the block</li>\n            </ul>\n            <p>Blocks are linked together through cryptographic hashes, forming a chain. Each block references the hash of the previous block, creating an immutable sequence.</p>\n        ",
+    "tags": [
+      "fundamentals",
+      "difficulty-basic"
+    ],
+    "order": 3
+  },
+  {
+    "title": "What is a hash and how is it used in blockchain?",
+    "answer": "\n            <p>A <strong>hash</strong> is a fixed-size output produced by a cryptographic hash function from an input of any size. It's like a digital fingerprint of data.</p>\n            <strong>Properties of cryptographic hashes:</strong>\n            <ul>\n                <li><strong>Deterministic:</strong> Same input always produces same output</li>\n                <li><strong>One-way:</strong> Cannot reverse-engineer the input from the output</li>\n                <li><strong>Collision-resistant:</strong> Extremely difficult to find two inputs that produce the same hash</li>\n                <li><strong>Avalanche effect:</strong> Small change in input produces drastically different output</li>\n            </ul>\n            <strong>Uses in blockchain:</strong>\n            <ul>\n                <li>Linking blocks together</li>\n                <li>Creating transaction IDs</li>\n                <li>Verifying data integrity</li>\n                <li>Mining (Proof of Work)</li>\n            </ul>\n            <p>Common hash algorithms: SHA-256 (Bitcoin), Keccak-256 (Ethereum)</p>\n        ",
+    "tags": [
+      "fundamentals",
+      "cryptography",
+      "difficulty-basic"
+    ],
+    "order": 4
+  },
+  {
+    "title": "What is the genesis block?",
+    "answer": "\n            <p>The <strong>genesis block</strong> is the first block in a blockchain, also known as Block 0. It's the foundation upon which all subsequent blocks are built.</p>\n            <strong>Key characteristics:</strong>\n            <ul>\n                <li>It's hardcoded into the blockchain software</li>\n                <li>Has no reference to a previous block (previous hash is typically all zeros)</li>\n                <li>Often contains a special message or timestamp</li>\n                <li>Cannot be altered</li>\n            </ul>\n            <p><strong>Famous example:</strong> Bitcoin's genesis block was mined by Satoshi Nakamoto on January 3, 2009, and contains the text: \"The Times 03/Jan/2009 Chancellor on brink of second bailout for banks\"</p>\n        ",
+    "tags": [
+      "fundamentals",
+      "difficulty-basic"
+    ],
+    "order": 5
+  },
+  {
+    "title": "What is block height?",
+    "answer": "\n            <p><strong>Block height</strong> refers to the number of blocks in the chain between the genesis block and the current block. It's essentially a sequential number assigned to each block.</p>\n            <ul>\n                <li>Genesis block has height 0 (or 1 in some blockchains)</li>\n                <li>Each new block increments the height by 1</li>\n                <li>Block height can be used to identify specific blocks</li>\n                <li>It indicates how many blocks have been confirmed on the network</li>\n            </ul>\n            <p>Block height is also used to schedule network upgrades (hard forks) that activate at a specific block height.</p>\n        ",
+    "tags": [
+      "fundamentals",
+      "difficulty-basic"
+    ],
+    "order": 6
+  },
+  {
+    "title": "What is block time?",
+    "answer": "\n            <p><strong>Block time</strong> is the average time it takes to add a new block to the blockchain. Different blockchains have different target block times.</p>\n            <strong>Examples of block times:</strong>\n            <ul>\n                <li><strong>Bitcoin:</strong> ~10 minutes</li>\n                <li><strong>Ethereum:</strong> ~12 seconds (post-merge)</li>\n                <li><strong>Solana:</strong> ~400 milliseconds</li>\n                <li><strong>Polygon:</strong> ~2 seconds</li>\n            </ul>\n            <p>Shorter block times mean faster transaction confirmations but may lead to more orphaned blocks. Longer block times provide more security but slower transactions.</p>\n        ",
+    "tags": [
+      "fundamentals",
+      "difficulty-basic"
+    ],
+    "order": 7
+  },
+  {
+    "title": "What is a blockchain node?",
+    "answer": "\n            <p>A <strong>node</strong> is any computer that connects to the blockchain network and helps maintain it. Nodes are essential for the decentralized nature of blockchain.</p>\n            <strong>Types of nodes:</strong>\n            <ul>\n                <li><strong>Full Node:</strong> Stores complete blockchain, validates all transactions</li>\n                <li><strong>Light Node (SPV):</strong> Stores only block headers, relies on full nodes</li>\n                <li><strong>Archive Node:</strong> Stores full history plus all historical states</li>\n                <li><strong>Mining/Validator Node:</strong> Participates in creating new blocks</li>\n            </ul>\n            <strong>Node responsibilities:</strong>\n            <ul>\n                <li>Validate transactions and blocks</li>\n                <li>Store blockchain data</li>\n                <li>Relay transactions to other nodes</li>\n                <li>Enforce network consensus rules</li>\n            </ul>\n        ",
+    "tags": [
+      "fundamentals",
+      "difficulty-basic"
+    ],
+    "order": 8
+  },
+  {
+    "title": "What is the difference between a full node and a light node?",
+    "answer": "\n            <p>Both full nodes and light nodes participate in the blockchain network, but they differ in capabilities and resource requirements.</p>\n            <strong>Full Node:</strong>\n            <ul>\n                <li>Downloads and stores the entire blockchain</li>\n                <li>Independently validates all transactions and blocks</li>\n                <li>Enforces all consensus rules</li>\n                <li>Provides maximum security and trustlessness</li>\n                <li>Requires significant storage (Bitcoin: ~500GB+, Ethereum: ~1TB+)</li>\n            </ul>\n            <strong>Light Node (SPV):</strong>\n            <ul>\n                <li>Only downloads block headers</li>\n                <li>Relies on full nodes for transaction data</li>\n                <li>Cannot fully validate transactions independently</li>\n                <li>Suitable for mobile wallets</li>\n                <li>Requires minimal storage (few MBs)</li>\n            </ul>\n        ",
+    "tags": [
+      "fundamentals",
+      "difficulty-basic"
+    ],
+    "order": 9
+  },
+  {
+    "title": "What is blockchain immutability?",
+    "answer": "\n            <p><strong>Immutability</strong> means that once data is recorded on the blockchain, it cannot be altered, deleted, or tampered with. This is one of the core properties that makes blockchain trustworthy.</p>\n            <strong>How immutability is achieved:</strong>\n            <ul>\n                <li><strong>Cryptographic hashing:</strong> Each block contains the hash of the previous block</li>\n                <li><strong>Distributed storage:</strong> The blockchain is stored across thousands of nodes</li>\n                <li><strong>Consensus mechanisms:</strong> Any changes must be agreed upon by the network majority</li>\n            </ul>\n            <strong>Benefits:</strong>\n            <ul>\n                <li>Creates a permanent, auditable record</li>\n                <li>Prevents fraud and tampering</li>\n                <li>Builds trust without intermediaries</li>\n            </ul>\n        ",
+    "tags": [
+      "fundamentals",
+      "difficulty-basic"
+    ],
+    "order": 10
+  },
+  {
+    "title": "What is blockchain transparency?",
+    "answer": "\n            <p><strong>Transparency</strong> in blockchain refers to the ability for anyone to view and verify all transactions and data stored on the blockchain.</p>\n            <strong>Types of transparency:</strong>\n            <ul>\n                <li><strong>Public blockchains:</strong> Anyone can view all transactions (Bitcoin, Ethereum)</li>\n                <li><strong>Private blockchains:</strong> Only authorized participants can view transactions</li>\n                <li><strong>Consortium blockchains:</strong> Limited transparency among consortium members</li>\n            </ul>\n            <p><strong>Note:</strong> While transactions are transparent, user identities are typically pseudonymous (represented by addresses rather than real names).</p>\n            <p>Blockchain explorers like Etherscan allow anyone to browse and analyze blockchain data.</p>\n        ",
+    "tags": [
+      "fundamentals",
+      "difficulty-basic"
+    ],
+    "order": 11
+  },
+  {
+    "title": "What is a Merkle tree?",
+    "answer": "\n            <p>A <strong>Merkle tree</strong> (or hash tree) is a data structure used to efficiently verify the integrity of data in a blockchain.</p>\n            <strong>How it works:</strong>\n            <ul>\n                <li>Transaction data is hashed individually</li>\n                <li>Pairs of hashes are combined and hashed again</li>\n                <li>Process repeats until a single \"Merkle root\" is produced</li>\n                <li>The Merkle root is stored in the block header</li>\n            </ul>\n            <strong>Benefits:</strong>\n            <ul>\n                <li>Efficient verification of transaction inclusion</li>\n                <li>Light clients can verify without full blockchain</li>\n                <li>Quick detection of any data tampering</li>\n                <li>Space-efficient proofs</li>\n            </ul>\n        ",
+    "tags": [
+      "fundamentals",
+      "cryptography",
+      "difficulty-basic"
+    ],
+    "order": 12
+  },
+  {
+    "title": "What is a blockchain fork?",
+    "answer": "\n            <p>A <strong>fork</strong> occurs when a blockchain diverges into two potential paths. This can happen naturally or be intentionally created.</p>\n            <strong>Types of forks:</strong>\n            <ul>\n                <li><strong>Temporary fork:</strong> Natural occurrence when two miners find blocks simultaneously; resolves itself</li>\n                <li><strong>Soft fork:</strong> Backward-compatible upgrade; old nodes still recognize new blocks</li>\n                <li><strong>Hard fork:</strong> Non-backward-compatible change; creates a permanent split</li>\n            </ul>\n            <strong>Famous hard forks:</strong>\n            <ul>\n                <li>Ethereum → Ethereum Classic (2016, after DAO hack)</li>\n                <li>Bitcoin → Bitcoin Cash (2017, block size debate)</li>\n            </ul>\n        ",
+    "tags": [
+      "fundamentals",
+      "difficulty-basic"
+    ],
+    "order": 13
+  },
+  {
+    "title": "What is the difference between hard fork and soft fork?",
+    "answer": "\n            <p><strong>Hard forks</strong> and <strong>soft forks</strong> are two types of protocol upgrades with different compatibility implications.</p>\n            <table>\n                <tr><th>Aspect</th><th>Hard Fork</th><th>Soft Fork</th></tr>\n                <tr><td>Compatibility</td><td>Not backward-compatible</td><td>Backward-compatible</td></tr>\n                <tr><td>Old nodes</td><td>Must upgrade or split off</td><td>Can still participate</td></tr>\n                <tr><td>Chain split</td><td>Creates two chains if not unanimous</td><td>Single chain maintained</td></tr>\n                <tr><td>Rule changes</td><td>Can add or remove rules</td><td>Can only tighten rules</td></tr>\n            </table>\n            <strong>Soft fork example:</strong> SegWit (Bitcoin) - tightened block structure rules\n            <strong>Hard fork example:</strong> London upgrade (Ethereum) - added EIP-1559 fee mechanism\n        ",
+    "tags": [
+      "fundamentals",
+      "difficulty-basic"
+    ],
+    "order": 14
+  },
+  {
+    "title": "What is a blockchain explorer?",
+    "answer": "\n            <p>A <strong>blockchain explorer</strong> is a web-based tool that allows users to search and browse blockchain data.</p>\n            <strong>What you can find:</strong>\n            <ul>\n                <li>Transaction details (sender, receiver, amount, status)</li>\n                <li>Block information (height, timestamp, transactions)</li>\n                <li>Address balances and history</li>\n                <li>Smart contract code and interactions</li>\n                <li>Network statistics (gas prices, TPS)</li>\n            </ul>\n            <strong>Popular explorers:</strong>\n            <ul>\n                <li><strong>Etherscan:</strong> Ethereum and EVM chains</li>\n                <li><strong>Blockchain.com:</strong> Bitcoin</li>\n                <li><strong>Solscan:</strong> Solana</li>\n                <li><strong>Polygonscan:</strong> Polygon</li>\n            </ul>\n        ",
+    "tags": [
+      "fundamentals",
+      "tools",
+      "difficulty-basic"
+    ],
+    "order": 15
+  },
+  {
+    "title": "What is a blockchain network?",
+    "answer": "\n            <p>A <strong>blockchain network</strong> is the collection of nodes that maintain and operate a blockchain protocol together.</p>\n            <strong>Network types:</strong>\n            <ul>\n                <li><strong>Mainnet:</strong> The primary, production network with real value</li>\n                <li><strong>Testnet:</strong> Test networks with no real value (Sepolia, Goerli)</li>\n                <li><strong>Devnet:</strong> Local development networks</li>\n            </ul>\n            <strong>Network components:</strong>\n            <ul>\n                <li>Nodes (full, light, validator)</li>\n                <li>Consensus mechanism</li>\n                <li>Network protocol (gossip, peer discovery)</li>\n                <li>Native token for fees/staking</li>\n            </ul>\n        ",
+    "tags": [
+      "fundamentals",
+      "difficulty-basic"
+    ],
+    "order": 16
+  },
+  {
+    "title": "What is peer-to-peer (P2P) networking?",
+    "answer": "\n            <p><strong>Peer-to-peer (P2P)</strong> networking is a distributed architecture where participants (peers) share resources directly without a central server.</p>\n            <strong>In blockchain context:</strong>\n            <ul>\n                <li>Nodes communicate directly with each other</li>\n                <li>Transactions are broadcast to all peers</li>\n                <li>No central authority controls communication</li>\n                <li>Network remains functional if some nodes go offline</li>\n            </ul>\n            <strong>Key protocols:</strong>\n            <ul>\n                <li><strong>Gossip protocol:</strong> Nodes share information with random peers</li>\n                <li><strong>DHT (Distributed Hash Table):</strong> Distributed data storage</li>\n                <li><strong>libp2p:</strong> Modular P2P networking (used by Ethereum)</li>\n            </ul>\n        ",
+    "tags": [
+      "fundamentals",
+      "difficulty-basic"
+    ],
+    "order": 17
+  },
+  {
+    "title": "What is a consensus mechanism?",
+    "answer": "\n            <p>A <strong>consensus mechanism</strong> is a method used by blockchain networks to achieve agreement among nodes on the current state of the blockchain.</p>\n            <strong>Why needed:</strong>\n            <ul>\n                <li>No central authority to validate</li>\n                <li>Nodes must agree on transaction order</li>\n                <li>Prevents double-spending</li>\n                <li>Ensures network security</li>\n            </ul>\n            <strong>Popular mechanisms:</strong>\n            <ul>\n                <li><strong>Proof of Work:</strong> Bitcoin, Litecoin</li>\n                <li><strong>Proof of Stake:</strong> Ethereum, Cardano</li>\n                <li><strong>Delegated PoS:</strong> EOS, TRON</li>\n                <li><strong>Proof of Authority:</strong> Private blockchains</li>\n            </ul>\n        ",
+    "tags": [
+      "consensus",
+      "difficulty-basic"
+    ],
+    "order": 18
+  },
+  {
+    "title": "What is Proof of Work (PoW)?",
+    "answer": "\n            <p><strong>Proof of Work</strong> is a consensus mechanism where miners compete to solve complex mathematical puzzles.</p>\n            <strong>How it works:</strong>\n            <ol>\n                <li>Miners collect pending transactions</li>\n                <li>Repeatedly hash block data with different nonces</li>\n                <li>Find hash below target difficulty</li>\n                <li>First to succeed broadcasts the block</li>\n                <li>Receives block reward and fees</li>\n            </ol>\n            <strong>Advantages:</strong> Battle-tested security, highly decentralized\n            <strong>Disadvantages:</strong> High energy consumption, specialized hardware needed\n        ",
+    "tags": [
+      "consensus",
+      "mining",
+      "difficulty-basic"
+    ],
+    "order": 19
+  },
+  {
+    "title": "What is Proof of Stake (PoS)?",
+    "answer": "\n            <p><strong>Proof of Stake</strong> is a consensus mechanism where validators are chosen based on staked cryptocurrency.</p>\n            <strong>How it works:</strong>\n            <ol>\n                <li>Validators stake their coins</li>\n                <li>Algorithm selects validators based on stake</li>\n                <li>Selected validator proposes new block</li>\n                <li>Other validators attest to validity</li>\n                <li>Validators earn rewards</li>\n            </ol>\n            <strong>Advantages:</strong> Energy efficient (99.9% less than PoW), no specialized hardware\n            <strong>Disadvantages:</strong> Rich get richer concerns, less battle-tested\n        ",
+    "tags": [
+      "consensus",
+      "staking",
+      "difficulty-basic"
+    ],
+    "order": 20
+  },
+  {
+    "title": "What is mining in blockchain?",
+    "answer": "\n            <p><strong>Mining</strong> is the process of using computational power to validate transactions and add new blocks in PoW blockchains.</p>\n            <strong>Mining process:</strong>\n            <ol>\n                <li>Collect transactions from mempool</li>\n                <li>Create candidate block</li>\n                <li>Compute hashes with different nonces</li>\n                <li>Find valid hash meeting difficulty</li>\n                <li>Broadcast block, receive rewards</li>\n            </ol>\n            <strong>Requirements:</strong> Specialized hardware (ASICs/GPUs), electricity, mining software\n        ",
+    "tags": [
+      "consensus",
+      "mining",
+      "difficulty-basic"
+    ],
+    "order": 21
+  },
+  {
+    "title": "What is staking?",
+    "answer": "\n            <p><strong>Staking</strong> is locking up cryptocurrency to participate in network validation and earn rewards in PoS blockchains.</p>\n            <strong>How to stake:</strong>\n            <ul>\n                <li><strong>Solo staking:</strong> Run your own validator (requires 32 ETH for Ethereum)</li>\n                <li><strong>Pooled staking:</strong> Join a staking pool</li>\n                <li><strong>Liquid staking:</strong> Stake via protocols like Lido (receive stETH)</li>\n                <li><strong>Exchange staking:</strong> Stake on centralized exchanges</li>\n            </ul>\n            <strong>Rewards:</strong> Typically 4-15% APY depending on network\n        ",
+    "tags": [
+      "consensus",
+      "staking",
+      "difficulty-basic"
+    ],
+    "order": 22
+  },
+  {
+    "title": "What is a validator?",
+    "answer": "\n            <p>A <strong>validator</strong> is a node in a PoS network that validates transactions and proposes new blocks.</p>\n            <strong>Responsibilities:</strong>\n            <ul>\n                <li>Validate transactions</li>\n                <li>Propose new blocks (when selected)</li>\n                <li>Attest to other validators' blocks</li>\n                <li>Maintain network security</li>\n            </ul>\n            <strong>Requirements (Ethereum):</strong>\n            <ul>\n                <li>32 ETH stake</li>\n                <li>Validator software running 24/7</li>\n                <li>Reliable internet connection</li>\n            </ul>\n            <strong>Slashing:</strong> Validators can lose stake for malicious or negligent behavior\n        ",
+    "tags": [
+      "consensus",
+      "staking",
+      "difficulty-basic"
+    ],
+    "order": 23
+  },
+  {
+    "title": "What is the 51% attack?",
+    "answer": "\n            <p>A <strong>51% attack</strong> occurs when an entity controls more than half of the network's mining/validation power.</p>\n            <strong>Potential attacks:</strong>\n            <ul>\n                <li>Double-spending</li>\n                <li>Blocking transactions</li>\n                <li>Reversing recent transactions</li>\n                <li>Preventing other miners from finding blocks</li>\n            </ul>\n            <strong>What they CANNOT do:</strong>\n            <ul>\n                <li>Steal coins from wallets</li>\n                <li>Create new coins (beyond block rewards)</li>\n                <li>Change protocol rules</li>\n            </ul>\n            <strong>Protection:</strong> Higher network hashrate/stake makes attacks more expensive\n        ",
+    "tags": [
+      "consensus",
+      "security",
+      "difficulty-basic"
+    ],
+    "order": 24
+  },
+  {
+    "title": "What is finality in blockchain?",
+    "answer": "\n            <p><strong>Finality</strong> is the point at which a transaction becomes irreversible and cannot be undone.</p>\n            <strong>Types of finality:</strong>\n            <ul>\n                <li><strong>Probabilistic:</strong> Certainty increases with confirmations (Bitcoin, PoW)</li>\n                <li><strong>Absolute:</strong> Transaction final once confirmed (BFT-based systems)</li>\n                <li><strong>Economic:</strong> Reversal would cost more than it's worth (Ethereum PoS)</li>\n            </ul>\n            <strong>Examples:</strong>\n            <ul>\n                <li>Bitcoin: ~6 confirmations (~1 hour)</li>\n                <li>Ethereum PoS: ~15 minutes for finality</li>\n            </ul>\n        ",
+    "tags": [
+      "consensus",
+      "difficulty-basic"
+    ],
+    "order": 25
+  },
+  {
+    "title": "What is slashing in Proof of Stake?",
+    "answer": "\n            <p><strong>Slashing</strong> is a penalty mechanism where validators lose a portion of their stake for malicious or negligent behavior.</p>\n            <strong>Slashable offenses:</strong>\n            <ul>\n                <li><strong>Double signing:</strong> Signing two different blocks at the same height</li>\n                <li><strong>Surround voting:</strong> Creating conflicting attestations</li>\n                <li><strong>Downtime:</strong> Being offline for too long (in some networks)</li>\n            </ul>\n            <strong>Purpose:</strong>\n            <ul>\n                <li>Discourages malicious behavior</li>\n                <li>Ensures validators stay online</li>\n                <li>Provides economic security</li>\n            </ul>\n        ",
+    "tags": [
+      "consensus",
+      "staking",
+      "difficulty-basic"
+    ],
+    "order": 26
+  },
+  {
+    "title": "What is Delegated Proof of Stake (DPoS)?",
+    "answer": "\n            <p><strong>Delegated Proof of Stake</strong> is a variant where token holders vote to elect a small number of delegates who validate blocks.</p>\n            <strong>How it works:</strong>\n            <ul>\n                <li>Token holders vote for delegates</li>\n                <li>Top N delegates become validators</li>\n                <li>Delegates take turns producing blocks</li>\n                <li>Delegates share rewards with voters</li>\n            </ul>\n            <strong>Examples:</strong> EOS, TRON, Lisk\n            <strong>Pros:</strong> Fast, scalable, energy efficient\n            <strong>Cons:</strong> More centralized, potential for cartels\n        ",
+    "tags": [
+      "consensus",
+      "difficulty-basic"
+    ],
+    "order": 27
+  },
+  {
+    "title": "What is Proof of Authority (PoA)?",
+    "answer": "\n            <p><strong>Proof of Authority</strong> is a consensus mechanism where approved accounts (authorities) validate transactions.</p>\n            <strong>Characteristics:</strong>\n            <ul>\n                <li>Validators are known, pre-approved entities</li>\n                <li>Reputation at stake instead of money</li>\n                <li>Very fast and efficient</li>\n                <li>Used mainly for private/consortium chains</li>\n            </ul>\n            <strong>Use cases:</strong>\n            <ul>\n                <li>Enterprise blockchains</li>\n                <li>Testnets (Sepolia, Goerli)</li>\n                <li>Supply chain networks</li>\n            </ul>\n        ",
+    "tags": [
+      "consensus",
+      "difficulty-basic"
+    ],
+    "order": 28
+  },
+  {
+    "title": "What is difficulty adjustment?",
+    "answer": "\n            <p><strong>Difficulty adjustment</strong> is a mechanism that adjusts mining difficulty to maintain consistent block times.</p>\n            <strong>Bitcoin's approach:</strong>\n            <ul>\n                <li>Adjusts every 2,016 blocks (~2 weeks)</li>\n                <li>Target: 10 minutes per block</li>\n                <li>Increases if blocks are too fast</li>\n                <li>Decreases if blocks are too slow</li>\n            </ul>\n            <strong>Purpose:</strong>\n            <ul>\n                <li>Consistent block production</li>\n                <li>Adapts to changing hash power</li>\n                <li>Maintains predictable issuance</li>\n            </ul>\n        ",
+    "tags": [
+      "consensus",
+      "mining",
+      "difficulty-basic"
+    ],
+    "order": 29
+  },
+  {
+    "title": "What is a mining pool?",
+    "answer": "\n            <p>A <strong>mining pool</strong> is a group of miners who combine their computational power to increase chances of finding blocks.</p>\n            <strong>How it works:</strong>\n            <ul>\n                <li>Miners contribute hash power to pool</li>\n                <li>Pool finds blocks more frequently</li>\n                <li>Rewards distributed based on contribution</li>\n                <li>More stable income for individual miners</li>\n            </ul>\n            <strong>Popular pools:</strong> Foundry, AntPool, F2Pool, Poolin\n            <strong>Concerns:</strong> Pool concentration can threaten decentralization\n        ",
+    "tags": [
+      "consensus",
+      "mining",
+      "difficulty-basic"
+    ],
+    "order": 30
+  },
+  {
+    "title": "What is block reward?",
+    "answer": "\n            <p><strong>Block reward</strong> is the cryptocurrency given to miners/validators for creating new blocks.</p>\n            <strong>Bitcoin block rewards:</strong>\n            <ul>\n                <li>Started at 50 BTC (2009)</li>\n                <li>Halves every 210,000 blocks (~4 years)</li>\n                <li>Currently 6.25 BTC (2020-2024)</li>\n                <li>Next halving: 3.125 BTC</li>\n            </ul>\n            <strong>Ethereum (PoS):</strong>\n            <ul>\n                <li>No fixed block reward</li>\n                <li>Rewards based on stake and attestations</li>\n                <li>Issuance reduced ~90% post-merge</li>\n            </ul>\n        ",
+    "tags": [
+      "consensus",
+      "mining",
+      "difficulty-basic"
+    ],
+    "order": 31
+  },
+  {
+    "title": "What is the Bitcoin halving?",
+    "answer": "\n            <p>The <strong>Bitcoin halving</strong> is an event that cuts block rewards in half, occurring every 210,000 blocks (~4 years).</p>\n            <strong>Halving history:</strong>\n            <ul>\n                <li>2009: 50 BTC</li>\n                <li>2012: 25 BTC</li>\n                <li>2016: 12.5 BTC</li>\n                <li>2020: 6.25 BTC</li>\n                <li>2024: 3.125 BTC</li>\n            </ul>\n            <strong>Significance:</strong>\n            <ul>\n                <li>Controls inflation/supply</li>\n                <li>Ensures 21 million max supply</li>\n                <li>Historically preceded price increases</li>\n            </ul>\n        ",
+    "tags": [
+      "consensus",
+      "bitcoin",
+      "difficulty-basic"
+    ],
+    "order": 32
+  },
+  {
+    "title": "What is cryptocurrency?",
+    "answer": "\n            <p>A <strong>cryptocurrency</strong> is a digital or virtual currency that uses cryptography for security and operates on a decentralized network, typically a blockchain.</p>\n            <strong>Key characteristics:</strong>\n            <ul>\n                <li><strong>Digital:</strong> Exists only in electronic form</li>\n                <li><strong>Decentralized:</strong> Not controlled by any government or central bank</li>\n                <li><strong>Cryptographically secured:</strong> Uses encryption to secure transactions</li>\n                <li><strong>Peer-to-peer:</strong> Transactions occur directly between users</li>\n                <li><strong>Limited supply:</strong> Many cryptocurrencies have a capped supply</li>\n            </ul>\n            <strong>Common use cases:</strong>\n            <ul>\n                <li>Digital payments and store of value</li>\n                <li>Powering decentralized applications</li>\n                <li>Cross-border transactions</li>\n                <li>DeFi (Decentralized Finance)</li>\n            </ul>\n        ",
+    "tags": [
+      "cryptocurrency",
+      "difficulty-basic"
+    ],
+    "order": 33
+  },
+  {
+    "title": "What is Bitcoin?",
+    "answer": "\n            <p><strong>Bitcoin (BTC)</strong> is the first and most well-known cryptocurrency, created in 2009 by an anonymous person or group using the pseudonym Satoshi Nakamoto.</p>\n            <strong>Key features:</strong>\n            <ul>\n                <li><strong>Limited supply:</strong> Maximum of 21 million BTC will ever exist</li>\n                <li><strong>Proof of Work:</strong> Uses mining to secure the network</li>\n                <li><strong>Halving:</strong> Block rewards are cut in half every ~4 years</li>\n                <li><strong>Decentralized:</strong> No central authority controls it</li>\n                <li><strong>Block time:</strong> ~10 minutes per block</li>\n            </ul>\n            <p>Bitcoin is often called \"digital gold\" due to its scarcity and store of value properties.</p>\n        ",
+    "tags": [
+      "cryptocurrency",
+      "bitcoin",
+      "difficulty-basic"
+    ],
+    "order": 34
+  },
+  {
+    "title": "What is Ethereum?",
+    "answer": "\n            <p><strong>Ethereum</strong> is a decentralized, open-source blockchain platform that enables the creation of smart contracts and decentralized applications (dApps). Its native cryptocurrency is Ether (ETH).</p>\n            <strong>Key features:</strong>\n            <ul>\n                <li><strong>Smart Contracts:</strong> Self-executing contracts with code that runs on the blockchain</li>\n                <li><strong>Ethereum Virtual Machine (EVM):</strong> Runtime environment for smart contracts</li>\n                <li><strong>Proof of Stake:</strong> Transitioned from PoW in \"The Merge\" (September 2022)</li>\n                <li><strong>Programmable blockchain:</strong> Developers can build applications on it</li>\n            </ul>\n            <strong>Ethereum enables:</strong>\n            <ul>\n                <li>DeFi, NFTs, DAOs, and token creation (ERC-20, ERC-721)</li>\n            </ul>\n        ",
+    "tags": [
+      "cryptocurrency",
+      "ethereum",
+      "difficulty-basic"
+    ],
+    "order": 35
+  },
+  {
+    "title": "What is the difference between Bitcoin and Ethereum?",
+    "answer": "\n            <p>While both are popular cryptocurrencies, Bitcoin and Ethereum serve different purposes.</p>\n            <table>\n                <tr><th>Aspect</th><th>Bitcoin</th><th>Ethereum</th></tr>\n                <tr><td>Purpose</td><td>Digital currency / Store of value</td><td>Platform for dApps and smart contracts</td></tr>\n                <tr><td>Launched</td><td>2009</td><td>2015</td></tr>\n                <tr><td>Creator</td><td>Satoshi Nakamoto</td><td>Vitalik Buterin</td></tr>\n                <tr><td>Consensus</td><td>Proof of Work</td><td>Proof of Stake</td></tr>\n                <tr><td>Supply</td><td>21 million (capped)</td><td>No hard cap</td></tr>\n                <tr><td>Block time</td><td>~10 minutes</td><td>~12 seconds</td></tr>\n                <tr><td>Smart contracts</td><td>Limited</td><td>Fully programmable</td></tr>\n            </table>\n        ",
+    "tags": [
+      "cryptocurrency",
+      "bitcoin",
+      "ethereum",
+      "difficulty-basic"
+    ],
+    "order": 36
+  },
+  {
+    "title": "What is a satoshi?",
+    "answer": "\n            <p>A <strong>satoshi</strong> (sat) is the smallest unit of Bitcoin, named after Bitcoin's creator Satoshi Nakamoto.</p>\n            <strong>Denomination:</strong>\n            <ul>\n                <li>1 Bitcoin (BTC) = 100,000,000 satoshis</li>\n                <li>1 satoshi = 0.00000001 BTC</li>\n            </ul>\n            <p>Satoshis are useful for expressing small amounts of Bitcoin, especially as Bitcoin's price increases. Many prefer to price things in sats rather than fractions of BTC.</p>\n        ",
+    "tags": [
+      "cryptocurrency",
+      "bitcoin",
+      "difficulty-basic"
+    ],
+    "order": 37
+  },
+  {
+    "title": "What are wei and gwei in Ethereum?",
+    "answer": "\n            <p><strong>Wei</strong> and <strong>Gwei</strong> are denominations of Ether (ETH).</p>\n            <strong>Ethereum denominations:</strong>\n            <ul>\n                <li><strong>Wei:</strong> The smallest unit (1 ETH = 10^18 wei)</li>\n                <li><strong>Gwei:</strong> 1 billion wei (1 ETH = 10^9 gwei)</li>\n            </ul>\n            <pre><code>1 ETH = 1,000,000,000 Gwei = 1,000,000,000,000,000,000 Wei</code></pre>\n            <strong>Common uses:</strong>\n            <ul>\n                <li><strong>Wei:</strong> Used in smart contract calculations for precision</li>\n                <li><strong>Gwei:</strong> Used to express gas prices (e.g., \"Gas price: 30 Gwei\")</li>\n            </ul>\n        ",
+    "tags": [
+      "cryptocurrency",
+      "ethereum",
+      "gas",
+      "difficulty-basic"
+    ],
+    "order": 38
+  },
+  {
+    "title": "What is market capitalization in crypto?",
+    "answer": "\n            <p><strong>Market capitalization</strong> (market cap) is the total value of a cryptocurrency.</p>\n            <strong>Formula:</strong>\n            <pre><code>Market Cap = Current Price × Circulating Supply</code></pre>\n            <strong>Types:</strong>\n            <ul>\n                <li><strong>Circulating Market Cap:</strong> Price × coins currently in circulation</li>\n                <li><strong>Fully Diluted Market Cap:</strong> Price × maximum supply</li>\n            </ul>\n            <strong>Categories:</strong>\n            <ul>\n                <li><strong>Large cap:</strong> > $10 billion</li>\n                <li><strong>Mid cap:</strong> $1-10 billion</li>\n                <li><strong>Small cap:</strong> $100 million - $1 billion</li>\n                <li><strong>Micro cap:</strong> < $100 million</li>\n            </ul>\n        ",
+    "tags": [
+      "cryptocurrency",
+      "trading",
+      "difficulty-basic"
+    ],
+    "order": 39
+  },
+  {
+    "title": "What is a stablecoin?",
+    "answer": "\n            <p>A <strong>stablecoin</strong> is a cryptocurrency designed to maintain a stable value, typically pegged to a fiat currency like USD (1:1).</p>\n            <strong>Types of stablecoins:</strong>\n            <ul>\n                <li><strong>Fiat-backed:</strong> Backed by reserves (USDC, USDT)</li>\n                <li><strong>Crypto-backed:</strong> Over-collateralized by crypto (DAI)</li>\n                <li><strong>Algorithmic:</strong> Uses algorithms to maintain peg (FRAX)</li>\n                <li><strong>Commodity-backed:</strong> Backed by gold, etc. (PAXG)</li>\n            </ul>\n            <strong>Use cases:</strong> Trading pairs, safe haven, cross-border payments, DeFi\n        ",
+    "tags": [
+      "cryptocurrency",
+      "stablecoin",
+      "defi",
+      "difficulty-basic"
+    ],
+    "order": 40
+  },
+  {
+    "title": "What are altcoins?",
+    "answer": "\n            <p><strong>Altcoins</strong> (alternative coins) refer to all cryptocurrencies other than Bitcoin.</p>\n            <strong>Categories:</strong>\n            <ul>\n                <li><strong>Platform coins:</strong> ETH, SOL, ADA, AVAX</li>\n                <li><strong>Utility tokens:</strong> LINK, GRT</li>\n                <li><strong>Meme coins:</strong> DOGE, SHIB</li>\n                <li><strong>Privacy coins:</strong> XMR, ZEC</li>\n                <li><strong>Stablecoins:</strong> USDC, DAI</li>\n                <li><strong>Governance tokens:</strong> UNI, AAVE</li>\n            </ul>\n        ",
+    "tags": [
+      "cryptocurrency",
+      "difficulty-basic"
+    ],
+    "order": 41
+  },
+  {
+    "title": "What is the difference between a token and a coin?",
+    "answer": "\n            <p><strong>Coins</strong> and <strong>tokens</strong> have distinct technical meanings.</p>\n            <strong>Coins:</strong>\n            <ul>\n                <li>Native to their own blockchain</li>\n                <li>Used to pay transaction fees</li>\n                <li>Examples: BTC, ETH, SOL</li>\n            </ul>\n            <strong>Tokens:</strong>\n            <ul>\n                <li>Built on existing blockchains using smart contracts</li>\n                <li>Require native coin for gas fees</li>\n                <li>Examples: USDC, UNI, LINK (on Ethereum)</li>\n            </ul>\n            <table>\n                <tr><th>Aspect</th><th>Coin</th><th>Token</th></tr>\n                <tr><td>Blockchain</td><td>Has its own</td><td>Uses existing blockchain</td></tr>\n                <tr><td>Creation</td><td>From scratch</td><td>Smart contract deployment</td></tr>\n            </table>\n        ",
+    "tags": [
+      "cryptocurrency",
+      "tokens",
+      "difficulty-basic"
+    ],
+    "order": 42
+  },
+  {
+    "title": "What is a token burn?",
+    "answer": "\n            <p><strong>Token burning</strong> is the permanent removal of tokens from circulation, typically by sending them to an inaccessible address.</p>\n            <strong>How it works:</strong>\n            <ul>\n                <li>Tokens are sent to a \"burn address\" (no private key)</li>\n                <li>These tokens can never be recovered or used</li>\n                <li>Reduces total supply</li>\n            </ul>\n            <strong>Reasons for burning:</strong>\n            <ul>\n                <li>Create deflationary pressure</li>\n                <li>Increase scarcity and potential value</li>\n                <li>Part of tokenomics (EIP-1559 burns ETH)</li>\n                <li>Remove unsold ICO tokens</li>\n            </ul>\n        ",
+    "tags": [
+      "cryptocurrency",
+      "tokens",
+      "difficulty-basic"
+    ],
+    "order": 43
+  },
+  {
+    "title": "What is tokenomics?",
+    "answer": "\n            <p><strong>Tokenomics</strong> (token economics) refers to the study of how a cryptocurrency token is designed, distributed, and managed.</p>\n            <strong>Key components:</strong>\n            <ul>\n                <li><strong>Supply:</strong> Total, circulating, max supply</li>\n                <li><strong>Distribution:</strong> How tokens are allocated (team, investors, community)</li>\n                <li><strong>Emission:</strong> How new tokens are created</li>\n                <li><strong>Utility:</strong> What the token is used for</li>\n                <li><strong>Incentives:</strong> Staking rewards, governance rights</li>\n                <li><strong>Vesting:</strong> Lock-up periods for team/investors</li>\n            </ul>\n            <p>Good tokenomics is essential for a project's long-term success.</p>\n        ",
+    "tags": [
+      "cryptocurrency",
+      "tokens",
+      "difficulty-basic"
+    ],
+    "order": 44
+  },
+  {
+    "title": "What is a cryptocurrency exchange?",
+    "answer": "\n            <p>A <strong>cryptocurrency exchange</strong> is a platform where users can buy, sell, and trade cryptocurrencies.</p>\n            <strong>Types of exchanges:</strong>\n            <ul>\n                <li><strong>Centralized (CEX):</strong> Coinbase, Binance, Kraken</li>\n                <li><strong>Decentralized (DEX):</strong> Uniswap, SushiSwap, dYdX</li>\n                <li><strong>Hybrid:</strong> Combines features of both</li>\n            </ul>\n            <strong>Exchange services:</strong>\n            <ul>\n                <li>Spot trading (buy/sell at current price)</li>\n                <li>Margin/futures trading</li>\n                <li>Staking services</li>\n                <li>Fiat on/off ramps</li>\n            </ul>\n        ",
+    "tags": [
+      "cryptocurrency",
+      "trading",
+      "difficulty-basic"
+    ],
+    "order": 45
+  },
+  {
+    "title": "What is the difference between CEX and DEX?",
+    "answer": "\n            <p><strong>CEX</strong> (Centralized Exchange) and <strong>DEX</strong> (Decentralized Exchange) differ in their architecture and trust models.</p>\n            <table>\n                <tr><th>Aspect</th><th>CEX</th><th>DEX</th></tr>\n                <tr><td>Custody</td><td>Exchange holds funds</td><td>User controls funds</td></tr>\n                <tr><td>KYC</td><td>Usually required</td><td>Not required</td></tr>\n                <tr><td>Speed</td><td>Fast (off-chain)</td><td>Blockchain speed</td></tr>\n                <tr><td>Liquidity</td><td>Generally higher</td><td>Can be fragmented</td></tr>\n                <tr><td>Trust</td><td>Trust the company</td><td>Trust the code</td></tr>\n                <tr><td>Fiat support</td><td>Yes</td><td>No (usually)</td></tr>\n            </table>\n        ",
+    "tags": [
+      "cryptocurrency",
+      "trading",
+      "defi",
+      "difficulty-basic"
+    ],
+    "order": 46
+  },
+  {
+    "title": "What is a trading pair?",
+    "answer": "\n            <p>A <strong>trading pair</strong> represents two cryptocurrencies that can be exchanged for each other.</p>\n            <strong>Examples:</strong>\n            <ul>\n                <li><strong>BTC/USDT:</strong> Trade Bitcoin for Tether</li>\n                <li><strong>ETH/BTC:</strong> Trade Ethereum for Bitcoin</li>\n                <li><strong>UNI/ETH:</strong> Trade Uniswap token for Ethereum</li>\n            </ul>\n            <strong>Terminology:</strong>\n            <ul>\n                <li><strong>Base currency:</strong> First in pair (what you're buying/selling)</li>\n                <li><strong>Quote currency:</strong> Second in pair (what you're paying with)</li>\n            </ul>\n            <p>BTC/USDT at 50,000 means 1 BTC = 50,000 USDT</p>\n        ",
+    "tags": [
+      "cryptocurrency",
+      "trading",
+      "difficulty-basic"
+    ],
+    "order": 47
+  },
+  {
+    "title": "What is cryptocurrency volatility?",
+    "answer": "\n            <p><strong>Volatility</strong> measures how much a cryptocurrency's price fluctuates over time.</p>\n            <strong>Causes of crypto volatility:</strong>\n            <ul>\n                <li>Smaller market cap compared to traditional assets</li>\n                <li>24/7 trading (no market close)</li>\n                <li>Speculative nature</li>\n                <li>Regulatory news and uncertainty</li>\n                <li>Market manipulation (whales)</li>\n                <li>Technological developments</li>\n            </ul>\n            <strong>Managing volatility:</strong>\n            <ul>\n                <li>Dollar-cost averaging (DCA)</li>\n                <li>Diversification</li>\n                <li>Stablecoins for stability</li>\n                <li>Long-term holding (HODLing)</li>\n            </ul>\n        ",
+    "tags": [
+      "cryptocurrency",
+      "trading",
+      "difficulty-basic"
+    ],
+    "order": 48
+  },
+  {
+    "title": "What is HODL?",
+    "answer": "\n            <p><strong>HODL</strong> is crypto slang for \"hold\" - the strategy of holding cryptocurrency long-term despite price volatility.</p>\n            <strong>Origin:</strong>\n            <ul>\n                <li>Started as a typo in a 2013 Bitcoin forum post</li>\n                <li>Later backronymed to \"Hold On for Dear Life\"</li>\n            </ul>\n            <strong>HODL philosophy:</strong>\n            <ul>\n                <li>Don't panic sell during dips</li>\n                <li>Believe in long-term value</li>\n                <li>Avoid emotional trading</li>\n                <li>Time in market > timing the market</li>\n            </ul>\n        ",
+    "tags": [
+      "cryptocurrency",
+      "culture",
+      "difficulty-basic"
+    ],
+    "order": 49
+  },
+  {
+    "title": "What is a whale in crypto?",
+    "answer": "\n            <p>A <strong>whale</strong> is an individual or entity that holds a large amount of cryptocurrency, enough to potentially influence market prices.</p>\n            <strong>Whale characteristics:</strong>\n            <ul>\n                <li>Hold thousands of BTC or equivalent</li>\n                <li>Can move markets with large trades</li>\n                <li>Often watched by analysts for market signals</li>\n            </ul>\n            <strong>Whale watching:</strong>\n            <ul>\n                <li>Track large wallet movements</li>\n                <li>Monitor exchange deposits/withdrawals</li>\n                <li>Tools: Whale Alert, on-chain analytics</li>\n            </ul>\n            <strong>Impact:</strong> Large whale sales can cause price drops; large buys can cause pumps.\n        ",
+    "tags": [
+      "cryptocurrency",
+      "trading",
+      "difficulty-basic"
+    ],
+    "order": 50
+  },
+  {
+    "title": "What is a blockchain transaction?",
+    "answer": "\n            <p>A <strong>blockchain transaction</strong> is a cryptographically signed instruction that transfers value or data on a blockchain network.</p>\n            <strong>Components:</strong>\n            <ul>\n                <li><strong>Sender/Recipient:</strong> The addresses involved</li>\n                <li><strong>Value:</strong> Amount being transferred</li>\n                <li><strong>Data:</strong> Additional data for smart contract calls</li>\n                <li><strong>Gas:</strong> Fee for network processing</li>\n                <li><strong>Nonce:</strong> Transaction counter</li>\n                <li><strong>Signature:</strong> Cryptographic proof of authorization</li>\n            </ul>\n            <strong>Lifecycle:</strong> Created → Broadcast → Mempool → Included in block → Confirmed\n        ",
+    "tags": [
+      "transactions",
+      "difficulty-basic"
+    ],
+    "order": 51
+  },
+  {
+    "title": "What is a transaction hash (txHash)?",
+    "answer": "\n            <p>A <strong>transaction hash</strong> (txHash) is a unique identifier for a specific transaction on the blockchain.</p>\n            <strong>Characteristics:</strong>\n            <ul>\n                <li>64 hexadecimal characters (256 bits)</li>\n                <li>Generated by hashing the transaction data</li>\n                <li>Unique for every transaction</li>\n            </ul>\n            <strong>Uses:</strong>\n            <ul>\n                <li>Look up transaction details on block explorers</li>\n                <li>Verify transaction status</li>\n                <li>Provide proof of payment</li>\n            </ul>\n        ",
+    "tags": [
+      "transactions",
+      "difficulty-basic"
+    ],
+    "order": 52
+  },
+  {
+    "title": "What is gas in Ethereum?",
+    "answer": "\n            <p><strong>Gas</strong> is the unit measuring computational effort required on Ethereum. It's like fuel for the EVM.</p>\n            <strong>Why gas exists:</strong>\n            <ul>\n                <li>Prevents spam and infinite loops</li>\n                <li>Compensates validators</li>\n                <li>Allocates network resources fairly</li>\n            </ul>\n            <strong>Key concepts:</strong>\n            <ul>\n                <li><strong>Gas Units:</strong> Amount of computation</li>\n                <li><strong>Gas Price:</strong> Cost per unit (Gwei)</li>\n                <li><strong>Gas Limit:</strong> Maximum gas willing to use</li>\n                <li><strong>Fee = Gas Used × Gas Price</strong></li>\n            </ul>\n        ",
+    "tags": [
+      "transactions",
+      "ethereum",
+      "gas",
+      "difficulty-basic"
+    ],
+    "order": 53
+  },
+  {
+    "title": "What is gas price?",
+    "answer": "\n            <p><strong>Gas price</strong> is the amount of ETH per unit of gas, measured in Gwei.</p>\n            <strong>Post EIP-1559:</strong>\n            <ul>\n                <li><strong>Base Fee:</strong> Minimum price, burned</li>\n                <li><strong>Priority Fee (Tip):</strong> Optional extra to validators</li>\n                <li><strong>Max Fee:</strong> Maximum willing to pay</li>\n            </ul>\n            <strong>Typical prices:</strong>\n            <ul>\n                <li>Low: 10-20 Gwei</li>\n                <li>Normal: 20-50 Gwei</li>\n                <li>High demand: 50-200+ Gwei</li>\n            </ul>\n        ",
+    "tags": [
+      "transactions",
+      "ethereum",
+      "gas",
+      "difficulty-basic"
+    ],
+    "order": 54
+  },
+  {
+    "title": "What is gas limit?",
+    "answer": "\n            <p><strong>Gas limit</strong> is the maximum gas you're willing to spend on a transaction.</p>\n            <strong>How it works:</strong>\n            <ul>\n                <li>Sets maximum gas units for transaction</li>\n                <li>Unused gas is refunded</li>\n                <li>If too low, transaction fails (gas still consumed)</li>\n            </ul>\n            <strong>Common gas limits:</strong>\n            <ul>\n                <li>ETH transfer: 21,000</li>\n                <li>Token transfers: 65,000-100,000</li>\n                <li>Smart contract interactions: 100,000-500,000+</li>\n            </ul>\n        ",
+    "tags": [
+      "transactions",
+      "ethereum",
+      "gas",
+      "difficulty-basic"
+    ],
+    "order": 55
+  },
+  {
+    "title": "What is a nonce in blockchain?",
+    "answer": "\n            <p>In Ethereum, a <strong>nonce</strong> is a counter tracking the number of transactions sent from an account.</p>\n            <strong>Purposes:</strong>\n            <ul>\n                <li>Prevents replay attacks</li>\n                <li>Ensures transactions are processed in order</li>\n                <li>Allows replacing pending transactions</li>\n            </ul>\n            <strong>How it works:</strong>\n            <ul>\n                <li>First transaction has nonce 0</li>\n                <li>Each transaction increments by 1</li>\n                <li>Transactions must be mined in nonce order</li>\n            </ul>\n        ",
+    "tags": [
+      "transactions",
+      "difficulty-basic"
+    ],
+    "order": 56
+  },
+  {
+    "title": "What is transaction confirmation?",
+    "answer": "\n            <p><strong>Transaction confirmation</strong> occurs when a transaction is included in a block. More confirmations mean higher certainty.</p>\n            <strong>Recommended confirmations:</strong>\n            <ul>\n                <li><strong>Bitcoin:</strong> 6 confirmations (~1 hour)</li>\n                <li><strong>Ethereum:</strong> 12-20 confirmations (~3-5 minutes)</li>\n            </ul>\n            <strong>Why multiple confirmations matter:</strong>\n            <ul>\n                <li>Protects against chain reorganizations</li>\n                <li>Prevents double-spending attacks</li>\n            </ul>\n        ",
+    "tags": [
+      "transactions",
+      "difficulty-basic"
+    ],
+    "order": 57
+  },
+  {
+    "title": "What is the mempool?",
+    "answer": "\n            <p>The <strong>mempool</strong> (memory pool) is a waiting area for unconfirmed transactions before they're added to a block.</p>\n            <strong>How it works:</strong>\n            <ol>\n                <li>User broadcasts transaction</li>\n                <li>Transaction validated by nodes</li>\n                <li>Valid transactions enter mempool</li>\n                <li>Validators select transactions (usually highest fees first)</li>\n                <li>Selected transactions included in blocks</li>\n            </ol>\n            <strong>Key points:</strong>\n            <ul>\n                <li>Each node has its own mempool</li>\n                <li>Higher gas = higher priority</li>\n                <li>Front-running bots watch the mempool</li>\n            </ul>\n        ",
+    "tags": [
+      "transactions",
+      "difficulty-basic"
+    ],
+    "order": 58
+  },
+  {
+    "title": "What are transaction fees?",
+    "answer": "\n            <p><strong>Transaction fees</strong> are payments to validators/miners for processing transactions.</p>\n            <strong>Fee structures:</strong>\n            <ul>\n                <li><strong>Ethereum:</strong> Gas × Gas Price</li>\n                <li><strong>Bitcoin:</strong> Based on transaction size</li>\n                <li><strong>Solana:</strong> Fixed base fee (very low)</li>\n            </ul>\n            <strong>Fee comparison (approximate):</strong>\n            <ul>\n                <li>Ethereum L1: $1-50+</li>\n                <li>Bitcoin: $1-20+</li>\n                <li>Arbitrum/Optimism: $0.10-1</li>\n                <li>Solana: $0.00025</li>\n            </ul>\n        ",
+    "tags": [
+      "transactions",
+      "difficulty-basic"
+    ],
+    "order": 59
+  },
+  {
+    "title": "What is a failed/reverted transaction?",
+    "answer": "\n            <p>A <strong>failed/reverted</strong> transaction was processed but didn't complete its intended action.</p>\n            <strong>Common reasons:</strong>\n            <ul>\n                <li><strong>Out of gas:</strong> Gas limit too low</li>\n                <li><strong>Reverted by contract:</strong> Condition not met</li>\n                <li><strong>Insufficient balance</strong></li>\n                <li><strong>Slippage too high</strong></li>\n            </ul>\n            <strong>Important:</strong> Gas fees are still charged for failed transactions!\n            <strong>Prevention:</strong> Use adequate gas, simulate transactions, check balances\n        ",
+    "tags": [
+      "transactions",
+      "difficulty-basic"
+    ],
+    "order": 60
+  },
+  {
+    "title": "What is a pending transaction?",
+    "answer": "\n            <p>A <strong>pending transaction</strong> has been broadcast to the network but not yet included in a block.</p>\n            <strong>Reasons for pending:</strong>\n            <ul>\n                <li>Low gas price (not attractive to validators)</li>\n                <li>Network congestion</li>\n                <li>Nonce gap (earlier transaction pending)</li>\n            </ul>\n            <strong>Solutions:</strong>\n            <ul>\n                <li><strong>Speed up:</strong> Resend with higher gas price, same nonce</li>\n                <li><strong>Cancel:</strong> Send 0 ETH to yourself with same nonce, higher gas</li>\n                <li><strong>Wait:</strong> Eventually will be processed or dropped</li>\n            </ul>\n        ",
+    "tags": [
+      "transactions",
+      "difficulty-basic"
+    ],
+    "order": 61
+  },
+  {
+    "title": "What is EIP-1559?",
+    "answer": "\n            <p><strong>EIP-1559</strong> is an Ethereum upgrade that changed how gas fees work (London upgrade, August 2021).</p>\n            <strong>Key changes:</strong>\n            <ul>\n                <li><strong>Base Fee:</strong> Algorithmically determined, gets burned</li>\n                <li><strong>Priority Fee:</strong> Tip to validators</li>\n                <li><strong>Dynamic block size:</strong> Blocks can be up to 2x normal size</li>\n            </ul>\n            <strong>Benefits:</strong>\n            <ul>\n                <li>More predictable fees</li>\n                <li>ETH becomes deflationary (fees burned)</li>\n                <li>Better user experience</li>\n            </ul>\n        ",
+    "tags": [
+      "transactions",
+      "ethereum",
+      "gas",
+      "difficulty-basic"
+    ],
+    "order": 62
+  },
+  {
+    "title": "What is transaction speed-up and cancellation?",
+    "answer": "\n            <p>You can <strong>speed up</strong> or <strong>cancel</strong> pending transactions by resubmitting with the same nonce but higher gas.</p>\n            <strong>Speed up:</strong>\n            <ul>\n                <li>Resend exact same transaction</li>\n                <li>Use higher gas price</li>\n                <li>Miners prefer higher-paying transaction</li>\n            </ul>\n            <strong>Cancel:</strong>\n            <ul>\n                <li>Send 0 ETH to yourself</li>\n                <li>Use same nonce as pending transaction</li>\n                <li>Use higher gas price</li>\n                <li>This \"replaces\" the original transaction</li>\n            </ul>\n        ",
+    "tags": [
+      "transactions",
+      "difficulty-basic"
+    ],
+    "order": 63
+  },
+  {
+    "title": "What is a block gas limit?",
+    "answer": "\n            <p>The <strong>block gas limit</strong> is the maximum total gas that can be used by all transactions in a single block.</p>\n            <strong>Current Ethereum:</strong>\n            <ul>\n                <li>Target: 15 million gas</li>\n                <li>Max: 30 million gas (after EIP-1559)</li>\n            </ul>\n            <strong>Implications:</strong>\n            <ul>\n                <li>Limits number of transactions per block</li>\n                <li>Complex contracts may hit limits</li>\n                <li>Determines network throughput</li>\n            </ul>\n        ",
+    "tags": [
+      "transactions",
+      "ethereum",
+      "difficulty-basic"
+    ],
+    "order": 64
+  },
+  {
+    "title": "What is a crypto wallet?",
+    "answer": "\n            <p>A <strong>crypto wallet</strong> is a tool that allows you to interact with blockchain networks. It stores your private keys which prove ownership of your funds.</p>\n            <strong>Components:</strong>\n            <ul>\n                <li><strong>Private key:</strong> Secret key that proves ownership and signs transactions</li>\n                <li><strong>Public key:</strong> Derived from private key, used to generate addresses</li>\n                <li><strong>Address:</strong> Public identifier where you receive funds</li>\n            </ul>\n            <strong>Types:</strong> Hot wallets, cold wallets, paper wallets, multi-sig wallets\n            <p><strong>Key principle:</strong> \"Not your keys, not your crypto\"</p>\n        ",
+    "tags": [
+      "wallets",
+      "difficulty-basic"
+    ],
+    "order": 65
+  },
+  {
+    "title": "What is the difference between hot and cold wallets?",
+    "answer": "\n            <p>Hot and cold wallets differ in internet connectivity and security.</p>\n            <strong>Hot Wallets:</strong>\n            <ul>\n                <li>Connected to the internet</li>\n                <li>Easy access, more vulnerable to hacks</li>\n                <li>Best for small amounts, frequent transactions</li>\n                <li>Examples: MetaMask, Trust Wallet</li>\n            </ul>\n            <strong>Cold Wallets:</strong>\n            <ul>\n                <li>Stored offline</li>\n                <li>More secure, less convenient</li>\n                <li>Best for long-term storage of large amounts</li>\n                <li>Examples: Ledger, Trezor</li>\n            </ul>\n        ",
+    "tags": [
+      "wallets",
+      "security",
+      "difficulty-basic"
+    ],
+    "order": 66
+  },
+  {
+    "title": "What is a hardware wallet?",
+    "answer": "\n            <p>A <strong>hardware wallet</strong> is a physical device that stores private keys offline, providing the highest level of security.</p>\n            <strong>How it works:</strong>\n            <ul>\n                <li>Private keys never leave the device</li>\n                <li>Transactions are signed on the device itself</li>\n                <li>Protected by PIN and optional passphrase</li>\n            </ul>\n            <strong>Popular hardware wallets:</strong> Ledger Nano S/X, Trezor Model One/T, GridPlus Lattice1\n            <strong>Best practices:</strong> Buy from manufacturer, store recovery phrase offline, keep firmware updated\n        ",
+    "tags": [
+      "wallets",
+      "security",
+      "difficulty-basic"
+    ],
+    "order": 67
+  },
+  {
+    "title": "What is a software wallet?",
+    "answer": "\n            <p>A <strong>software wallet</strong> is an application (mobile, desktop, or browser extension) that stores your private keys.</p>\n            <strong>Types:</strong>\n            <ul>\n                <li><strong>Browser extensions:</strong> MetaMask, Phantom, Rabby</li>\n                <li><strong>Mobile apps:</strong> Trust Wallet, Rainbow, Coinbase Wallet</li>\n                <li><strong>Desktop:</strong> Exodus, Electrum, Atomic Wallet</li>\n            </ul>\n            <strong>Advantages:</strong> Free, easy to set up, quick dApp access\n            <strong>Risks:</strong> Vulnerable to malware, phishing, device loss\n        ",
+    "tags": [
+      "wallets",
+      "difficulty-basic"
+    ],
+    "order": 68
+  },
+  {
+    "title": "What is a seed phrase (recovery phrase)?",
+    "answer": "\n            <p>A <strong>seed phrase</strong> (recovery phrase, mnemonic) is a list of 12, 18, or 24 words that can recover your wallet and all its accounts.</p>\n            <strong>How it works:</strong>\n            <ul>\n                <li>Generated when creating a new wallet</li>\n                <li>Mathematically derives all your private keys</li>\n                <li>Uses BIP-39 standard (2048 possible words)</li>\n            </ul>\n            <strong>Security rules:</strong>\n            <ul>\n                <li>NEVER share with anyone</li>\n                <li>NEVER store digitally</li>\n                <li>Write on paper or metal backup</li>\n                <li>Store in multiple secure locations</li>\n            </ul>\n        ",
+    "tags": [
+      "wallets",
+      "security",
+      "difficulty-basic"
+    ],
+    "order": 69
+  },
+  {
+    "title": "What is a private key?",
+    "answer": "\n            <p>A <strong>private key</strong> is a secret, cryptographically-generated number that proves ownership of a blockchain address.</p>\n            <strong>Characteristics:</strong>\n            <ul>\n                <li>256-bit number (extremely large)</li>\n                <li>64 hexadecimal characters</li>\n                <li>Must be kept absolutely secret</li>\n                <li>Cannot be recovered if lost</li>\n            </ul>\n            <strong>What private keys do:</strong>\n            <ul>\n                <li>Sign transactions to prove authorization</li>\n                <li>Derive public key and address</li>\n                <li>Prove ownership of assets</li>\n            </ul>\n            <p><strong>Critical:</strong> Never share your private key. Anyone with it can steal all your funds.</p>\n        ",
+    "tags": [
+      "wallets",
+      "cryptography",
+      "difficulty-basic"
+    ],
+    "order": 70
+  },
+  {
+    "title": "What is a public key?",
+    "answer": "\n            <p>A <strong>public key</strong> is a cryptographic key derived from your private key that can be safely shared.</p>\n            <strong>Relationship:</strong>\n            <ul>\n                <li>Derived from private key using elliptic curve cryptography</li>\n                <li>One-way derivation (cannot get private key from public key)</li>\n                <li>Used to generate wallet addresses</li>\n            </ul>\n            <pre><code>Private Key → (Elliptic Curve) → Public Key → (Hash) → Address</code></pre>\n        ",
+    "tags": [
+      "wallets",
+      "cryptography",
+      "difficulty-basic"
+    ],
+    "order": 71
+  },
+  {
+    "title": "What is a wallet address?",
+    "answer": "\n            <p>A <strong>wallet address</strong> is a unique identifier where you can receive cryptocurrency.</p>\n            <strong>Address formats:</strong>\n            <ul>\n                <li><strong>Ethereum:</strong> 0x + 40 hex characters</li>\n                <li><strong>Bitcoin:</strong> 1..., 3..., or bc1...</li>\n                <li><strong>Solana:</strong> Base58, 32-44 characters</li>\n            </ul>\n            <strong>Best practices:</strong>\n            <ul>\n                <li>Double-check addresses before sending</li>\n                <li>Use copy-paste, never type manually</li>\n                <li>Send test transaction first for large amounts</li>\n            </ul>\n        ",
+    "tags": [
+      "wallets",
+      "difficulty-basic"
+    ],
+    "order": 72
+  },
+  {
+    "title": "What is the difference between custodial and non-custodial wallets?",
+    "answer": "\n            <p>The key difference is who controls the private keys.</p>\n            <strong>Custodial Wallets:</strong>\n            <ul>\n                <li>Third party holds your private keys</li>\n                <li>Similar to a bank account</li>\n                <li>Examples: Coinbase, Binance accounts</li>\n            </ul>\n            <strong>Non-Custodial Wallets:</strong>\n            <ul>\n                <li>You control your own private keys</li>\n                <li>Full responsibility for security</li>\n                <li>Examples: MetaMask, Ledger, Trezor</li>\n            </ul>\n            <table>\n                <tr><th>Aspect</th><th>Custodial</th><th>Non-Custodial</th></tr>\n                <tr><td>Key control</td><td>Third party</td><td>You</td></tr>\n                <tr><td>Recovery</td><td>Customer support</td><td>Only with seed phrase</td></tr>\n                <tr><td>True ownership</td><td>No</td><td>Yes</td></tr>\n            </table>\n        ",
+    "tags": [
+      "wallets",
+      "security",
+      "difficulty-basic"
+    ],
+    "order": 73
+  },
+  {
+    "title": "What is MetaMask?",
+    "answer": "\n            <p><strong>MetaMask</strong> is the most popular non-custodial cryptocurrency wallet for Ethereum and EVM-compatible blockchains.</p>\n            <strong>Key features:</strong>\n            <ul>\n                <li>Browser extension and mobile app</li>\n                <li>Supports multiple EVM networks (Ethereum, Polygon, Arbitrum)</li>\n                <li>Built-in token swap functionality</li>\n                <li>NFT display and dApp browser</li>\n            </ul>\n            <strong>Security tips:</strong>\n            <ul>\n                <li>Only download from official sources</li>\n                <li>Never share your seed phrase</li>\n                <li>Be cautious of phishing sites</li>\n            </ul>\n        ",
+    "tags": [
+      "wallets",
+      "ethereum",
+      "difficulty-basic"
+    ],
+    "order": 74
+  },
+  {
+    "title": "What is a paper wallet?",
+    "answer": "\n            <p>A <strong>paper wallet</strong> is a physical document containing your private key and/or seed phrase.</p>\n            <strong>Pros:</strong>\n            <ul>\n                <li>Completely offline (air-gapped)</li>\n                <li>Immune to digital attacks</li>\n                <li>Simple to create</li>\n            </ul>\n            <strong>Cons:</strong>\n            <ul>\n                <li>Vulnerable to physical damage (fire, water)</li>\n                <li>Can be lost or stolen</li>\n                <li>Difficult to use for transactions</li>\n            </ul>\n            <strong>Best practice:</strong> Use metal backups like Cryptosteel for durability\n        ",
+    "tags": [
+      "wallets",
+      "security",
+      "difficulty-basic"
+    ],
+    "order": 75
+  },
+  {
+    "title": "What is a multi-signature wallet?",
+    "answer": "\n            <p>A <strong>multi-signature (multi-sig) wallet</strong> requires multiple private keys to authorize a transaction.</p>\n            <strong>Common configurations:</strong>\n            <ul>\n                <li><strong>2-of-3:</strong> 2 signatures needed from 3 possible signers</li>\n                <li><strong>3-of-5:</strong> 3 signatures needed from 5 possible signers</li>\n            </ul>\n            <strong>Use cases:</strong>\n            <ul>\n                <li>Corporate treasury management</li>\n                <li>DAO governance</li>\n                <li>Enhanced personal security</li>\n                <li>Escrow services</li>\n            </ul>\n            <strong>Popular multi-sig wallets:</strong> Gnosis Safe, Armory, Electrum\n        ",
+    "tags": [
+      "wallets",
+      "security",
+      "difficulty-basic"
+    ],
+    "order": 76
+  },
+  {
+    "title": "What is wallet connect?",
+    "answer": "\n            <p><strong>WalletConnect</strong> is an open protocol for connecting wallets to dApps securely.</p>\n            <strong>How it works:</strong>\n            <ul>\n                <li>Scan QR code or click deep link</li>\n                <li>Establishes encrypted connection</li>\n                <li>dApp can request transactions</li>\n                <li>User approves on their wallet</li>\n            </ul>\n            <strong>Benefits:</strong>\n            <ul>\n                <li>Works with many wallets</li>\n                <li>Connect mobile wallet to desktop dApp</li>\n                <li>End-to-end encryption</li>\n                <li>No browser extension needed</li>\n            </ul>\n        ",
+    "tags": [
+      "wallets",
+      "dapps",
+      "difficulty-basic"
+    ],
+    "order": 77
+  },
+  {
+    "title": "What is address poisoning?",
+    "answer": "\n            <p><strong>Address poisoning</strong> is a scam where attackers send small transactions from addresses that look similar to ones you've used.</p>\n            <strong>How it works:</strong>\n            <ul>\n                <li>Scammer generates address with similar start/end characters</li>\n                <li>Sends tiny transaction to appear in your history</li>\n                <li>Victim copies wrong address from history</li>\n                <li>Funds sent to scammer's address</li>\n            </ul>\n            <strong>Prevention:</strong>\n            <ul>\n                <li>Always verify FULL address</li>\n                <li>Use address book/contacts feature</li>\n                <li>Don't copy addresses from transaction history</li>\n            </ul>\n        ",
+    "tags": [
+      "wallets",
+      "security",
+      "difficulty-basic"
+    ],
+    "order": 78
+  },
+  {
+    "title": "What is a vanity address?",
+    "answer": "\n            <p>A <strong>vanity address</strong> is a cryptocurrency address customized to contain specific characters or words.</p>\n            <strong>Examples:</strong>\n            <ul>\n                <li>0xDEAD... (starts with \"DEAD\")</li>\n                <li>0x...1234 (ends with specific numbers)</li>\n                <li>vitalik.eth (ENS name)</li>\n            </ul>\n            <strong>How they're created:</strong>\n            <ul>\n                <li>Generate millions of addresses</li>\n                <li>Check each for desired pattern</li>\n                <li>Longer patterns take exponentially longer</li>\n            </ul>\n            <strong>Caution:</strong> Never use online vanity generators - they may steal your keys\n        ",
+    "tags": [
+      "wallets",
+      "difficulty-basic"
+    ],
+    "order": 79
+  },
+  {
+    "title": "What is a dApp (decentralized application)?",
+    "answer": "\n            <p>A <strong>dApp</strong> (decentralized application) is an application that runs on a decentralized network using smart contracts.</p>\n            <strong>Characteristics:</strong>\n            <ul>\n                <li><strong>Open source:</strong> Code is publicly verifiable</li>\n                <li><strong>Decentralized:</strong> Runs on blockchain, not single server</li>\n                <li><strong>Censorship-resistant:</strong> No single point of control</li>\n                <li><strong>Token-incentivized:</strong> Often uses crypto tokens</li>\n            </ul>\n            <strong>Examples:</strong>\n            <ul>\n                <li><strong>DeFi:</strong> Uniswap, Aave, Compound</li>\n                <li><strong>NFT:</strong> OpenSea, Blur</li>\n                <li><strong>Gaming:</strong> Axie Infinity, Gods Unchained</li>\n            </ul>\n        ",
+    "tags": [
+      "dapps",
+      "difficulty-basic"
+    ],
+    "order": 80
+  },
+  {
+    "title": "What is Web3?",
+    "answer": "\n            <p><strong>Web3</strong> refers to the next evolution of the internet, built on blockchain technology with emphasis on decentralization, ownership, and trustlessness.</p>\n            <strong>Key principles:</strong>\n            <ul>\n                <li><strong>Decentralization:</strong> No central authorities</li>\n                <li><strong>Ownership:</strong> Users own their data and assets</li>\n                <li><strong>Trustlessness:</strong> Trust code, not intermediaries</li>\n                <li><strong>Permissionless:</strong> Open access for all</li>\n                <li><strong>Native payments:</strong> Built-in cryptocurrency</li>\n            </ul>\n        ",
+    "tags": [
+      "web3",
+      "difficulty-basic"
+    ],
+    "order": 81
+  },
+  {
+    "title": "What is the difference between Web1, Web2, and Web3?",
+    "answer": "\n            <p>The web has evolved through three major phases:</p>\n            <table>\n                <tr><th>Era</th><th>Description</th><th>Examples</th></tr>\n                <tr><td>Web1 (1990s-2000s)</td><td>Read-only, static pages</td><td>Yahoo, AOL, early websites</td></tr>\n                <tr><td>Web2 (2000s-now)</td><td>Read-write, interactive, centralized</td><td>Facebook, Google, Twitter</td></tr>\n                <tr><td>Web3 (emerging)</td><td>Read-write-own, decentralized</td><td>Ethereum, DeFi, NFTs</td></tr>\n            </table>\n            <strong>Key differences:</strong>\n            <ul>\n                <li><strong>Web1:</strong> Publishers create, users consume</li>\n                <li><strong>Web2:</strong> Users create content, platforms own it</li>\n                <li><strong>Web3:</strong> Users create and own their content</li>\n            </ul>\n        ",
+    "tags": [
+      "web3",
+      "difficulty-basic"
+    ],
+    "order": 82
+  },
+  {
+    "title": "What is the difference between Web2 and Web3?",
+    "answer": "\n            <p>Web2 and Web3 represent different eras of internet evolution.</p>\n            <table>\n                <tr><th>Aspect</th><th>Web2</th><th>Web3</th></tr>\n                <tr><td>Control</td><td>Centralized companies</td><td>Decentralized networks</td></tr>\n                <tr><td>Data ownership</td><td>Platforms own user data</td><td>Users own their data</td></tr>\n                <tr><td>Identity</td><td>Email/password per site</td><td>Single wallet identity</td></tr>\n                <tr><td>Payments</td><td>Credit cards, banks</td><td>Native cryptocurrency</td></tr>\n                <tr><td>Trust</td><td>Trust the company</td><td>Trust the code</td></tr>\n                <tr><td>Censorship</td><td>Easy to censor</td><td>Censorship-resistant</td></tr>\n            </table>\n        ",
+    "tags": [
+      "web3",
+      "difficulty-basic"
+    ],
+    "order": 83
+  },
+  {
+    "title": "What is a smart contract (basic overview)?",
+    "answer": "\n            <p>A <strong>smart contract</strong> is self-executing code stored on a blockchain that automatically enforces the terms of an agreement.</p>\n            <strong>Key properties:</strong>\n            <ul>\n                <li><strong>Automated:</strong> Executes when conditions are met</li>\n                <li><strong>Immutable:</strong> Cannot be changed once deployed</li>\n                <li><strong>Transparent:</strong> Code is publicly visible</li>\n                <li><strong>Trustless:</strong> No intermediaries needed</li>\n            </ul>\n            <strong>Examples:</strong>\n            <ul>\n                <li>Token transfers (ERC-20)</li>\n                <li>NFT ownership (ERC-721)</li>\n                <li>Decentralized exchanges</li>\n                <li>Lending protocols</li>\n            </ul>\n        ",
+    "tags": [
+      "smart-contracts",
+      "difficulty-basic"
+    ],
+    "order": 84
+  },
+  {
+    "title": "What is Ethereum Name Service (ENS)?",
+    "answer": "\n            <p><strong>ENS</strong> (Ethereum Name Service) is a decentralized naming system that maps human-readable names to blockchain addresses.</p>\n            <strong>How it works:</strong>\n            <ul>\n                <li>Register a .eth domain (e.g., vitalik.eth)</li>\n                <li>Link it to your wallet address</li>\n                <li>Use the name instead of the long hex address</li>\n            </ul>\n            <strong>Benefits:</strong>\n            <ul>\n                <li>Easy to remember and share</li>\n                <li>Reduces errors in transactions</li>\n                <li>Can link to websites, social profiles, and more</li>\n                <li>NFT-based ownership</li>\n            </ul>\n            <strong>Example:</strong> Send ETH to \"vitalik.eth\" instead of \"0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045\"\n        ",
+    "tags": [
+      "ens",
+      "ethereum",
+      "difficulty-basic"
+    ],
+    "order": 85
+  },
+  {
+    "title": "What is an NFT?",
+    "answer": "\n            <p>An <strong>NFT</strong> (Non-Fungible Token) is a unique digital asset that represents ownership of a specific item on the blockchain.</p>\n            <strong>Key properties:</strong>\n            <ul>\n                <li><strong>Non-fungible:</strong> Each token is unique (unlike ETH or BTC)</li>\n                <li><strong>Verifiable ownership:</strong> Blockchain proves who owns it</li>\n                <li><strong>Transferable:</strong> Can be bought, sold, traded</li>\n                <li><strong>Programmable:</strong> Can include royalties, unlockables</li>\n            </ul>\n            <strong>Use cases:</strong>\n            <ul>\n                <li>Digital art and collectibles</li>\n                <li>Gaming items</li>\n                <li>Event tickets</li>\n                <li>Domain names</li>\n                <li>Music and media</li>\n            </ul>\n        ",
+    "tags": [
+      "nft",
+      "tokens",
+      "difficulty-basic"
+    ],
+    "order": 86
+  },
+  {
+    "title": "What is DeFi?",
+    "answer": "\n            <p><strong>DeFi</strong> (Decentralized Finance) refers to financial services built on blockchain without traditional intermediaries.</p>\n            <strong>DeFi services:</strong>\n            <ul>\n                <li><strong>Lending/Borrowing:</strong> Aave, Compound</li>\n                <li><strong>Trading:</strong> Uniswap, Curve</li>\n                <li><strong>Stablecoins:</strong> DAI, USDC</li>\n                <li><strong>Yield farming:</strong> Yearn Finance</li>\n                <li><strong>Insurance:</strong> Nexus Mutual</li>\n            </ul>\n            <strong>Benefits:</strong>\n            <ul>\n                <li>Accessible to anyone with internet</li>\n                <li>No credit checks or KYC</li>\n                <li>Transparent and auditable</li>\n                <li>Composable (\"money legos\")</li>\n            </ul>\n        ",
+    "tags": [
+      "defi",
+      "difficulty-basic"
+    ],
+    "order": 87
+  },
+  {
+    "title": "What is a DAO?",
+    "answer": "\n            <p>A <strong>DAO</strong> (Decentralized Autonomous Organization) is an organization governed by smart contracts and token holder votes.</p>\n            <strong>How DAOs work:</strong>\n            <ul>\n                <li>Rules encoded in smart contracts</li>\n                <li>Token holders can vote on proposals</li>\n                <li>Treasury managed by the DAO</li>\n                <li>No central leadership</li>\n            </ul>\n            <strong>Examples:</strong>\n            <ul>\n                <li><strong>MakerDAO:</strong> Manages DAI stablecoin</li>\n                <li><strong>Uniswap:</strong> Protocol governance</li>\n                <li><strong>ENS DAO:</strong> Manages ENS protocol</li>\n            </ul>\n        ",
+    "tags": [
+      "dao",
+      "governance",
+      "difficulty-basic"
+    ],
+    "order": 88
+  },
+  {
+    "title": "What is Layer 1 vs Layer 2?",
+    "answer": "\n            <p><strong>Layer 1</strong> is the base blockchain, while <strong>Layer 2</strong> is a secondary framework built on top to improve scalability.</p>\n            <strong>Layer 1 examples:</strong>\n            <ul>\n                <li>Ethereum, Bitcoin, Solana, Avalanche</li>\n            </ul>\n            <strong>Layer 2 examples:</strong>\n            <ul>\n                <li><strong>Rollups:</strong> Arbitrum, Optimism, zkSync</li>\n                <li><strong>State channels:</strong> Lightning Network</li>\n                <li><strong>Sidechains:</strong> Polygon PoS</li>\n            </ul>\n            <strong>Benefits of L2:</strong>\n            <ul>\n                <li>Lower fees</li>\n                <li>Faster transactions</li>\n                <li>Inherits L1 security (rollups)</li>\n            </ul>\n        ",
+    "tags": [
+      "scaling",
+      "layer2",
+      "difficulty-basic"
+    ],
+    "order": 89
+  },
+  {
+    "title": "What is gas optimization?",
+    "answer": "\n            <p><strong>Gas optimization</strong> is the practice of writing efficient smart contract code to minimize transaction costs.</p>\n            <strong>Common techniques:</strong>\n            <ul>\n                <li>Use uint256 instead of smaller integers</li>\n                <li>Pack storage variables</li>\n                <li>Use events instead of storage for logs</li>\n                <li>Avoid unnecessary storage reads/writes</li>\n                <li>Use calldata instead of memory for function params</li>\n            </ul>\n            <strong>Why it matters:</strong>\n            <ul>\n                <li>Lower costs for users</li>\n                <li>Better user experience</li>\n                <li>More competitive protocols</li>\n            </ul>\n        ",
+    "tags": [
+      "development",
+      "gas",
+      "difficulty-basic"
+    ],
+    "order": 90
+  },
+  {
+    "title": "What is a testnet?",
+    "answer": "\n            <p>A <strong>testnet</strong> is a blockchain network for testing that uses tokens with no real value.</p>\n            <strong>Popular testnets:</strong>\n            <ul>\n                <li><strong>Ethereum:</strong> Sepolia, Goerli</li>\n                <li><strong>Polygon:</strong> Mumbai</li>\n                <li><strong>Arbitrum:</strong> Arbitrum Sepolia</li>\n            </ul>\n            <strong>Use cases:</strong>\n            <ul>\n                <li>Testing smart contracts before mainnet</li>\n                <li>Learning without risking real money</li>\n                <li>QA and debugging</li>\n            </ul>\n            <strong>Getting testnet tokens:</strong> Faucets (free) like Sepolia Faucet\n        ",
+    "tags": [
+      "development",
+      "networks",
+      "difficulty-basic"
+    ],
+    "order": 91
+  },
+  {
+    "title": "What is mainnet?",
+    "answer": "\n            <p><strong>Mainnet</strong> is the primary, production blockchain network where real value transactions occur.</p>\n            <strong>Mainnet vs Testnet:</strong>\n            <table>\n                <tr><th>Aspect</th><th>Mainnet</th><th>Testnet</th></tr>\n                <tr><td>Value</td><td>Real money</td><td>No value</td></tr>\n                <tr><td>Purpose</td><td>Production</td><td>Testing</td></tr>\n                <tr><td>Security</td><td>Maximum</td><td>Lower priority</td></tr>\n                <tr><td>Tokens</td><td>Must be purchased</td><td>Free from faucets</td></tr>\n            </table>\n        ",
+    "tags": [
+      "networks",
+      "difficulty-basic"
+    ],
+    "order": 92
+  },
+  {
+    "title": "What is a faucet in crypto?",
+    "answer": "\n            <p>A <strong>faucet</strong> is a website or app that dispenses free cryptocurrency, typically for testing purposes.</p>\n            <strong>Types:</strong>\n            <ul>\n                <li><strong>Testnet faucets:</strong> Free testnet tokens for development</li>\n                <li><strong>Mainnet faucets:</strong> Small amounts of real crypto (rare)</li>\n            </ul>\n            <strong>Popular faucets:</strong>\n            <ul>\n                <li>Alchemy Sepolia Faucet</li>\n                <li>Chainlink Faucets</li>\n                <li>Paradigm Faucet</li>\n            </ul>\n            <strong>Note:</strong> Most require wallet connection or social verification to prevent abuse\n        ",
+    "tags": [
+      "development",
+      "tools",
+      "difficulty-basic"
+    ],
+    "order": 93
+  },
+  {
+    "title": "What is a blockchain bridge?",
+    "answer": "\n            <p>A <strong>bridge</strong> allows transferring assets between different blockchain networks.</p>\n            <strong>How bridges work:</strong>\n            <ol>\n                <li>Lock tokens on source chain</li>\n                <li>Mint wrapped tokens on destination chain</li>\n                <li>To return: burn wrapped tokens</li>\n                <li>Unlock original tokens</li>\n            </ol>\n            <strong>Examples:</strong>\n            <ul>\n                <li>Arbitrum Bridge</li>\n                <li>Polygon Bridge</li>\n                <li>Wormhole</li>\n                <li>Across Protocol</li>\n            </ul>\n            <strong>Risks:</strong> Bridge hacks have caused billions in losses - use trusted bridges carefully\n        ",
+    "tags": [
+      "crosschain",
+      "difficulty-basic"
+    ],
+    "order": 94
+  },
+  {
+    "title": "What is an oracle in blockchain?",
+    "answer": "\n            <p>An <strong>oracle</strong> provides external data to smart contracts, which cannot access off-chain information directly.</p>\n            <strong>Types of data:</strong>\n            <ul>\n                <li>Price feeds (ETH/USD, BTC/USD)</li>\n                <li>Weather data</li>\n                <li>Sports scores</li>\n                <li>Random numbers</li>\n            </ul>\n            <strong>Popular oracles:</strong>\n            <ul>\n                <li><strong>Chainlink:</strong> Industry leader, decentralized</li>\n                <li><strong>Band Protocol</strong></li>\n                <li><strong>Pyth Network</strong></li>\n            </ul>\n            <strong>Oracle problem:</strong> Ensuring off-chain data is accurate and tamper-proof\n        ",
+    "tags": [
+      "oracles",
+      "difficulty-basic"
+    ],
+    "order": 95
+  },
+  {
+    "title": "What is IPFS?",
+    "answer": "\n            <p><strong>IPFS</strong> (InterPlanetary File System) is a decentralized protocol for storing and sharing files.</p>\n            <strong>How it works:</strong>\n            <ul>\n                <li>Files addressed by content hash (CID)</li>\n                <li>Same content = same address</li>\n                <li>Distributed across network nodes</li>\n                <li>No central server</li>\n            </ul>\n            <strong>Uses in Web3:</strong>\n            <ul>\n                <li>NFT metadata and images</li>\n                <li>dApp frontends</li>\n                <li>Document storage</li>\n            </ul>\n            <strong>Pinning services:</strong> Pinata, Infura, NFT.Storage keep files available\n        ",
+    "tags": [
+      "storage",
+      "decentralized",
+      "difficulty-basic"
+    ],
+    "order": 96
+  },
+  {
+    "title": "What is a rug pull?",
+    "answer": "\n            <p>A <strong>rug pull</strong> is a scam where developers abandon a project after collecting investor funds.</p>\n            <strong>Common types:</strong>\n            <ul>\n                <li><strong>Liquidity pull:</strong> Developers remove all liquidity from DEX</li>\n                <li><strong>Selling supply:</strong> Team dumps large token holdings</li>\n                <li><strong>Limiting sells:</strong> Code prevents users from selling</li>\n            </ul>\n            <strong>Red flags:</strong>\n            <ul>\n                <li>Anonymous team</li>\n                <li>Unverified/unaudited contracts</li>\n                <li>Too-good-to-be-true returns</li>\n                <li>Locked liquidity with short timeframe</li>\n            </ul>\n        ",
+    "tags": [
+      "security",
+      "scams",
+      "difficulty-basic"
+    ],
+    "order": 97
+  },
+  {
+    "title": "What is DYOR?",
+    "answer": "\n            <p><strong>DYOR</strong> stands for \"Do Your Own Research\" - a common phrase in crypto reminding people to investigate before investing.</p>\n            <strong>What to research:</strong>\n            <ul>\n                <li>Team background and credibility</li>\n                <li>Tokenomics and supply</li>\n                <li>Smart contract audits</li>\n                <li>Community and social presence</li>\n                <li>Roadmap and development activity</li>\n                <li>Use case and competition</li>\n            </ul>\n            <strong>Tools for research:</strong>\n            <ul>\n                <li>CoinGecko, CoinMarketCap</li>\n                <li>Etherscan, block explorers</li>\n                <li>DeFiLlama for TVL</li>\n                <li>GitHub for code activity</li>\n            </ul>\n        ",
+    "tags": [
+      "culture",
+      "security",
+      "difficulty-basic"
+    ],
+    "order": 98
+  }
+]

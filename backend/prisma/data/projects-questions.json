@@ -1,0 +1,502 @@
+[
+  {
+    "title": "Simple ERC-20 Token",
+    "answer": "\n            <p>Create your own fungible token following the ERC-20 standard.</p>\n            <strong>Learning Goals:</strong>\n            <ul>\n                <li>Understand token standards</li>\n                <li>Learn Solidity basics</li>\n                <li>Deploy to testnet</li>\n                <li>Interact with your contract</li>\n            </ul>\n            <strong>Features to implement:</strong>\n            <ul>\n                <li>totalSupply, balanceOf, transfer</li>\n                <li>approve, transferFrom, allowance</li>\n                <li>Minting function (with access control)</li>\n                <li>Burning function</li>\n            </ul>\n            <strong>Tech Stack:</strong> Solidity, Hardhat/Foundry, ethers.js\n            <strong>Extension:</strong> Add pausable, capped supply, or snapshot features\n        ",
+    "tags": [
+      "beginner",
+      "tokens",
+      "solidity"
+    ],
+    "order": 0
+  },
+  {
+    "title": "Basic NFT Collection",
+    "answer": "\n            <p>Build an ERC-721 NFT collection with metadata on IPFS.</p>\n            <strong>Learning Goals:</strong>\n            <ul>\n                <li>Understand ERC-721 standard</li>\n                <li>Work with IPFS for metadata</li>\n                <li>Implement minting logic</li>\n                <li>Add reveal mechanism</li>\n            </ul>\n            <strong>Features:</strong>\n            <ul>\n                <li>Mint function with price</li>\n                <li>Max supply limit</li>\n                <li>Base URI for metadata</li>\n                <li>Owner withdrawal function</li>\n            </ul>\n            <strong>Tech Stack:</strong> Solidity, OpenZeppelin, Pinata/NFT.Storage\n            <strong>Extension:</strong> Add whitelist, reveal mechanism, or royalties (ERC-2981)\n        ",
+    "tags": [
+      "beginner",
+      "nft",
+      "solidity"
+    ],
+    "order": 1
+  },
+  {
+    "title": "Crypto Wallet Tracker",
+    "answer": "\n            <p>Build a web app that tracks wallet balances and transaction history.</p>\n            <strong>Learning Goals:</strong>\n            <ul>\n                <li>Use blockchain APIs (Etherscan, Alchemy)</li>\n                <li>Parse and display blockchain data</li>\n                <li>Handle multiple networks</li>\n            </ul>\n            <strong>Features:</strong>\n            <ul>\n                <li>Input any wallet address</li>\n                <li>Show ETH and token balances</li>\n                <li>Display recent transactions</li>\n                <li>Calculate portfolio value in USD</li>\n            </ul>\n            <strong>Tech Stack:</strong> React/Vue, ethers.js, CoinGecko API\n            <strong>Extension:</strong> Add NFT display, multi-chain support, or alerts\n        ",
+    "tags": [
+      "beginner",
+      "frontend",
+      "api"
+    ],
+    "order": 2
+  },
+  {
+    "title": "Simple Voting dApp",
+    "answer": "\n            <p>Create a decentralized voting application with smart contract backend.</p>\n            <strong>Learning Goals:</strong>\n            <ul>\n                <li>Connect frontend to smart contracts</li>\n                <li>Handle wallet connections</li>\n                <li>Implement voting logic</li>\n            </ul>\n            <strong>Features:</strong>\n            <ul>\n                <li>Create proposals</li>\n                <li>Cast votes (one per address)</li>\n                <li>View results in real-time</li>\n                <li>Time-limited voting periods</li>\n            </ul>\n            <strong>Tech Stack:</strong> Solidity, React, ethers.js, MetaMask\n            <strong>Extension:</strong> Add weighted voting, delegation, or quadratic voting\n        ",
+    "tags": [
+      "beginner",
+      "dapp",
+      "solidity"
+    ],
+    "order": 3
+  },
+  {
+    "title": "Tip Jar Smart Contract",
+    "answer": "\n            <p>Build a smart contract that accepts ETH tips and allows owner withdrawal.</p>\n            <strong>Learning Goals:</strong>\n            <ul>\n                <li>Handle ETH payments</li>\n                <li>Implement access control</li>\n                <li>Learn payable functions</li>\n            </ul>\n            <strong>Features:</strong>\n            <ul>\n                <li>Receive ETH tips</li>\n                <li>Track tipper addresses and amounts</li>\n                <li>Owner can withdraw</li>\n                <li>Emit events for tips</li>\n            </ul>\n            <pre><code class=\"language-solidity\">function tip() external payable {\n    require(msg.value > 0, \"Must send ETH\");\n    tips[msg.sender] += msg.value;\n    emit TipReceived(msg.sender, msg.value);\n}</code></pre>\n            <strong>Extension:</strong> Add leaderboard, messages with tips, or multi-recipient splitting\n        ",
+    "tags": [
+      "beginner",
+      "solidity",
+      "payments"
+    ],
+    "order": 4
+  },
+  {
+    "title": "ENS Name Resolver App",
+    "answer": "\n            <p>Build an app that resolves ENS names to addresses and vice versa.</p>\n            <strong>Learning Goals:</strong>\n            <ul>\n                <li>Work with ENS protocol</li>\n                <li>Understand name resolution</li>\n                <li>Display ENS metadata</li>\n            </ul>\n            <strong>Features:</strong>\n            <ul>\n                <li>Resolve .eth names to addresses</li>\n                <li>Reverse resolve addresses to names</li>\n                <li>Display avatar and other records</li>\n                <li>Check name availability</li>\n            </ul>\n            <strong>Tech Stack:</strong> React, ethers.js (built-in ENS support)\n            <strong>Extension:</strong> Add registration flow, text records, or subdomain creation\n        ",
+    "tags": [
+      "beginner",
+      "ens",
+      "frontend"
+    ],
+    "order": 5
+  },
+  {
+    "title": "Gas Price Tracker",
+    "answer": "\n            <p>Create a real-time gas price tracker with historical data.</p>\n            <strong>Learning Goals:</strong>\n            <ul>\n                <li>Fetch blockchain data</li>\n                <li>Display real-time updates</li>\n                <li>Work with charting libraries</li>\n            </ul>\n            <strong>Features:</strong>\n            <ul>\n                <li>Current gas prices (slow, standard, fast)</li>\n                <li>Historical gas charts</li>\n                <li>Estimated transaction costs</li>\n                <li>Push notifications for low gas</li>\n            </ul>\n            <strong>Tech Stack:</strong> React, ethers.js, Chart.js, Etherscan API\n            <strong>Extension:</strong> Add multi-chain, transaction simulation, or gas predictions\n        ",
+    "tags": [
+      "beginner",
+      "tools",
+      "api"
+    ],
+    "order": 6
+  },
+  {
+    "title": "Multi-Sig Wallet (Basic)",
+    "answer": "\n            <p>Build a simple multi-signature wallet requiring multiple approvals.</p>\n            <strong>Learning Goals:</strong>\n            <ul>\n                <li>Understand multi-sig concepts</li>\n                <li>Implement approval mechanisms</li>\n                <li>Handle transaction execution</li>\n            </ul>\n            <strong>Features:</strong>\n            <ul>\n                <li>Add/remove owners</li>\n                <li>Set required confirmations</li>\n                <li>Submit and confirm transactions</li>\n                <li>Execute after threshold met</li>\n            </ul>\n            <strong>Tech Stack:</strong> Solidity, Hardhat\n            <strong>Extension:</strong> Add time locks, transaction batching, or ERC-20 support\n        ",
+    "tags": [
+      "beginner",
+      "security",
+      "solidity"
+    ],
+    "order": 7
+  },
+  {
+    "title": "Token Faucet",
+    "answer": "\n            <p>Create a testnet token faucet that distributes tokens with rate limiting.</p>\n            <strong>Learning Goals:</strong>\n            <ul>\n                <li>Token distribution logic</li>\n                <li>Rate limiting mechanisms</li>\n                <li>Frontend wallet integration</li>\n            </ul>\n            <strong>Features:</strong>\n            <ul>\n                <li>Claim tokens once per day</li>\n                <li>CAPTCHA or wallet verification</li>\n                <li>Display remaining balance</li>\n                <li>Transaction history</li>\n            </ul>\n            <strong>Tech Stack:</strong> Solidity, React, ethers.js\n            <strong>Extension:</strong> Add social verification, referral bonuses, or multi-token support\n        ",
+    "tags": [
+      "beginner",
+      "tokens",
+      "dapp"
+    ],
+    "order": 8
+  },
+  {
+    "title": "Blockchain Event Listener",
+    "answer": "\n            <p>Build a service that listens to smart contract events and logs them.</p>\n            <strong>Learning Goals:</strong>\n            <ul>\n                <li>Understand blockchain events</li>\n                <li>Work with WebSocket connections</li>\n                <li>Handle event data</li>\n            </ul>\n            <strong>Features:</strong>\n            <ul>\n                <li>Listen to specific contract events</li>\n                <li>Store events in database</li>\n                <li>Real-time notifications</li>\n                <li>Historical event queries</li>\n            </ul>\n            <pre><code class=\"language-javascript\">contract.on(\"Transfer\", (from, to, value, event) => {\n    console.log(`Transfer: ${from} → ${to}: ${value}`);\n});</code></pre>\n            <strong>Extension:</strong> Add webhook notifications, multi-contract monitoring, or analytics\n        ",
+    "tags": [
+      "beginner",
+      "events",
+      "backend"
+    ],
+    "order": 9
+  },
+  {
+    "title": "Crypto Price Ticker",
+    "answer": "\n            <p>Build a live cryptocurrency price ticker with multiple coins.</p>\n            <strong>Learning Goals:</strong>\n            <ul>\n                <li>Work with price APIs</li>\n                <li>Handle real-time data</li>\n                <li>Display price changes</li>\n            </ul>\n            <strong>Features:</strong>\n            <ul>\n                <li>Live prices for top cryptocurrencies</li>\n                <li>24h price change percentages</li>\n                <li>Sparkline mini charts</li>\n                <li>Favorites/watchlist</li>\n            </ul>\n            <strong>Tech Stack:</strong> React, CoinGecko/CoinMarketCap API\n            <strong>Extension:</strong> Add price alerts, portfolio tracking, or compare charts\n        ",
+    "tags": [
+      "beginner",
+      "api",
+      "frontend"
+    ],
+    "order": 10
+  },
+  {
+    "title": "Simple Crowdfunding Contract",
+    "answer": "\n            <p>Create a crowdfunding smart contract with goal-based funding.</p>\n            <strong>Learning Goals:</strong>\n            <ul>\n                <li>Handle multiple contributors</li>\n                <li>Implement funding deadlines</li>\n                <li>Refund logic if goal not met</li>\n            </ul>\n            <strong>Features:</strong>\n            <ul>\n                <li>Create campaigns with goals and deadlines</li>\n                <li>Accept contributions</li>\n                <li>Automatic refunds if goal not met</li>\n                <li>Creator withdrawal on success</li>\n            </ul>\n            <strong>Tech Stack:</strong> Solidity, Hardhat, React\n            <strong>Extension:</strong> Add milestone-based release, voting on milestones, or NFT rewards\n        ",
+    "tags": [
+      "beginner",
+      "defi",
+      "solidity"
+    ],
+    "order": 11
+  },
+  {
+    "title": "Wallet Connect Integration",
+    "answer": "\n            <p>Build a dApp with multiple wallet connection options.</p>\n            <strong>Learning Goals:</strong>\n            <ul>\n                <li>Integrate WalletConnect</li>\n                <li>Support multiple wallets</li>\n                <li>Handle wallet state</li>\n            </ul>\n            <strong>Features:</strong>\n            <ul>\n                <li>Connect MetaMask, WalletConnect, Coinbase Wallet</li>\n                <li>Display connected address</li>\n                <li>Show wallet balance</li>\n                <li>Switch networks</li>\n            </ul>\n            <strong>Tech Stack:</strong> React, wagmi, RainbowKit/Web3Modal\n            <strong>Extension:</strong> Add session persistence, mobile deep links, or account switching\n        ",
+    "tags": [
+      "beginner",
+      "frontend",
+      "wallets"
+    ],
+    "order": 12
+  },
+  {
+    "title": "Token Swap Interface",
+    "answer": "\n            <p>Build a frontend that interfaces with a DEX for token swaps.</p>\n            <strong>Learning Goals:</strong>\n            <ul>\n                <li>Integrate with DEX protocols</li>\n                <li>Handle token approvals</li>\n                <li>Calculate swap rates</li>\n            </ul>\n            <strong>Features:</strong>\n            <ul>\n                <li>Token selection</li>\n                <li>Quote display</li>\n                <li>Slippage settings</li>\n                <li>Approve and swap transactions</li>\n            </ul>\n            <strong>Tech Stack:</strong> React, ethers.js, Uniswap SDK\n            <strong>Extension:</strong> Add multi-hop routing, price impact warnings, or limit orders\n        ",
+    "tags": [
+      "beginner",
+      "defi",
+      "frontend"
+    ],
+    "order": 13
+  },
+  {
+    "title": "NFT Gallery Viewer",
+    "answer": "\n            <p>Create an app that displays NFTs owned by any wallet.</p>\n            <strong>Learning Goals:</strong>\n            <ul>\n                <li>Query NFT ownership</li>\n                <li>Fetch and display metadata</li>\n                <li>Handle IPFS content</li>\n            </ul>\n            <strong>Features:</strong>\n            <ul>\n                <li>Input wallet address</li>\n                <li>Display all NFTs with images</li>\n                <li>Show traits and attributes</li>\n                <li>Link to OpenSea/marketplaces</li>\n            </ul>\n            <strong>Tech Stack:</strong> React, Alchemy NFT API, IPFS gateways\n            <strong>Extension:</strong> Add collection filtering, rarity rankings, or batch transfers\n        ",
+    "tags": [
+      "beginner",
+      "nft",
+      "frontend"
+    ],
+    "order": 14
+  },
+  {
+    "title": "Decentralized Exchange (Simple AMM)",
+    "answer": "\n            <p>Build a basic Automated Market Maker like Uniswap V2.</p>\n            <strong>Learning Goals:</strong>\n            <ul>\n                <li>Understand constant product formula (x*y=k)</li>\n                <li>Implement liquidity pools</li>\n                <li>Handle swap mechanics</li>\n            </ul>\n            <strong>Features:</strong>\n            <ul>\n                <li>Create liquidity pools</li>\n                <li>Add/remove liquidity</li>\n                <li>Swap tokens</li>\n                <li>LP token minting/burning</li>\n            </ul>\n            <pre><code class=\"language-solidity\">function swap(uint amountIn, address tokenIn) external {\n    uint amountOut = getAmountOut(amountIn, reserveIn, reserveOut);\n    // Transfer tokens...\n}</code></pre>\n            <strong>Extension:</strong> Add multi-hop swaps, fees, or price oracle\n        ",
+    "tags": [
+      "intermediate",
+      "defi",
+      "amm"
+    ],
+    "order": 15
+  },
+  {
+    "title": "Lending Protocol (Basic)",
+    "answer": "\n            <p>Create a simplified lending/borrowing protocol like Compound.</p>\n            <strong>Learning Goals:</strong>\n            <ul>\n                <li>Understand collateralization</li>\n                <li>Implement interest rate models</li>\n                <li>Handle liquidations</li>\n            </ul>\n            <strong>Features:</strong>\n            <ul>\n                <li>Deposit collateral</li>\n                <li>Borrow against collateral</li>\n                <li>Accrue interest over time</li>\n                <li>Liquidation mechanism</li>\n            </ul>\n            <strong>Tech Stack:</strong> Solidity, OpenZeppelin, Chainlink Price Feeds\n            <strong>Extension:</strong> Add flash loans, governance, or multiple assets\n        ",
+    "tags": [
+      "intermediate",
+      "defi",
+      "lending"
+    ],
+    "order": 16
+  },
+  {
+    "title": "NFT Marketplace",
+    "answer": "\n            <p>Build a decentralized NFT marketplace with listings and auctions.</p>\n            <strong>Learning Goals:</strong>\n            <ul>\n                <li>Handle NFT transfers</li>\n                <li>Implement listing/delisting</li>\n                <li>Create auction mechanics</li>\n            </ul>\n            <strong>Features:</strong>\n            <ul>\n                <li>List NFTs for fixed price</li>\n                <li>Create timed auctions</li>\n                <li>Handle bids and settlements</li>\n                <li>Royalty payments (ERC-2981)</li>\n            </ul>\n            <strong>Tech Stack:</strong> Solidity, The Graph, React\n            <strong>Extension:</strong> Add collection offers, bundle sales, or lazy minting\n        ",
+    "tags": [
+      "intermediate",
+      "nft",
+      "marketplace"
+    ],
+    "order": 17
+  },
+  {
+    "title": "DAO with Governance",
+    "answer": "\n            <p>Create a DAO with proposal creation, voting, and execution.</p>\n            <strong>Learning Goals:</strong>\n            <ul>\n                <li>Implement voting mechanisms</li>\n                <li>Handle proposal lifecycle</li>\n                <li>Execute on-chain actions</li>\n            </ul>\n            <strong>Features:</strong>\n            <ul>\n                <li>Token-weighted voting</li>\n                <li>Proposal creation with threshold</li>\n                <li>Timelock for execution</li>\n                <li>Delegate voting power</li>\n            </ul>\n            <strong>Tech Stack:</strong> Solidity, OpenZeppelin Governor, Tally\n            <strong>Extension:</strong> Add quadratic voting, rage quit, or multi-sig integration\n        ",
+    "tags": [
+      "intermediate",
+      "dao",
+      "governance"
+    ],
+    "order": 18
+  },
+  {
+    "title": "Staking Platform",
+    "answer": "\n            <p>Build a staking platform with rewards distribution.</p>\n            <strong>Learning Goals:</strong>\n            <ul>\n                <li>Calculate staking rewards</li>\n                <li>Handle stake/unstake logic</li>\n                <li>Implement lock periods</li>\n            </ul>\n            <strong>Features:</strong>\n            <ul>\n                <li>Stake tokens</li>\n                <li>Earn rewards proportionally</li>\n                <li>Compound rewards</li>\n                <li>Different lock tiers</li>\n            </ul>\n            <pre><code class=\"language-solidity\">function earned(address account) public view returns (uint256) {\n    return (staked[account] * (rewardPerToken() - userRewardPerTokenPaid[account])) / 1e18 + rewards[account];\n}</code></pre>\n            <strong>Extension:</strong> Add boosted rewards, NFT staking, or veToken model\n        ",
+    "tags": [
+      "intermediate",
+      "defi",
+      "staking"
+    ],
+    "order": 19
+  },
+  {
+    "title": "On-chain SVG NFTs",
+    "answer": "\n            <p>Create NFTs with fully on-chain SVG art and metadata.</p>\n            <strong>Learning Goals:</strong>\n            <ul>\n                <li>Generate SVG in Solidity</li>\n                <li>Base64 encoding</li>\n                <li>Dynamic metadata</li>\n            </ul>\n            <strong>Features:</strong>\n            <ul>\n                <li>Procedurally generated art</li>\n                <li>100% on-chain (no IPFS)</li>\n                <li>Dynamic traits based on token ID</li>\n                <li>Updatable artwork</li>\n            </ul>\n            <pre><code class=\"language-solidity\">function tokenURI(uint256 tokenId) public view returns (string memory) {\n    string memory svg = generateSVG(tokenId);\n    return string(abi.encodePacked(\"data:application/json;base64,\", ...));\n}</code></pre>\n            <strong>Extension:</strong> Add animated SVGs, evolving art, or composable layers\n        ",
+    "tags": [
+      "intermediate",
+      "nft",
+      "generative"
+    ],
+    "order": 20
+  },
+  {
+    "title": "Bridge for ERC-20 Tokens",
+    "answer": "\n            <p>Build a basic token bridge between two EVM chains.</p>\n            <strong>Learning Goals:</strong>\n            <ul>\n                <li>Understand cross-chain messaging</li>\n                <li>Lock-and-mint pattern</li>\n                <li>Handle validators/relayers</li>\n            </ul>\n            <strong>Features:</strong>\n            <ul>\n                <li>Lock tokens on source chain</li>\n                <li>Mint wrapped tokens on destination</li>\n                <li>Burn to unlock originals</li>\n                <li>Multi-sig validation</li>\n            </ul>\n            <strong>Tech Stack:</strong> Solidity (both chains), relayer backend\n            <strong>Warning:</strong> Bridges are high-risk. Use testnet only!\n            <strong>Extension:</strong> Add challenge period, optimistic verification, or multiple assets\n        ",
+    "tags": [
+      "intermediate",
+      "bridge",
+      "crosschain"
+    ],
+    "order": 21
+  },
+  {
+    "title": "Yield Aggregator",
+    "answer": "\n            <p>Create a yield aggregator that auto-compounds rewards.</p>\n            <strong>Learning Goals:</strong>\n            <ul>\n                <li>Integrate with DeFi protocols</li>\n                <li>Implement vault pattern</li>\n                <li>Auto-compound logic</li>\n            </ul>\n            <strong>Features:</strong>\n            <ul>\n                <li>Deposit to vault</li>\n                <li>Vault deploys to strategies</li>\n                <li>Auto-harvest and compound</li>\n                <li>Share-based accounting</li>\n            </ul>\n            <strong>Tech Stack:</strong> Solidity, ERC-4626 vault standard\n            <strong>Extension:</strong> Add multiple strategies, strategy scoring, or emergency withdrawal\n        ",
+    "tags": [
+      "intermediate",
+      "defi",
+      "yield"
+    ],
+    "order": 22
+  },
+  {
+    "title": "Decentralized Identity (DID)",
+    "answer": "\n            <p>Build a decentralized identity system with verifiable credentials.</p>\n            <strong>Learning Goals:</strong>\n            <ul>\n                <li>Understand DID standards</li>\n                <li>Issue verifiable credentials</li>\n                <li>Implement attestations</li>\n            </ul>\n            <strong>Features:</strong>\n            <ul>\n                <li>Create DID documents</li>\n                <li>Issue credentials (soulbound tokens)</li>\n                <li>Verify credentials</li>\n                <li>Revocation registry</li>\n            </ul>\n            <strong>Tech Stack:</strong> Solidity, ERC-5192 (Soulbound), did-jwt\n            <strong>Extension:</strong> Add ZK proofs for privacy, social recovery, or reputation system\n        ",
+    "tags": [
+      "intermediate",
+      "identity",
+      "credentials"
+    ],
+    "order": 23
+  },
+  {
+    "title": "On-chain Game (Simple)",
+    "answer": "\n            <p>Create a simple on-chain game with verifiable randomness.</p>\n            <strong>Learning Goals:</strong>\n            <ul>\n                <li>Secure randomness (Chainlink VRF)</li>\n                <li>Game state management</li>\n                <li>Reward distribution</li>\n            </ul>\n            <strong>Features:</strong>\n            <ul>\n                <li>Coin flip or dice game</li>\n                <li>Provably fair randomness</li>\n                <li>Bet placement and payouts</li>\n                <li>House edge configuration</li>\n            </ul>\n            <strong>Tech Stack:</strong> Solidity, Chainlink VRF\n            <strong>Extension:</strong> Add multi-player games, tournaments, or progressive jackpots\n        ",
+    "tags": [
+      "intermediate",
+      "gaming",
+      "randomness"
+    ],
+    "order": 24
+  },
+  {
+    "title": "Token Vesting Contract",
+    "answer": "\n            <p>Build a token vesting system with cliff and linear release.</p>\n            <strong>Learning Goals:</strong>\n            <ul>\n                <li>Time-based unlocking</li>\n                <li>Cliff periods</li>\n                <li>Revocation handling</li>\n            </ul>\n            <strong>Features:</strong>\n            <ul>\n                <li>Create vesting schedules</li>\n                <li>Cliff period before any release</li>\n                <li>Linear or step-based vesting</li>\n                <li>Admin can revoke unvested tokens</li>\n            </ul>\n            <pre><code class=\"language-solidity\">function vestedAmount() public view returns (uint256) {\n    if (block.timestamp < cliff) return 0;\n    if (block.timestamp >= end) return totalAmount;\n    return totalAmount * (block.timestamp - start) / (end - start);\n}</code></pre>\n            <strong>Extension:</strong> Add multiple beneficiaries, transferable vesting, or milestone-based vesting\n        ",
+    "tags": [
+      "intermediate",
+      "tokens",
+      "vesting"
+    ],
+    "order": 25
+  },
+  {
+    "title": "Subscription NFT Membership",
+    "answer": "\n            <p>Create NFT-based subscriptions that expire and can be renewed.</p>\n            <strong>Learning Goals:</strong>\n            <ul>\n                <li>Time-limited token validity</li>\n                <li>Renewal mechanics</li>\n                <li>Access control based on NFT</li>\n            </ul>\n            <strong>Features:</strong>\n            <ul>\n                <li>Mint subscription NFT with duration</li>\n                <li>Check if subscription is active</li>\n                <li>Renew subscription</li>\n                <li>Tier-based pricing</li>\n            </ul>\n            <strong>Tech Stack:</strong> Solidity, ERC-721\n            <strong>Extension:</strong> Add auto-renewal, gifting, or family plans\n        ",
+    "tags": [
+      "intermediate",
+      "nft",
+      "subscription"
+    ],
+    "order": 26
+  },
+  {
+    "title": "Gasless Transactions (Meta-transactions)",
+    "answer": "\n            <p>Implement ERC-2771 meta-transactions for gasless user experience.</p>\n            <strong>Learning Goals:</strong>\n            <ul>\n                <li>Understand ERC-2771</li>\n                <li>Trusted forwarder pattern</li>\n                <li>Signature verification</li>\n            </ul>\n            <strong>Features:</strong>\n            <ul>\n                <li>User signs transaction off-chain</li>\n                <li>Relayer submits transaction</li>\n                <li>Contract trusts forwarder</li>\n                <li>User doesn't need ETH for gas</li>\n            </ul>\n            <strong>Tech Stack:</strong> Solidity, OpenZeppelin, Gelato/Biconomy\n            <strong>Extension:</strong> Add ERC-20 gas payment, sponsored transactions, or batch execution\n        ",
+    "tags": [
+      "intermediate",
+      "ux",
+      "gasless"
+    ],
+    "order": 27
+  },
+  {
+    "title": "The Graph Subgraph",
+    "answer": "\n            <p>Create a subgraph to index and query blockchain data.</p>\n            <strong>Learning Goals:</strong>\n            <ul>\n                <li>Understand event indexing</li>\n                <li>Write GraphQL schema</li>\n                <li>Map events to entities</li>\n            </ul>\n            <strong>Features:</strong>\n            <ul>\n                <li>Index smart contract events</li>\n                <li>Create queryable entities</li>\n                <li>Handle relationships</li>\n                <li>Query via GraphQL API</li>\n            </ul>\n            <strong>Tech Stack:</strong> The Graph, AssemblyScript, GraphQL\n            <strong>Extension:</strong> Add aggregations, time-series data, or cross-contract indexing\n        ",
+    "tags": [
+      "intermediate",
+      "indexing",
+      "thegraph"
+    ],
+    "order": 28
+  },
+  {
+    "title": "Commit-Reveal Voting",
+    "answer": "\n            <p>Implement voting with commit-reveal to prevent vote peeking.</p>\n            <strong>Learning Goals:</strong>\n            <ul>\n                <li>Two-phase voting</li>\n                <li>Commitment schemes</li>\n                <li>Reveal verification</li>\n            </ul>\n            <strong>Features:</strong>\n            <ul>\n                <li>Commit phase: Submit hashed votes</li>\n                <li>Reveal phase: Reveal and verify votes</li>\n                <li>Prevent voting based on others' votes</li>\n                <li>Slash unrevealed votes</li>\n            </ul>\n            <pre><code class=\"language-solidity\">function commit(bytes32 commitment) external {\n    commits[msg.sender] = commitment;\n}\n\nfunction reveal(uint256 vote, bytes32 salt) external {\n    require(keccak256(abi.encode(vote, salt)) == commits[msg.sender]);\n    // Count vote...\n}</code></pre>\n            <strong>Extension:</strong> Add ZK proofs, vote weighting, or delegation\n        ",
+    "tags": [
+      "intermediate",
+      "governance",
+      "privacy"
+    ],
+    "order": 29
+  },
+  {
+    "title": "Escrow Contract",
+    "answer": "\n            <p>Build an escrow system with dispute resolution.</p>\n            <strong>Learning Goals:</strong>\n            <ul>\n                <li>Multi-party fund management</li>\n                <li>State machine patterns</li>\n                <li>Dispute handling</li>\n            </ul>\n            <strong>Features:</strong>\n            <ul>\n                <li>Buyer deposits funds</li>\n                <li>Seller delivers goods/service</li>\n                <li>Buyer confirms or disputes</li>\n                <li>Arbiter resolves disputes</li>\n            </ul>\n            <strong>Tech Stack:</strong> Solidity\n            <strong>Extension:</strong> Add milestone releases, multiple arbiters, or reputation system\n        ",
+    "tags": [
+      "intermediate",
+      "payments",
+      "security"
+    ],
+    "order": 30
+  },
+  {
+    "title": "Merkle Airdrop",
+    "answer": "\n            <p>Implement gas-efficient airdrops using Merkle proofs.</p>\n            <strong>Learning Goals:</strong>\n            <ul>\n                <li>Generate Merkle trees off-chain</li>\n                <li>Verify proofs on-chain</li>\n                <li>Efficient claim mechanism</li>\n            </ul>\n            <strong>Features:</strong>\n            <ul>\n                <li>Generate tree from address list</li>\n                <li>Users claim with proof</li>\n                <li>Prevent double claims</li>\n                <li>Set expiration dates</li>\n            </ul>\n            <pre><code class=\"language-solidity\">function claim(uint256 amount, bytes32[] calldata proof) external {\n    bytes32 leaf = keccak256(abi.encode(msg.sender, amount));\n    require(MerkleProof.verify(proof, merkleRoot, leaf));\n    require(!claimed[msg.sender]);\n    claimed[msg.sender] = true;\n    token.transfer(msg.sender, amount);\n}</code></pre>\n            <strong>Extension:</strong> Add streaming claims, retroactive airdrops, or multi-token drops\n        ",
+    "tags": [
+      "intermediate",
+      "tokens",
+      "airdrop"
+    ],
+    "order": 31
+  },
+  {
+    "title": "Upgradeable Contract System",
+    "answer": "\n            <p>Implement upgradeable smart contracts using proxy patterns.</p>\n            <strong>Learning Goals:</strong>\n            <ul>\n                <li>Understand proxy patterns</li>\n                <li>Storage layout considerations</li>\n                <li>Safe upgrade practices</li>\n            </ul>\n            <strong>Features:</strong>\n            <ul>\n                <li>Transparent or UUPS proxy</li>\n                <li>Admin-controlled upgrades</li>\n                <li>Initialization instead of constructor</li>\n                <li>Storage gap for future variables</li>\n            </ul>\n            <strong>Tech Stack:</strong> OpenZeppelin Upgrades, Hardhat\n            <strong>Extension:</strong> Add timelock, multi-sig approval, or beacon proxy\n        ",
+    "tags": [
+      "intermediate",
+      "upgrades",
+      "patterns"
+    ],
+    "order": 32
+  },
+  {
+    "title": "Chainlink Price Feed Integration",
+    "answer": "\n            <p>Build a DeFi app that uses Chainlink for reliable price data.</p>\n            <strong>Learning Goals:</strong>\n            <ul>\n                <li>Integrate Chainlink feeds</li>\n                <li>Handle price data correctly</li>\n                <li>Implement staleness checks</li>\n            </ul>\n            <strong>Features:</strong>\n            <ul>\n                <li>Fetch ETH/USD price</li>\n                <li>Use for collateral valuation</li>\n                <li>Check for stale data</li>\n                <li>Multiple price feeds</li>\n            </ul>\n            <pre><code class=\"language-solidity\">function getLatestPrice() public view returns (int256) {\n    (,int256 price,,uint256 updatedAt,) = priceFeed.latestRoundData();\n    require(block.timestamp - updatedAt < 1 hours, \"Stale price\");\n    return price;\n}</code></pre>\n            <strong>Extension:</strong> Add derived prices, circuit breakers, or fallback oracles\n        ",
+    "tags": [
+      "intermediate",
+      "oracles",
+      "chainlink"
+    ],
+    "order": 33
+  },
+  {
+    "title": "NFT Staking for Rewards",
+    "answer": "\n            <p>Create a system where NFT holders can stake for token rewards.</p>\n            <strong>Learning Goals:</strong>\n            <ul>\n                <li>Handle NFT deposits/withdrawals</li>\n                <li>Calculate time-based rewards</li>\n                <li>Rarity-based reward multipliers</li>\n            </ul>\n            <strong>Features:</strong>\n            <ul>\n                <li>Stake NFTs from collection</li>\n                <li>Earn tokens over time</li>\n                <li>Claim rewards anytime</li>\n                <li>Bonus for rare NFTs</li>\n            </ul>\n            <strong>Tech Stack:</strong> Solidity, ERC-721, ERC-20\n            <strong>Extension:</strong> Add lock-up bonuses, collection bonuses, or boosting\n        ",
+    "tags": [
+      "intermediate",
+      "nft",
+      "staking"
+    ],
+    "order": 34
+  },
+  {
+    "title": "Flash Loan Arbitrage Bot",
+    "answer": "\n            <p>Build an arbitrage bot using flash loans to profit from price differences.</p>\n            <strong>Learning Goals:</strong>\n            <ul>\n                <li>Flash loan mechanics</li>\n                <li>Arbitrage detection</li>\n                <li>Gas optimization</li>\n                <li>MEV protection</li>\n            </ul>\n            <strong>Features:</strong>\n            <ul>\n                <li>Detect price discrepancies</li>\n                <li>Execute flash loan arbitrage</li>\n                <li>Calculate profitability including gas</li>\n                <li>Use Flashbots for MEV protection</li>\n            </ul>\n            <strong>Tech Stack:</strong> Solidity, Aave/dYdX flash loans, ethers.js\n            <strong>Warning:</strong> Highly competitive, expect losses learning\n            <strong>Extension:</strong> Add multi-hop, multi-DEX, or triangular arbitrage\n        ",
+    "tags": [
+      "advanced",
+      "defi",
+      "mev"
+    ],
+    "order": 35
+  },
+  {
+    "title": "ZK Proof Integration",
+    "answer": "\n            <p>Implement a smart contract that verifies zero-knowledge proofs.</p>\n            <strong>Learning Goals:</strong>\n            <ul>\n                <li>Understand ZK circuits</li>\n                <li>Generate and verify proofs</li>\n                <li>Integrate Circom/snarkjs</li>\n            </ul>\n            <strong>Features:</strong>\n            <ul>\n                <li>Write circuit in Circom</li>\n                <li>Generate trusted setup</li>\n                <li>Create Solidity verifier</li>\n                <li>Private proof verification</li>\n            </ul>\n            <strong>Example use case:</strong>\n            <ul>\n                <li>Prove age > 18 without revealing birthdate</li>\n                <li>Prove membership without revealing identity</li>\n                <li>Private voting</li>\n            </ul>\n            <strong>Tech Stack:</strong> Circom, snarkjs, Solidity\n            <strong>Extension:</strong> Add recursive proofs, anonymous voting, or private transfers\n        ",
+    "tags": [
+      "advanced",
+      "zk",
+      "privacy"
+    ],
+    "order": 36
+  },
+  {
+    "title": "Concentrated Liquidity AMM (Uniswap V3 style)",
+    "answer": "\n            <p>Build an AMM with concentrated liquidity positions.</p>\n            <strong>Learning Goals:</strong>\n            <ul>\n                <li>Tick-based pricing</li>\n                <li>Range orders</li>\n                <li>Capital efficiency</li>\n            </ul>\n            <strong>Features:</strong>\n            <ul>\n                <li>Provide liquidity in price ranges</li>\n                <li>NFT position tokens</li>\n                <li>Fee collection per position</li>\n                <li>Tick math implementation</li>\n            </ul>\n            <strong>Challenges:</strong>\n            <ul>\n                <li>Complex math (Q64.96 fixed point)</li>\n                <li>Tick spacing and fee tiers</li>\n                <li>Position management</li>\n            </ul>\n            <strong>Tech Stack:</strong> Solidity, PRBMath library\n            <strong>Extension:</strong> Add limit orders, TWAP oracle, or fee switch\n        ",
+    "tags": [
+      "advanced",
+      "defi",
+      "amm"
+    ],
+    "order": 37
+  },
+  {
+    "title": "MEV Bot (Searcher)",
+    "answer": "\n            <p>Create a searcher bot that extracts MEV opportunities.</p>\n            <strong>Learning Goals:</strong>\n            <ul>\n                <li>Mempool monitoring</li>\n                <li>Transaction simulation</li>\n                <li>Bundle creation</li>\n                <li>Flashbots integration</li>\n            </ul>\n            <strong>Features:</strong>\n            <ul>\n                <li>Monitor pending transactions</li>\n                <li>Simulate opportunities</li>\n                <li>Create profitable bundles</li>\n                <li>Submit to Flashbots</li>\n            </ul>\n            <strong>Strategies to explore:</strong>\n            <ul>\n                <li>Arbitrage</li>\n                <li>Liquidations</li>\n                <li>Long-tail MEV</li>\n            </ul>\n            <strong>Tech Stack:</strong> ethers.js, Flashbots SDK\n            <strong>Warning:</strong> Highly competitive, requires significant capital\n        ",
+    "tags": [
+      "advanced",
+      "mev",
+      "bot"
+    ],
+    "order": 38
+  },
+  {
+    "title": "Layer 2 Bridge",
+    "answer": "\n            <p>Build a trustless bridge between L1 and an L2 rollup.</p>\n            <strong>Learning Goals:</strong>\n            <ul>\n                <li>Cross-chain communication</li>\n                <li>Merkle proof verification</li>\n                <li>Challenge periods</li>\n            </ul>\n            <strong>Features:</strong>\n            <ul>\n                <li>Deposit on L1, receive on L2</li>\n                <li>Withdraw with proof</li>\n                <li>Handle optimistic verification</li>\n                <li>Fast exit with liquidity providers</li>\n            </ul>\n            <strong>Tech Stack:</strong> Solidity (L1 & L2), SDK for L2\n            <strong>Extension:</strong> Add NFT bridging, fast withdrawals, or multi-token support\n        ",
+    "tags": [
+      "advanced",
+      "layer2",
+      "bridge"
+    ],
+    "order": 39
+  },
+  {
+    "title": "Account Abstraction Wallet (ERC-4337)",
+    "answer": "\n            <p>Implement an ERC-4337 compliant smart contract wallet.</p>\n            <strong>Learning Goals:</strong>\n            <ul>\n                <li>UserOperation structure</li>\n                <li>Bundler interaction</li>\n                <li>Paymaster integration</li>\n            </ul>\n            <strong>Features:</strong>\n            <ul>\n                <li>Smart contract wallet</li>\n                <li>Social recovery</li>\n                <li>Session keys</li>\n                <li>Gasless transactions via paymaster</li>\n            </ul>\n            <strong>Tech Stack:</strong> Solidity, ERC-4337 SDK (eth-infinitism)\n            <strong>Extension:</strong> Add plugins, multi-sig, or spending limits\n        ",
+    "tags": [
+      "advanced",
+      "wallet",
+      "aa"
+    ],
+    "order": 40
+  },
+  {
+    "title": "Perpetual Futures DEX",
+    "answer": "\n            <p>Create a decentralized perpetual futures exchange.</p>\n            <strong>Learning Goals:</strong>\n            <ul>\n                <li>Funding rate mechanics</li>\n                <li>Leverage and margin</li>\n                <li>Liquidation engine</li>\n            </ul>\n            <strong>Features:</strong>\n            <ul>\n                <li>Open long/short positions</li>\n                <li>Leverage up to 10-50x</li>\n                <li>Funding rate calculation</li>\n                <li>Partial/full liquidations</li>\n            </ul>\n            <strong>Challenges:</strong>\n            <ul>\n                <li>Oracle integration</li>\n                <li>Insurance fund</li>\n                <li>Position sizing</li>\n            </ul>\n            <strong>Tech Stack:</strong> Solidity, Chainlink, The Graph\n        ",
+    "tags": [
+      "advanced",
+      "defi",
+      "derivatives"
+    ],
+    "order": 41
+  },
+  {
+    "title": "Optimistic Rollup (Simplified)",
+    "answer": "\n            <p>Build a simplified optimistic rollup with fraud proofs.</p>\n            <strong>Learning Goals:</strong>\n            <ul>\n                <li>State root management</li>\n                <li>Fraud proof mechanics</li>\n                <li>Challenge games</li>\n            </ul>\n            <strong>Features:</strong>\n            <ul>\n                <li>Batch transaction submission</li>\n                <li>State root commitments</li>\n                <li>Fraud proof verification</li>\n                <li>Challenge/response protocol</li>\n            </ul>\n            <strong>Components:</strong>\n            <ul>\n                <li>L1 contract (state roots, deposits)</li>\n                <li>Sequencer (batching)</li>\n                <li>Verifier (fraud detection)</li>\n            </ul>\n            <strong>Tech Stack:</strong> Solidity, Node.js sequencer\n        ",
+    "tags": [
+      "advanced",
+      "layer2",
+      "rollup"
+    ],
+    "order": 42
+  },
+  {
+    "title": "Algorithmic Stablecoin",
+    "answer": "\n            <p>Create an algorithmic stablecoin with stability mechanisms.</p>\n            <strong>Learning Goals:</strong>\n            <ul>\n                <li>Monetary policy on-chain</li>\n                <li>Collateralization models</li>\n                <li>Stability mechanisms</li>\n            </ul>\n            <strong>Features:</strong>\n            <ul>\n                <li>Mint stablecoin with collateral</li>\n                <li>Stability fee/interest</li>\n                <li>Liquidation mechanism</li>\n                <li>Governance for parameters</li>\n            </ul>\n            <strong>Warning:</strong> Algorithmic stablecoins are high-risk\n            <strong>Study:</strong> MakerDAO, Frax, UST collapse\n            <strong>Extension:</strong> Add PSM (Peg Stability Module), emergency shutdown\n        ",
+    "tags": [
+      "advanced",
+      "defi",
+      "stablecoin"
+    ],
+    "order": 43
+  },
+  {
+    "title": "Intent-Based Trading System",
+    "answer": "\n            <p>Build a system where users sign intents that solvers compete to fulfill.</p>\n            <strong>Learning Goals:</strong>\n            <ul>\n                <li>Intent architecture</li>\n                <li>Solver competition</li>\n                <li>Off-chain matching</li>\n            </ul>\n            <strong>Features:</strong>\n            <ul>\n                <li>Users sign swap intents</li>\n                <li>Solvers find best execution</li>\n                <li>On-chain settlement</li>\n                <li>MEV protection for users</li>\n            </ul>\n            <strong>Inspired by:</strong> CoW Protocol, UniswapX\n            <strong>Tech Stack:</strong> Solidity, EIP-712, solver backend\n            <strong>Extension:</strong> Add batch auctions, solver reputation, or cross-chain intents\n        ",
+    "tags": [
+      "advanced",
+      "defi",
+      "intents"
+    ],
+    "order": 44
+  },
+  {
+    "title": "Liquid Staking Derivative",
+    "answer": "\n            <p>Create a liquid staking protocol like Lido for a PoS chain.</p>\n            <strong>Learning Goals:</strong>\n            <ul>\n                <li>Staking pool management</li>\n                <li>Derivative token mechanics</li>\n                <li>Oracle for rewards</li>\n            </ul>\n            <strong>Features:</strong>\n            <ul>\n                <li>Stake ETH, receive stETH</li>\n                <li>Rebase or reward-bearing token</li>\n                <li>Withdrawal queue</li>\n                <li>Node operator management</li>\n            </ul>\n            <strong>Tech Stack:</strong> Solidity, Beacon chain interaction\n            <strong>Extension:</strong> Add insurance, distributed validators, or governance\n        ",
+    "tags": [
+      "advanced",
+      "defi",
+      "staking"
+    ],
+    "order": 45
+  },
+  {
+    "title": "Decentralized Options Protocol",
+    "answer": "\n            <p>Build a protocol for trading on-chain options.</p>\n            <strong>Learning Goals:</strong>\n            <ul>\n                <li>Options pricing (Black-Scholes)</li>\n                <li>Collateralization</li>\n                <li>Settlement mechanics</li>\n            </ul>\n            <strong>Features:</strong>\n            <ul>\n                <li>Create call/put options</li>\n                <li>European or American style</li>\n                <li>Automated exercise at expiry</li>\n                <li>Collateral management</li>\n            </ul>\n            <strong>Study:</strong> Opyn, Dopex, Lyra\n            <strong>Tech Stack:</strong> Solidity, Chainlink, PRBMath\n            <strong>Extension:</strong> Add exotic options, vaults, or AMM for options\n        ",
+    "tags": [
+      "advanced",
+      "defi",
+      "derivatives"
+    ],
+    "order": 46
+  },
+  {
+    "title": "Cross-chain Messaging Protocol",
+    "answer": "\n            <p>Build a protocol for passing arbitrary messages between chains.</p>\n            <strong>Learning Goals:</strong>\n            <ul>\n                <li>Message verification</li>\n                <li>Relay networks</li>\n                <li>Security models</li>\n            </ul>\n            <strong>Features:</strong>\n            <ul>\n                <li>Send messages between chains</li>\n                <li>Verify message authenticity</li>\n                <li>Execute arbitrary calls</li>\n                <li>Handle failures gracefully</li>\n            </ul>\n            <strong>Inspired by:</strong> LayerZero, Axelar, Hyperlane\n            <strong>Tech Stack:</strong> Solidity (multiple chains), relayer\n            <strong>Extension:</strong> Add multi-chain governance, token transfers, or NFT bridging\n        ",
+    "tags": [
+      "advanced",
+      "crosschain",
+      "messaging"
+    ],
+    "order": 47
+  },
+  {
+    "title": "Fully On-chain Game (Complex)",
+    "answer": "\n            <p>Create a fully on-chain game with autonomous world mechanics.</p>\n            <strong>Learning Goals:</strong>\n            <ul>\n                <li>On-chain game state</li>\n                <li>Turn-based or time-based mechanics</li>\n                <li>NFT integration for assets</li>\n            </ul>\n            <strong>Features:</strong>\n            <ul>\n                <li>All game logic on-chain</li>\n                <li>Composable game entities</li>\n                <li>Player-owned assets</li>\n                <li>Emergent gameplay</li>\n            </ul>\n            <strong>Inspired by:</strong> Dark Forest, Loot, Realms\n            <strong>Tech Stack:</strong> Solidity/Cairo, MUD/Dojo framework\n            <strong>Extension:</strong> Add ZK fog of war, autonomous agents, or economic systems\n        ",
+    "tags": [
+      "advanced",
+      "gaming",
+      "autonomous"
+    ],
+    "order": 48
+  },
+  {
+    "title": "Privacy Pool (ZK Mixer)",
+    "answer": "\n            <p>Build a privacy-preserving transaction system using ZK proofs.</p>\n            <strong>Learning Goals:</strong>\n            <ul>\n                <li>Nullifier/commitment scheme</li>\n                <li>ZK proof generation</li>\n                <li>Compliance considerations</li>\n            </ul>\n            <strong>Features:</strong>\n            <ul>\n                <li>Deposit with commitment</li>\n                <li>Withdraw with ZK proof</li>\n                <li>No link between deposit/withdrawal</li>\n                <li>Merkle tree of commitments</li>\n            </ul>\n            <strong>Study:</strong> Tornado Cash (for educational purposes)\n            <strong>Tech Stack:</strong> Circom, snarkjs, Solidity\n            <strong>Legal note:</strong> Be aware of regulatory requirements\n            <strong>Extension:</strong> Add compliance proofs, shielded transfers, or multi-asset\n        ",
+    "tags": [
+      "advanced",
+      "privacy",
+      "zk"
+    ],
+    "order": 49
+  }
+]

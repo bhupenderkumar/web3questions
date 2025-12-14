@@ -1,0 +1,37 @@
+[
+  {
+    "name": "basic",
+    "displayName": "Basic Web3 Concepts",
+    "description": "Master the foundational concepts of blockchain and Web3 technology",
+    "icon": "📗",
+    "order": 1
+  },
+  {
+    "name": "intermediate",
+    "displayName": "Intermediate Concepts",
+    "description": "Deep dive into smart contracts, DeFi, and Web3 development",
+    "icon": "📘",
+    "order": 2
+  },
+  {
+    "name": "advanced",
+    "displayName": "Advanced Topics",
+    "description": "Expert-level questions on Layer 2, MEV, security, and more",
+    "icon": "📕",
+    "order": 3
+  },
+  {
+    "name": "projects",
+    "displayName": "Portfolio Projects",
+    "description": "Build real-world Web3 applications to showcase your skills",
+    "icon": "🚀",
+    "order": 4
+  },
+  {
+    "name": "rust",
+    "displayName": "Rust for Web3",
+    "description": "Complete Rust tutorial for blockchain development with Substrate, Solana, NEAR & CosmWasm",
+    "icon": "🦀",
+    "order": 5
+  }
+]

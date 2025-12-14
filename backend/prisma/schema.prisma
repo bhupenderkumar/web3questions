@@ -1,0 +1,70 @@
+// Prisma Schema for Web3 Interview Questions
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Categories: basic, intermediate, advanced, projects, rust
+model Category {
+  id          String     @id @default(cuid())
+  name        String     @unique // basic, intermediate, advanced, projects, rust
+  displayName String     // "Basic Web3 Concepts", etc.
+  description String?
+  icon        String?    // emoji icon
+  order       Int        @default(0)
+  questions   Question[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model Question {
+  id          String     @id @default(cuid())
+  title       String
+  answer      String     @db.Text
+  order       Int        @default(0)
+  category    Category   @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  categoryId  String
+  tags        Tag[]
+  bookmarks   Bookmark[]
+  completions Completion[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@index([categoryId])
+}
+
+model Tag {
+  id        String     @id @default(cuid())
+  name      String     @unique
+  questions Question[]
+  createdAt DateTime   @default(now())
+}
+
+// Track user bookmarks (using localStorage ID for anonymous users)
+model Bookmark {
+  id         String   @id @default(cuid())
+  sessionId  String   // localStorage-based session ID
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  questionId String
+  createdAt  DateTime @default(now())
+
+  @@unique([sessionId, questionId])
+  @@index([sessionId])
+}
+
+// Track completed questions
+model Completion {
+  id         String   @id @default(cuid())
+  sessionId  String
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  questionId String
+  createdAt  DateTime @default(now())
+
+  @@unique([sessionId, questionId])
+  @@index([sessionId])
+}

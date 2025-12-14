@@ -1,0 +1,437 @@
+[
+  {
+    "title": "What is a smart contract in detail?",
+    "answer": "\n            <p>A <strong>smart contract</strong> is a program stored on a blockchain that automatically executes when predetermined conditions are met. On Ethereum, smart contracts are written in Solidity and compiled to bytecode that runs on the EVM.</p>\n            <strong>Anatomy of a smart contract:</strong>\n            <pre><code class=\"language-solidity\">// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ncontract SimpleStorage {\n    // State variables (stored on blockchain)\n    uint256 public storedData;\n    address public owner;\n    \n    // Events\n    event DataStored(uint256 data, address indexed by);\n    \n    // Constructor (runs once at deployment)\n    constructor() {\n        owner = msg.sender;\n    }\n    \n    // Functions\n    function set(uint256 x) public {\n        storedData = x;\n        emit DataStored(x, msg.sender);\n    }\n    \n    function get() public view returns (uint256) {\n        return storedData;\n    }\n}</code></pre>\n            <strong>Key components:</strong>\n            <ul>\n                <li><strong>State variables:</strong> Permanently stored on blockchain</li>\n                <li><strong>Functions:</strong> Executable code</li>\n                <li><strong>Events:</strong> Logging mechanism</li>\n                <li><strong>Modifiers:</strong> Reusable function conditions</li>\n            </ul>\n        ",
+    "tags": [
+      "smart-contracts",
+      "solidity",
+      "difficulty-intermediate"
+    ],
+    "order": 0
+  },
+  {
+    "title": "What is the Ethereum Virtual Machine (EVM)?",
+    "answer": "\n            <p>The <strong>EVM</strong> (Ethereum Virtual Machine) is a stack-based virtual machine that executes smart contract bytecode on the Ethereum network.</p>\n            <strong>Key characteristics:</strong>\n            <ul>\n                <li><strong>Turing-complete:</strong> Can compute anything computable (with gas limits)</li>\n                <li><strong>Deterministic:</strong> Same input always produces same output</li>\n                <li><strong>Isolated:</strong> Contracts run in sandboxed environment</li>\n                <li><strong>Stack-based:</strong> Uses a stack for operations</li>\n            </ul>\n            <strong>EVM components:</strong>\n            <ul>\n                <li><strong>Stack:</strong> LIFO, 1024 elements max, 256-bit words</li>\n                <li><strong>Memory:</strong> Temporary, byte-addressable, cleared between calls</li>\n                <li><strong>Storage:</strong> Permanent, key-value store, expensive</li>\n                <li><strong>Calldata:</strong> Read-only input data</li>\n            </ul>\n            <strong>EVM-compatible chains:</strong> Polygon, BSC, Avalanche, Arbitrum, Optimism\n        ",
+    "tags": [
+      "evm",
+      "ethereum",
+      "difficulty-intermediate"
+    ],
+    "order": 1
+  },
+  {
+    "title": "What is bytecode and ABI?",
+    "answer": "\n            <p><strong>Bytecode</strong> and <strong>ABI</strong> are two outputs from compiling Solidity code.</p>\n            <strong>Bytecode:</strong>\n            <ul>\n                <li>Low-level machine code that runs on the EVM</li>\n                <li>Hexadecimal representation of opcodes</li>\n                <li>Deployed to the blockchain</li>\n            </ul>\n            <pre><code>// Example bytecode (abbreviated)\n0x608060405234801561001057600080fd5b50...</code></pre>\n            <strong>ABI (Application Binary Interface):</strong>\n            <ul>\n                <li>JSON description of contract interface</li>\n                <li>Defines functions, parameters, and events</li>\n                <li>Used by frontends to interact with contracts</li>\n            </ul>\n            <pre><code class=\"language-json\">[\n  {\n    \"inputs\": [{\"name\": \"x\", \"type\": \"uint256\"}],\n    \"name\": \"set\",\n    \"outputs\": [],\n    \"stateMutability\": \"nonpayable\",\n    \"type\": \"function\"\n  }\n]</code></pre>\n        ",
+    "tags": [
+      "evm",
+      "solidity",
+      "difficulty-intermediate"
+    ],
+    "order": 2
+  },
+  {
+    "title": "What is contract deployment?",
+    "answer": "\n            <p><strong>Contract deployment</strong> is the process of publishing a smart contract to the blockchain, making it available for interaction.</p>\n            <strong>Deployment process:</strong>\n            <ol>\n                <li>Write and compile Solidity code</li>\n                <li>Create deployment transaction (no 'to' address)</li>\n                <li>Include bytecode in transaction data</li>\n                <li>Sign and broadcast transaction</li>\n                <li>Contract receives unique address</li>\n            </ol>\n            <strong>Deployment with Ethers.js:</strong>\n            <pre><code class=\"language-javascript\">const factory = new ethers.ContractFactory(abi, bytecode, signer);\nconst contract = await factory.deploy(constructorArgs);\nawait contract.deployed();\nconsole.log(\"Deployed to:\", contract.address);</code></pre>\n            <strong>Costs:</strong>\n            <ul>\n                <li>Gas for bytecode storage (200 gas per byte)</li>\n                <li>Constructor execution gas</li>\n                <li>More complex contracts = higher deployment cost</li>\n            </ul>\n        ",
+    "tags": [
+      "smart-contracts",
+      "difficulty-intermediate"
+    ],
+    "order": 3
+  },
+  {
+    "title": "What are Solidity data types?",
+    "answer": "\n            <p>Solidity has various data types for different use cases.</p>\n            <strong>Value Types:</strong>\n            <ul>\n                <li><strong>bool:</strong> true or false</li>\n                <li><strong>uint/int:</strong> Unsigned/signed integers (uint8 to uint256)</li>\n                <li><strong>address:</strong> 20-byte Ethereum address</li>\n                <li><strong>bytes1-bytes32:</strong> Fixed-size byte arrays</li>\n                <li><strong>enum:</strong> User-defined type with set of values</li>\n            </ul>\n            <strong>Reference Types:</strong>\n            <ul>\n                <li><strong>arrays:</strong> Fixed or dynamic size</li>\n                <li><strong>struct:</strong> Custom data structures</li>\n                <li><strong>mapping:</strong> Key-value storage</li>\n                <li><strong>string:</strong> Dynamic UTF-8 encoded string</li>\n                <li><strong>bytes:</strong> Dynamic byte array</li>\n            </ul>\n            <pre><code class=\"language-solidity\">mapping(address => uint256) public balances;\nstruct User { string name; uint256 balance; }\nuint256[] public dynamicArray;</code></pre>\n        ",
+    "tags": [
+      "solidity",
+      "difficulty-intermediate"
+    ],
+    "order": 4
+  },
+  {
+    "title": "What are function visibility modifiers in Solidity?",
+    "answer": "\n            <p>Solidity functions have visibility modifiers that control access.</p>\n            <strong>Visibility Types:</strong>\n            <ul>\n                <li><strong>public:</strong> Accessible from anywhere (internal + external)</li>\n                <li><strong>external:</strong> Only callable from outside the contract</li>\n                <li><strong>internal:</strong> Only from this contract or derived contracts</li>\n                <li><strong>private:</strong> Only from this contract</li>\n            </ul>\n            <strong>State Mutability:</strong>\n            <ul>\n                <li><strong>view:</strong> Reads state but doesn't modify</li>\n                <li><strong>pure:</strong> Doesn't read or modify state</li>\n                <li><strong>payable:</strong> Can receive ETH</li>\n            </ul>\n            <pre><code class=\"language-solidity\">function getBalance() public view returns (uint256) {\n    return address(this).balance;\n}\n\nfunction calculateSum(uint a, uint b) public pure returns (uint) {\n    return a + b;\n}\n\nfunction deposit() public payable {\n    // Can receive ETH\n}</code></pre>\n        ",
+    "tags": [
+      "solidity",
+      "difficulty-intermediate"
+    ],
+    "order": 5
+  },
+  {
+    "title": "What are events in smart contracts?",
+    "answer": "\n            <p><strong>Events</strong> are a logging mechanism in Solidity that emit data to the blockchain's transaction logs, which can be queried by off-chain applications.</p>\n            <pre><code class=\"language-solidity\">contract Token {\n    event Transfer(\n        address indexed from,\n        address indexed to,\n        uint256 value\n    );\n    \n    function transfer(address to, uint256 amount) public {\n        // ... transfer logic\n        emit Transfer(msg.sender, to, amount);\n    }\n}</code></pre>\n            <strong>Key points:</strong>\n            <ul>\n                <li><strong>indexed:</strong> Up to 3 parameters can be indexed for filtering</li>\n                <li>Events are stored in logs, not contract storage (cheaper)</li>\n                <li>Cannot be read by smart contracts, only off-chain</li>\n                <li>Common for frontend updates and historical queries</li>\n            </ul>\n            <strong>Listening to events (JavaScript):</strong>\n            <pre><code class=\"language-javascript\">contract.on(\"Transfer\", (from, to, value) => {\n    console.log(`${from} sent ${value} to ${to}`);\n});</code></pre>\n        ",
+    "tags": [
+      "solidity",
+      "events",
+      "difficulty-intermediate"
+    ],
+    "order": 6
+  },
+  {
+    "title": "What are modifiers in Solidity?",
+    "answer": "\n            <p><strong>Modifiers</strong> are reusable code that can be added to functions to add checks or modify behavior.</p>\n            <pre><code class=\"language-solidity\">contract Ownable {\n    address public owner;\n    \n    modifier onlyOwner() {\n        require(msg.sender == owner, \"Not owner\");\n        _; // Placeholder for function body\n    }\n    \n    modifier validAddress(address addr) {\n        require(addr != address(0), \"Invalid address\");\n        _;\n    }\n    \n    function withdraw() public onlyOwner {\n        // Only owner can call this\n    }\n    \n    function transfer(address to) public validAddress(to) {\n        // Address must be valid\n    }\n}</code></pre>\n            <strong>Common use cases:</strong>\n            <ul>\n                <li>Access control (onlyOwner, onlyAdmin)</li>\n                <li>Input validation</li>\n                <li>Reentrancy guards</li>\n                <li>Pausable functionality</li>\n            </ul>\n        ",
+    "tags": [
+      "solidity",
+      "difficulty-intermediate"
+    ],
+    "order": 7
+  },
+  {
+    "title": "What is the difference between require, assert, and revert?",
+    "answer": "\n            <p>Solidity provides three ways to handle errors and revert transactions.</p>\n            <strong>require():</strong>\n            <ul>\n                <li>Used for input validation and external conditions</li>\n                <li>Refunds remaining gas</li>\n                <li>Can include error message</li>\n            </ul>\n            <pre><code class=\"language-solidity\">require(balance >= amount, \"Insufficient balance\");</code></pre>\n            <strong>assert():</strong>\n            <ul>\n                <li>Used for internal errors and invariants</li>\n                <li>Consumes all remaining gas (pre-0.8.0)</li>\n                <li>Should never fail in production</li>\n            </ul>\n            <pre><code class=\"language-solidity\">assert(balance == previousBalance - amount);</code></pre>\n            <strong>revert():</strong>\n            <ul>\n                <li>Explicitly reverts with optional message</li>\n                <li>Useful in complex conditions</li>\n                <li>Can use custom errors (gas efficient)</li>\n            </ul>\n            <pre><code class=\"language-solidity\">if (amount > balance) {\n    revert InsufficientBalance(balance, amount);\n}</code></pre>\n        ",
+    "tags": [
+      "solidity",
+      "difficulty-intermediate"
+    ],
+    "order": 8
+  },
+  {
+    "title": "What is contract inheritance in Solidity?",
+    "answer": "\n            <p>Solidity supports multiple inheritance, allowing contracts to inherit from one or more parent contracts.</p>\n            <pre><code class=\"language-solidity\">contract Ownable {\n    address public owner;\n    modifier onlyOwner() { require(msg.sender == owner); _; }\n}\n\ncontract Pausable is Ownable {\n    bool public paused;\n    modifier whenNotPaused() { require(!paused); _; }\n}\n\ncontract Token is Ownable, Pausable {\n    // Inherits from both\n    function transfer() public whenNotPaused {\n        // ...\n    }\n}</code></pre>\n            <strong>Key concepts:</strong>\n            <ul>\n                <li><strong>is:</strong> Keyword for inheritance</li>\n                <li><strong>virtual:</strong> Function can be overridden</li>\n                <li><strong>override:</strong> Function overrides parent</li>\n                <li><strong>super:</strong> Call parent function</li>\n            </ul>\n            <strong>C3 Linearization:</strong> Determines order when multiple parents\n        ",
+    "tags": [
+      "solidity",
+      "difficulty-intermediate"
+    ],
+    "order": 9
+  },
+  {
+    "title": "What is the difference between memory, storage, and calldata?",
+    "answer": "\n            <p>Solidity has three data locations for reference types.</p>\n            <strong>Storage:</strong>\n            <ul>\n                <li>Permanent storage on blockchain</li>\n                <li>State variables are storage by default</li>\n                <li>Most expensive (SSTORE: 20,000 gas)</li>\n                <li>Persists between function calls</li>\n            </ul>\n            <strong>Memory:</strong>\n            <ul>\n                <li>Temporary, exists during function execution</li>\n                <li>Used for function parameters and local variables</li>\n                <li>Cheaper than storage</li>\n                <li>Mutable</li>\n            </ul>\n            <strong>Calldata:</strong>\n            <ul>\n                <li>Read-only, contains function arguments</li>\n                <li>Only for external function parameters</li>\n                <li>Cheapest option</li>\n                <li>Immutable</li>\n            </ul>\n            <pre><code class=\"language-solidity\">function process(string calldata input) external {\n    string memory temp = input; // Copy to memory\n    // storage would be a state variable\n}</code></pre>\n        ",
+    "tags": [
+      "solidity",
+      "evm",
+      "difficulty-intermediate"
+    ],
+    "order": 10
+  },
+  {
+    "title": "What is a constructor in Solidity?",
+    "answer": "\n            <p>A <strong>constructor</strong> is a special function that executes only once when a contract is deployed.</p>\n            <pre><code class=\"language-solidity\">contract Token {\n    string public name;\n    address public owner;\n    uint256 public totalSupply;\n    \n    constructor(string memory _name, uint256 _initialSupply) {\n        name = _name;\n        owner = msg.sender;\n        totalSupply = _initialSupply;\n    }\n}</code></pre>\n            <strong>Key points:</strong>\n            <ul>\n                <li>Runs exactly once at deployment</li>\n                <li>Cannot be called after deployment</li>\n                <li>Can accept parameters</li>\n                <li>Used to set initial state and owner</li>\n                <li>No function name or visibility keyword needed</li>\n            </ul>\n        ",
+    "tags": [
+      "solidity",
+      "difficulty-intermediate"
+    ],
+    "order": 11
+  },
+  {
+    "title": "What are interfaces in Solidity?",
+    "answer": "\n            <p><strong>Interfaces</strong> define a contract's external functions without implementation, enabling contract-to-contract interaction.</p>\n            <pre><code class=\"language-solidity\">interface IERC20 {\n    function transfer(address to, uint256 amount) external returns (bool);\n    function balanceOf(address account) external view returns (uint256);\n    event Transfer(address indexed from, address indexed to, uint256 value);\n}\n\ncontract MyContract {\n    IERC20 public token;\n    \n    constructor(address tokenAddress) {\n        token = IERC20(tokenAddress);\n    }\n    \n    function checkBalance(address user) public view returns (uint256) {\n        return token.balanceOf(user);\n    }\n}</code></pre>\n            <strong>Interface rules:</strong>\n            <ul>\n                <li>Cannot have state variables</li>\n                <li>Cannot have constructors</li>\n                <li>All functions must be external</li>\n                <li>Cannot implement any functions</li>\n            </ul>\n        ",
+    "tags": [
+      "solidity",
+      "difficulty-intermediate"
+    ],
+    "order": 12
+  },
+  {
+    "title": "What are libraries in Solidity?",
+    "answer": "\n            <p><strong>Libraries</strong> are reusable code deployed once and called by multiple contracts, saving gas.</p>\n            <pre><code class=\"language-solidity\">library SafeMath {\n    function add(uint256 a, uint256 b) internal pure returns (uint256) {\n        uint256 c = a + b;\n        require(c >= a, \"Overflow\");\n        return c;\n    }\n}\n\ncontract Token {\n    using SafeMath for uint256;\n    \n    mapping(address => uint256) balances;\n    \n    function transfer(address to, uint256 amount) public {\n        balances[msg.sender] = balances[msg.sender].sub(amount);\n        balances[to] = balances[to].add(amount);\n    }\n}</code></pre>\n            <strong>Key points:</strong>\n            <ul>\n                <li><strong>using for:</strong> Attaches library functions to types</li>\n                <li>Libraries cannot have state variables</li>\n                <li>Internal functions are inlined</li>\n                <li>Common examples: SafeMath, Address, Strings</li>\n            </ul>\n        ",
+    "tags": [
+      "solidity",
+      "difficulty-intermediate"
+    ],
+    "order": 13
+  },
+  {
+    "title": "What is the receive and fallback function?",
+    "answer": "\n            <p>Special functions that handle ETH transfers and unknown function calls.</p>\n            <pre><code class=\"language-solidity\">contract Receiver {\n    event Received(address sender, uint256 amount);\n    event FallbackCalled(address sender, bytes data);\n    \n    // Called when ETH is sent with empty calldata\n    receive() external payable {\n        emit Received(msg.sender, msg.value);\n    }\n    \n    // Called when no function matches or when ETH sent with data\n    fallback() external payable {\n        emit FallbackCalled(msg.sender, msg.data);\n    }\n}</code></pre>\n            <strong>Call order:</strong>\n            <ol>\n                <li>If calldata is empty and receive exists → receive()</li>\n                <li>Otherwise → fallback()</li>\n            </ol>\n            <strong>Use cases:</strong>\n            <ul>\n                <li>Receiving ETH</li>\n                <li>Proxy contracts</li>\n                <li>Handling unknown calls</li>\n            </ul>\n        ",
+    "tags": [
+      "solidity",
+      "difficulty-intermediate"
+    ],
+    "order": 14
+  },
+  {
+    "title": "What is ERC-20?",
+    "answer": "\n            <p><strong>ERC-20</strong> is the standard interface for fungible tokens on Ethereum.</p>\n            <strong>Required functions:</strong>\n            <pre><code class=\"language-solidity\">interface IERC20 {\n    function totalSupply() external view returns (uint256);\n    function balanceOf(address account) external view returns (uint256);\n    function transfer(address to, uint256 amount) external returns (bool);\n    function allowance(address owner, address spender) external view returns (uint256);\n    function approve(address spender, uint256 amount) external returns (bool);\n    function transferFrom(address from, address to, uint256 amount) external returns (bool);\n    \n    event Transfer(address indexed from, address indexed to, uint256 value);\n    event Approval(address indexed owner, address indexed spender, uint256 value);\n}</code></pre>\n            <strong>Key concepts:</strong>\n            <ul>\n                <li><strong>Fungible:</strong> Each token is identical and interchangeable</li>\n                <li><strong>Approve/TransferFrom:</strong> Allows delegated transfers</li>\n                <li><strong>Examples:</strong> USDC, LINK, UNI, AAVE</li>\n            </ul>\n        ",
+    "tags": [
+      "tokens",
+      "erc20",
+      "difficulty-intermediate"
+    ],
+    "order": 15
+  },
+  {
+    "title": "What is ERC-721?",
+    "answer": "\n            <p><strong>ERC-721</strong> is the standard for non-fungible tokens (NFTs) on Ethereum.</p>\n            <strong>Key functions:</strong>\n            <pre><code class=\"language-solidity\">interface IERC721 {\n    function balanceOf(address owner) external view returns (uint256);\n    function ownerOf(uint256 tokenId) external view returns (address);\n    function safeTransferFrom(address from, address to, uint256 tokenId) external;\n    function transferFrom(address from, address to, uint256 tokenId) external;\n    function approve(address to, uint256 tokenId) external;\n    function setApprovalForAll(address operator, bool approved) external;\n    function getApproved(uint256 tokenId) external view returns (address);\n    function isApprovedForAll(address owner, address operator) external view returns (bool);\n}</code></pre>\n            <strong>Key concepts:</strong>\n            <ul>\n                <li>Each token has a unique tokenId</li>\n                <li>Non-fungible: Each token is unique</li>\n                <li>Often includes tokenURI for metadata</li>\n                <li><strong>Examples:</strong> CryptoPunks, BAYC, Art Blocks</li>\n            </ul>\n        ",
+    "tags": [
+      "tokens",
+      "nft",
+      "difficulty-intermediate"
+    ],
+    "order": 16
+  },
+  {
+    "title": "What is ERC-1155?",
+    "answer": "\n            <p><strong>ERC-1155</strong> is a multi-token standard that supports both fungible and non-fungible tokens in a single contract.</p>\n            <pre><code class=\"language-solidity\">interface IERC1155 {\n    function balanceOf(address account, uint256 id) external view returns (uint256);\n    function balanceOfBatch(address[] calldata accounts, uint256[] calldata ids) \n        external view returns (uint256[] memory);\n    function safeTransferFrom(address from, address to, uint256 id, uint256 amount, bytes calldata data) external;\n    function safeBatchTransferFrom(\n        address from, address to, uint256[] calldata ids, uint256[] calldata amounts, bytes calldata data\n    ) external;\n}</code></pre>\n            <strong>Benefits:</strong>\n            <ul>\n                <li>Single contract for multiple token types</li>\n                <li>Batch transfers (gas efficient)</li>\n                <li>Supports fungible, non-fungible, and semi-fungible</li>\n                <li>Popular for gaming items</li>\n            </ul>\n        ",
+    "tags": [
+      "tokens",
+      "nft",
+      "difficulty-intermediate"
+    ],
+    "order": 17
+  },
+  {
+    "title": "What is token approval and allowance?",
+    "answer": "\n            <p>The <strong>approve/allowance</strong> pattern allows a spender to transfer tokens on behalf of the owner.</p>\n            <strong>How it works:</strong>\n            <ol>\n                <li>Owner calls approve(spender, amount)</li>\n                <li>Spender can now call transferFrom(owner, recipient, amount)</li>\n                <li>Allowance decreases by transferred amount</li>\n            </ol>\n            <pre><code class=\"language-solidity\">// User approves Uniswap to spend 100 USDC\nusdc.approve(uniswapRouter, 100 * 10**6);\n\n// Uniswap can now transfer user's USDC\nusdc.transferFrom(user, pool, 100 * 10**6);</code></pre>\n            <strong>Security concerns:</strong>\n            <ul>\n                <li>Infinite approvals are risky</li>\n                <li>Approve to 0 before setting new amount</li>\n                <li>Use increaseAllowance/decreaseAllowance when available</li>\n            </ul>\n        ",
+    "tags": [
+      "tokens",
+      "erc20",
+      "difficulty-intermediate"
+    ],
+    "order": 18
+  },
+  {
+    "title": "What is ERC-4626?",
+    "answer": "\n            <p><strong>ERC-4626</strong> is the tokenized vault standard for yield-bearing tokens.</p>\n            <pre><code class=\"language-solidity\">interface IERC4626 is IERC20 {\n    function asset() external view returns (address);\n    function totalAssets() external view returns (uint256);\n    function deposit(uint256 assets, address receiver) external returns (uint256 shares);\n    function withdraw(uint256 assets, address receiver, address owner) external returns (uint256 shares);\n    function convertToShares(uint256 assets) external view returns (uint256);\n    function convertToAssets(uint256 shares) external view returns (uint256);\n}</code></pre>\n            <strong>Use cases:</strong>\n            <ul>\n                <li>Yield aggregators (Yearn vaults)</li>\n                <li>Lending protocols (aTokens, cTokens)</li>\n                <li>Staking derivatives</li>\n                <li>Composable DeFi integrations</li>\n            </ul>\n        ",
+    "tags": [
+      "tokens",
+      "defi",
+      "difficulty-intermediate"
+    ],
+    "order": 19
+  },
+  {
+    "title": "What is token minting and burning?",
+    "answer": "\n            <p><strong>Minting</strong> creates new tokens, while <strong>burning</strong> permanently removes tokens from circulation.</p>\n            <pre><code class=\"language-solidity\">contract Token is ERC20 {\n    address public minter;\n    \n    function mint(address to, uint256 amount) external {\n        require(msg.sender == minter, \"Not minter\");\n        _mint(to, amount); // Creates new tokens\n    }\n    \n    function burn(uint256 amount) external {\n        _burn(msg.sender, amount); // Destroys tokens\n    }\n}</code></pre>\n            <strong>Use cases:</strong>\n            <ul>\n                <li><strong>Minting:</strong> Token rewards, initial distribution, bridging</li>\n                <li><strong>Burning:</strong> Fee burns (EIP-1559), buybacks, deflationary mechanisms</li>\n            </ul>\n        ",
+    "tags": [
+      "tokens",
+      "difficulty-intermediate"
+    ],
+    "order": 20
+  },
+  {
+    "title": "What are wrapped tokens?",
+    "answer": "\n            <p><strong>Wrapped tokens</strong> are tokens that represent another asset at a 1:1 ratio, making them compatible with different protocols or chains.</p>\n            <strong>Examples:</strong>\n            <ul>\n                <li><strong>WETH:</strong> Wrapped Ether (ETH → ERC-20)</li>\n                <li><strong>WBTC:</strong> Wrapped Bitcoin (BTC on Ethereum)</li>\n                <li><strong>stETH:</strong> Wrapped staked ETH</li>\n            </ul>\n            <pre><code class=\"language-solidity\">contract WETH {\n    function deposit() public payable {\n        balanceOf[msg.sender] += msg.value;\n    }\n    \n    function withdraw(uint256 amount) public {\n        require(balanceOf[msg.sender] >= amount);\n        balanceOf[msg.sender] -= amount;\n        payable(msg.sender).transfer(amount);\n    }\n}</code></pre>\n            <strong>Why wrap?</strong> ETH isn't ERC-20 compliant, so WETH allows ETH to be used in DeFi\n        ",
+    "tags": [
+      "tokens",
+      "defi",
+      "difficulty-intermediate"
+    ],
+    "order": 21
+  },
+  {
+    "title": "What is a token URI and metadata?",
+    "answer": "\n            <p><strong>Token URI</strong> points to metadata describing an NFT (image, attributes, description).</p>\n            <pre><code class=\"language-solidity\">function tokenURI(uint256 tokenId) public view returns (string memory) {\n    return string(abi.encodePacked(baseURI, tokenId.toString(), \".json\"));\n}</code></pre>\n            <strong>Metadata JSON format:</strong>\n            <pre><code class=\"language-json\">{\n    \"name\": \"Cool NFT #123\",\n    \"description\": \"A very cool NFT\",\n    \"image\": \"ipfs://Qm.../123.png\",\n    \"attributes\": [\n        {\"trait_type\": \"Background\", \"value\": \"Blue\"},\n        {\"trait_type\": \"Rarity\", \"value\": \"Rare\"}\n    ]\n}</code></pre>\n            <strong>Storage options:</strong>\n            <ul>\n                <li>IPFS (decentralized, immutable)</li>\n                <li>Arweave (permanent storage)</li>\n                <li>On-chain (expensive but fully decentralized)</li>\n                <li>Centralized servers (not recommended)</li>\n            </ul>\n        ",
+    "tags": [
+      "tokens",
+      "nft",
+      "difficulty-intermediate"
+    ],
+    "order": 22
+  },
+  {
+    "title": "What is ERC-2981 (NFT Royalties)?",
+    "answer": "\n            <p><strong>ERC-2981</strong> is a standard for NFT royalty information, allowing creators to receive a percentage of secondary sales.</p>\n            <pre><code class=\"language-solidity\">interface IERC2981 {\n    function royaltyInfo(uint256 tokenId, uint256 salePrice) \n        external view returns (address receiver, uint256 royaltyAmount);\n}\n\ncontract NFT is ERC721, ERC2981 {\n    constructor() {\n        _setDefaultRoyalty(msg.sender, 500); // 5% royalty\n    }\n}</code></pre>\n            <strong>Key points:</strong>\n            <ul>\n                <li>Returns royalty recipient and amount</li>\n                <li>Not enforced on-chain (marketplace must honor)</li>\n                <li>Typically 2.5-10% of sale price</li>\n                <li>Supported by OpenSea, Rarible, etc.</li>\n            </ul>\n        ",
+    "tags": [
+      "tokens",
+      "nft",
+      "difficulty-intermediate"
+    ],
+    "order": 23
+  },
+  {
+    "title": "What is a soulbound token (SBT)?",
+    "answer": "\n            <p><strong>Soulbound tokens</strong> are non-transferable tokens that represent identity, credentials, or achievements.</p>\n            <pre><code class=\"language-solidity\">contract SoulboundToken is ERC721 {\n    error SoulboundTransferDisabled();\n    \n    function _beforeTokenTransfer(\n        address from, address to, uint256 tokenId\n    ) internal override {\n        // Allow minting (from = 0) but not transfers\n        if (from != address(0)) {\n            revert SoulboundTransferDisabled();\n        }\n    }\n}</code></pre>\n            <strong>Use cases:</strong>\n            <ul>\n                <li>Educational credentials and certifications</li>\n                <li>Proof of attendance (POAPs)</li>\n                <li>Reputation and identity</li>\n                <li>DAO membership badges</li>\n                <li>Credit scores and trust</li>\n            </ul>\n        ",
+    "tags": [
+      "tokens",
+      "difficulty-intermediate"
+    ],
+    "order": 24
+  },
+  {
+    "title": "What is DeFi (Decentralized Finance)?",
+    "answer": "\n            <p><strong>DeFi</strong> is a financial system built on blockchain that provides traditional financial services without intermediaries.</p>\n            <strong>Key characteristics:</strong>\n            <ul>\n                <li><strong>Permissionless:</strong> Anyone can participate</li>\n                <li><strong>Transparent:</strong> All code and transactions visible</li>\n                <li><strong>Composable:</strong> Protocols can be combined (money legos)</li>\n                <li><strong>Non-custodial:</strong> Users maintain control of funds</li>\n            </ul>\n            <strong>DeFi categories:</strong>\n            <ul>\n                <li>Decentralized Exchanges (Uniswap, Curve)</li>\n                <li>Lending/Borrowing (Aave, Compound)</li>\n                <li>Yield Aggregators (Yearn)</li>\n                <li>Derivatives (dYdX, GMX)</li>\n                <li>Stablecoins (MakerDAO, Frax)</li>\n            </ul>\n        ",
+    "tags": [
+      "defi",
+      "difficulty-intermediate"
+    ],
+    "order": 25
+  },
+  {
+    "title": "What is a DEX (Decentralized Exchange)?",
+    "answer": "\n            <p>A <strong>DEX</strong> is a peer-to-peer marketplace for trading cryptocurrencies without a central authority.</p>\n            <strong>Types of DEXs:</strong>\n            <ul>\n                <li><strong>AMM (Automated Market Maker):</strong> Uniswap, Curve, Balancer</li>\n                <li><strong>Order Book:</strong> dYdX, Serum</li>\n                <li><strong>Aggregators:</strong> 1inch, Paraswap</li>\n            </ul>\n            <strong>How AMMs work:</strong>\n            <ul>\n                <li>Liquidity providers deposit token pairs into pools</li>\n                <li>Traders swap against these pools</li>\n                <li>Prices determined by mathematical formula</li>\n                <li>LPs earn fees from trades</li>\n            </ul>\n            <strong>DEX vs CEX:</strong>\n            <table>\n                <tr><th>Aspect</th><th>DEX</th><th>CEX</th></tr>\n                <tr><td>Custody</td><td>Non-custodial</td><td>Custodial</td></tr>\n                <tr><td>KYC</td><td>None</td><td>Required</td></tr>\n                <tr><td>Speed</td><td>Blockchain speed</td><td>Instant</td></tr>\n            </table>\n        ",
+    "tags": [
+      "defi",
+      "dex",
+      "difficulty-intermediate"
+    ],
+    "order": 26
+  },
+  {
+    "title": "What is an AMM (Automated Market Maker)?",
+    "answer": "\n            <p>An <strong>AMM</strong> is a type of DEX that uses mathematical formulas to price assets instead of order books.</p>\n            <strong>Constant Product Formula (Uniswap v2):</strong>\n            <pre><code>x * y = k\n// x = token A reserves\n// y = token B reserves\n// k = constant</code></pre>\n            <strong>How it works:</strong>\n            <ol>\n                <li>Liquidity providers deposit equal value of two tokens</li>\n                <li>Trades change the ratio of tokens in pool</li>\n                <li>Price adjusts based on supply and demand</li>\n                <li>Larger trades have more price impact (slippage)</li>\n            </ol>\n            <strong>Popular AMM designs:</strong>\n            <ul>\n                <li><strong>Uniswap:</strong> Constant product (x*y=k)</li>\n                <li><strong>Curve:</strong> StableSwap (optimized for pegged assets)</li>\n                <li><strong>Balancer:</strong> Weighted pools (any ratio)</li>\n            </ul>\n        ",
+    "tags": [
+      "defi",
+      "dex",
+      "difficulty-intermediate"
+    ],
+    "order": 27
+  },
+  {
+    "title": "What is liquidity provision and LP tokens?",
+    "answer": "\n            <p><strong>Liquidity provision</strong> is depositing tokens into a DEX pool to enable trading. LPs receive <strong>LP tokens</strong> representing their share.</p>\n            <strong>How it works:</strong>\n            <ol>\n                <li>Deposit equal value of two tokens (e.g., ETH/USDC)</li>\n                <li>Receive LP tokens representing pool share</li>\n                <li>Earn trading fees proportional to share</li>\n                <li>Burn LP tokens to withdraw liquidity + fees</li>\n            </ol>\n            <pre><code class=\"language-solidity\">// Simplified LP token logic\nfunction addLiquidity(uint amountA, uint amountB) external {\n    // Transfer tokens to pool\n    // Mint LP tokens to user\n    uint shares = calculateShares(amountA, amountB);\n    _mint(msg.sender, shares);\n}</code></pre>\n            <strong>Risks:</strong>\n            <ul>\n                <li>Impermanent loss</li>\n                <li>Smart contract risk</li>\n                <li>Token price volatility</li>\n            </ul>\n        ",
+    "tags": [
+      "defi",
+      "dex",
+      "difficulty-intermediate"
+    ],
+    "order": 28
+  },
+  {
+    "title": "What is impermanent loss?",
+    "answer": "\n            <p><strong>Impermanent loss</strong> occurs when the price of tokens in a liquidity pool changes compared to when you deposited them.</p>\n            <strong>Example:</strong>\n            <ul>\n                <li>Deposit: 1 ETH + 2000 USDC (ETH = $2000)</li>\n                <li>ETH price doubles to $4000</li>\n                <li>Pool rebalances: 0.707 ETH + 2828 USDC</li>\n                <li>If held: 1 ETH + 2000 USDC = $6000</li>\n                <li>In pool: 0.707 ETH + 2828 USDC = $5656</li>\n                <li>Loss: ~5.7%</li>\n            </ul>\n            <strong>Key points:</strong>\n            <ul>\n                <li>Called \"impermanent\" because it reverses if prices return</li>\n                <li>Greater price divergence = greater loss</li>\n                <li>Trading fees may offset the loss</li>\n                <li>Stablecoin pairs have minimal IL</li>\n            </ul>\n        ",
+    "tags": [
+      "defi",
+      "dex",
+      "difficulty-intermediate"
+    ],
+    "order": 29
+  },
+  {
+    "title": "What is lending and borrowing in DeFi?",
+    "answer": "\n            <p>DeFi <strong>lending protocols</strong> allow users to lend assets to earn interest or borrow against collateral.</p>\n            <strong>How it works:</strong>\n            <ol>\n                <li><strong>Suppliers:</strong> Deposit assets, receive interest-bearing tokens</li>\n                <li><strong>Borrowers:</strong> Deposit collateral, borrow up to a limit</li>\n                <li>Interest rates set algorithmically based on utilization</li>\n                <li>Collateral liquidated if health factor drops too low</li>\n            </ol>\n            <strong>Key metrics:</strong>\n            <ul>\n                <li><strong>LTV (Loan-to-Value):</strong> Max borrow vs collateral</li>\n                <li><strong>Liquidation Threshold:</strong> Point at which liquidation occurs</li>\n                <li><strong>Health Factor:</strong> Risk metric (liquidation if < 1)</li>\n                <li><strong>Utilization Rate:</strong> Borrowed / Total supplied</li>\n            </ul>\n            <strong>Popular protocols:</strong> Aave, Compound, MakerDAO\n        ",
+    "tags": [
+      "defi",
+      "lending",
+      "difficulty-intermediate"
+    ],
+    "order": 30
+  },
+  {
+    "title": "What is collateralization and liquidation?",
+    "answer": "\n            <p><strong>Collateralization</strong> is depositing assets to secure a loan. <strong>Liquidation</strong> occurs when collateral value falls below requirements.</p>\n            <strong>Over-collateralization:</strong>\n            <ul>\n                <li>Must deposit more value than you borrow</li>\n                <li>Typical ratio: 150% (borrow $100, need $150 collateral)</li>\n                <li>Protects lenders from defaults</li>\n            </ul>\n            <strong>Liquidation process:</strong>\n            <ol>\n                <li>Collateral value drops below threshold</li>\n                <li>Position becomes eligible for liquidation</li>\n                <li>Liquidator repays debt, receives collateral + bonus</li>\n                <li>Remaining collateral returned to borrower</li>\n            </ol>\n            <pre><code>Health Factor = (Collateral * Liquidation Threshold) / Debt\nIf Health Factor < 1 → Liquidation</code></pre>\n        ",
+    "tags": [
+      "defi",
+      "lending",
+      "difficulty-intermediate"
+    ],
+    "order": 31
+  },
+  {
+    "title": "What is yield farming?",
+    "answer": "\n            <p><strong>Yield farming</strong> is the practice of moving crypto between DeFi protocols to maximize returns.</p>\n            <strong>Common strategies:</strong>\n            <ul>\n                <li>Providing liquidity to DEXs for trading fees</li>\n                <li>Lending assets for interest</li>\n                <li>Staking LP tokens for additional rewards</li>\n                <li>Leveraged farming (borrow to farm more)</li>\n            </ul>\n            <strong>Reward sources:</strong>\n            <ul>\n                <li>Trading fees</li>\n                <li>Interest from lending</li>\n                <li>Protocol token incentives</li>\n                <li>Governance rewards</li>\n            </ul>\n            <strong>Risks:</strong>\n            <ul>\n                <li>Impermanent loss</li>\n                <li>Smart contract bugs</li>\n                <li>Token price crashes</li>\n                <li>Rug pulls</li>\n            </ul>\n        ",
+    "tags": [
+      "defi",
+      "difficulty-intermediate"
+    ],
+    "order": 32
+  },
+  {
+    "title": "What is TVL (Total Value Locked)?",
+    "answer": "\n            <p><strong>TVL</strong> measures the total value of assets deposited in a DeFi protocol, indicating its size and trust.</p>\n            <strong>What TVL includes:</strong>\n            <ul>\n                <li>Liquidity in DEX pools</li>\n                <li>Collateral in lending protocols</li>\n                <li>Assets in vaults and yield aggregators</li>\n                <li>Staked tokens</li>\n            </ul>\n            <strong>Interpreting TVL:</strong>\n            <ul>\n                <li>Higher TVL = more trusted/used protocol</li>\n                <li>Can be inflated by token prices rising</li>\n                <li>Compare to market cap for valuation</li>\n            </ul>\n            <strong>Top protocols by TVL:</strong> Lido, Aave, MakerDAO, Uniswap\n        ",
+    "tags": [
+      "defi",
+      "metrics",
+      "difficulty-intermediate"
+    ],
+    "order": 33
+  },
+  {
+    "title": "What is a flash loan?",
+    "answer": "\n            <p>A <strong>flash loan</strong> is an uncollateralized loan that must be borrowed and repaid within a single transaction.</p>\n            <pre><code class=\"language-solidity\">contract FlashLoanExample {\n    function executeFlashLoan(uint256 amount) external {\n        // 1. Borrow from Aave\n        pool.flashLoan(address(this), token, amount, \"\");\n        // Control returns to executeOperation()\n    }\n    \n    function executeOperation(\n        address asset, uint256 amount, uint256 premium, bytes calldata\n    ) external returns (bool) {\n        // 2. Use the borrowed funds\n        // Arbitrage, liquidation, collateral swap, etc.\n        \n        // 3. Repay loan + fee\n        IERC20(asset).approve(pool, amount + premium);\n        return true;\n    }\n}</code></pre>\n            <strong>Use cases:</strong>\n            <ul>\n                <li>Arbitrage opportunities</li>\n                <li>Collateral swaps</li>\n                <li>Self-liquidation</li>\n                <li>One-click leverage</li>\n            </ul>\n            <strong>Risk:</strong> Transaction reverts if loan isn't repaid\n        ",
+    "tags": [
+      "defi",
+      "difficulty-intermediate"
+    ],
+    "order": 34
+  },
+  {
+    "title": "What is slippage in DeFi?",
+    "answer": "\n            <p><strong>Slippage</strong> is the difference between the expected price and the actual execution price of a trade.</p>\n            <strong>Causes:</strong>\n            <ul>\n                <li>Trade size relative to liquidity (price impact)</li>\n                <li>Price movement between submission and execution</li>\n                <li>MEV/frontrunning attacks</li>\n            </ul>\n            <strong>Slippage tolerance:</strong>\n            <pre><code class=\"language-solidity\">// User expects 100 tokens, accepts 1% slippage\nuint256 amountOutMin = expectedAmount * 99 / 100;\nrouter.swapExactTokensForTokens(\n    amountIn, amountOutMin, path, to, deadline\n);</code></pre>\n            <strong>Best practices:</strong>\n            <ul>\n                <li>Set appropriate slippage tolerance (0.5-1% typical)</li>\n                <li>Use DEX aggregators for better prices</li>\n                <li>Split large trades</li>\n                <li>Trade in liquid pools</li>\n            </ul>\n        ",
+    "tags": [
+      "defi",
+      "dex",
+      "difficulty-intermediate"
+    ],
+    "order": 35
+  },
+  {
+    "title": "What is a stablecoin and how do they work?",
+    "answer": "\n            <p>A <strong>stablecoin</strong> maintains a stable value, usually pegged to USD. Different mechanisms achieve this stability.</p>\n            <strong>Types:</strong>\n            <ul>\n                <li><strong>Fiat-backed (USDC, USDT):</strong> $1 reserve per token</li>\n                <li><strong>Crypto-backed (DAI):</strong> Over-collateralized by crypto</li>\n                <li><strong>Algorithmic (FRAX):</strong> Uses algorithms + partial collateral</li>\n            </ul>\n            <strong>DAI mechanism:</strong>\n            <ol>\n                <li>Deposit ETH as collateral (150% min)</li>\n                <li>Borrow DAI against collateral</li>\n                <li>If collateral drops, position liquidated</li>\n                <li>Stability fees maintain peg</li>\n            </ol>\n            <strong>Risks:</strong>\n            <ul>\n                <li>Depegging events</li>\n                <li>Counterparty risk (fiat-backed)</li>\n                <li>Collateral volatility (crypto-backed)</li>\n            </ul>\n        ",
+    "tags": [
+      "defi",
+      "stablecoin",
+      "difficulty-intermediate"
+    ],
+    "order": 36
+  },
+  {
+    "title": "What is a DAO (Decentralized Autonomous Organization)?",
+    "answer": "\n            <p>A <strong>DAO</strong> is an organization governed by smart contracts and token holder votes rather than traditional management.</p>\n            <strong>Governance process:</strong>\n            <ol>\n                <li>Token holders create proposals</li>\n                <li>Community discusses and votes</li>\n                <li>If passed, proposal executed on-chain</li>\n            </ol>\n            <pre><code class=\"language-solidity\">contract DAO {\n    function propose(address target, bytes calldata data) external {\n        require(token.balanceOf(msg.sender) >= proposalThreshold);\n        proposals[proposalId] = Proposal(target, data);\n    }\n    \n    function vote(uint256 proposalId, bool support) external {\n        uint256 weight = token.balanceOf(msg.sender);\n        proposals[proposalId].votes += support ? weight : -weight;\n    }\n    \n    function execute(uint256 proposalId) external {\n        require(proposals[proposalId].votes > quorum);\n        target.call(proposals[proposalId].data);\n    }\n}</code></pre>\n            <strong>Examples:</strong> MakerDAO, Uniswap, Aave, Compound\n        ",
+    "tags": [
+      "defi",
+      "governance",
+      "difficulty-intermediate"
+    ],
+    "order": 37
+  },
+  {
+    "title": "What is a governance token?",
+    "answer": "\n            <p>A <strong>governance token</strong> gives holders voting power over protocol decisions.</p>\n            <strong>Rights typically include:</strong>\n            <ul>\n                <li>Voting on protocol upgrades</li>\n                <li>Parameter changes (fees, rates)</li>\n                <li>Treasury allocation</li>\n                <li>Adding new features or assets</li>\n            </ul>\n            <strong>Popular governance tokens:</strong>\n            <ul>\n                <li><strong>UNI:</strong> Uniswap governance</li>\n                <li><strong>AAVE:</strong> Aave lending protocol</li>\n                <li><strong>MKR:</strong> MakerDAO governance</li>\n                <li><strong>COMP:</strong> Compound governance</li>\n            </ul>\n            <strong>Vote delegation:</strong> Many protocols allow delegating voting power to others\n        ",
+    "tags": [
+      "defi",
+      "governance",
+      "difficulty-intermediate"
+    ],
+    "order": 38
+  },
+  {
+    "title": "What is a liquidity pool?",
+    "answer": "\n            <p>A <strong>liquidity pool</strong> is a smart contract containing locked tokens that facilitate trading on a DEX.</p>\n            <strong>Components:</strong>\n            <ul>\n                <li>Token pair (e.g., ETH/USDC)</li>\n                <li>Reserves of each token</li>\n                <li>Pricing algorithm</li>\n                <li>LP token for tracking ownership</li>\n            </ul>\n            <pre><code class=\"language-solidity\">contract LiquidityPool {\n    uint256 public reserveA;\n    uint256 public reserveB;\n    \n    function swap(address tokenIn, uint256 amountIn) external {\n        // Calculate output using constant product formula\n        uint256 amountOut = getAmountOut(amountIn, reserveA, reserveB);\n        // Update reserves and transfer tokens\n    }\n    \n    function getAmountOut(uint256 amountIn, uint256 resIn, uint256 resOut) \n        internal pure returns (uint256) {\n        uint256 amountInWithFee = amountIn * 997; // 0.3% fee\n        return (amountInWithFee * resOut) / (resIn * 1000 + amountInWithFee);\n    }\n}</code></pre>\n        ",
+    "tags": [
+      "defi",
+      "dex",
+      "difficulty-intermediate"
+    ],
+    "order": 39
+  },
+  {
+    "title": "What is Hardhat?",
+    "answer": "\n            <p><strong>Hardhat</strong> is a popular Ethereum development environment for compiling, testing, and deploying smart contracts.</p>\n            <strong>Key features:</strong>\n            <ul>\n                <li>Local Ethereum network for testing</li>\n                <li>Built-in Solidity compiler</li>\n                <li>Debugging with console.log</li>\n                <li>Plugin ecosystem (ethers, waffle, etc.)</li>\n            </ul>\n            <pre><code class=\"language-javascript\">// hardhat.config.js\nmodule.exports = {\n    solidity: \"0.8.19\",\n    networks: {\n        hardhat: {},\n        sepolia: {\n            url: process.env.SEPOLIA_RPC,\n            accounts: [process.env.PRIVATE_KEY]\n        }\n    }\n};\n\n// Deploy script\nasync function main() {\n    const Contract = await ethers.getContractFactory(\"MyContract\");\n    const contract = await Contract.deploy();\n    console.log(\"Deployed to:\", contract.address);\n}</code></pre>\n        ",
+    "tags": [
+      "development",
+      "tools",
+      "difficulty-intermediate"
+    ],
+    "order": 40
+  },
+  {
+    "title": "What is Foundry?",
+    "answer": "\n            <p><strong>Foundry</strong> is a fast, portable Ethereum development toolkit written in Rust.</p>\n            <strong>Components:</strong>\n            <ul>\n                <li><strong>Forge:</strong> Testing and building</li>\n                <li><strong>Cast:</strong> CLI for interacting with contracts</li>\n                <li><strong>Anvil:</strong> Local Ethereum node</li>\n                <li><strong>Chisel:</strong> Solidity REPL</li>\n            </ul>\n            <strong>Testing in Solidity:</strong>\n            <pre><code class=\"language-solidity\">contract TokenTest is Test {\n    Token token;\n    \n    function setUp() public {\n        token = new Token();\n    }\n    \n    function testTransfer() public {\n        token.mint(address(this), 100);\n        token.transfer(address(1), 50);\n        assertEq(token.balanceOf(address(1)), 50);\n    }\n    \n    function testFuzz_Transfer(uint256 amount) public {\n        vm.assume(amount <= 100);\n        // Fuzz testing with random inputs\n    }\n}</code></pre>\n        ",
+    "tags": [
+      "development",
+      "tools",
+      "difficulty-intermediate"
+    ],
+    "order": 41
+  },
+  {
+    "title": "What is ethers.js?",
+    "answer": "\n            <p><strong>ethers.js</strong> is a JavaScript library for interacting with Ethereum.</p>\n            <pre><code class=\"language-javascript\">import { ethers } from 'ethers';\n\n// Connect to provider\nconst provider = new ethers.providers.Web3Provider(window.ethereum);\n\n// Get signer\nconst signer = provider.getSigner();\n\n// Connect to contract\nconst contract = new ethers.Contract(address, abi, signer);\n\n// Read data\nconst balance = await contract.balanceOf(address);\n\n// Write transaction\nconst tx = await contract.transfer(recipient, amount);\nawait tx.wait(); // Wait for confirmation\n\n// Parse units\nconst oneEth = ethers.utils.parseEther(\"1.0\");\nconst formatted = ethers.utils.formatEther(balance);</code></pre>\n            <strong>Key classes:</strong>\n            <ul>\n                <li><strong>Provider:</strong> Read-only blockchain access</li>\n                <li><strong>Signer:</strong> Can sign transactions</li>\n                <li><strong>Contract:</strong> Interface to smart contracts</li>\n            </ul>\n        ",
+    "tags": [
+      "development",
+      "javascript",
+      "difficulty-intermediate"
+    ],
+    "order": 42
+  },
+  {
+    "title": "What is web3.js vs ethers.js?",
+    "answer": "\n            <p>Both are JavaScript libraries for Ethereum, but have different designs.</p>\n            <table>\n                <tr><th>Aspect</th><th>web3.js</th><th>ethers.js</th></tr>\n                <tr><td>Size</td><td>Larger</td><td>Smaller</td></tr>\n                <tr><td>Architecture</td><td>Single object</td><td>Modular (Provider/Signer)</td></tr>\n                <tr><td>TypeScript</td><td>Add-on</td><td>Native</td></tr>\n                <tr><td>Maintenance</td><td>Ethereum Foundation</td><td>Richard Moore</td></tr>\n                <tr><td>ENS</td><td>Manual</td><td>Built-in</td></tr>\n            </table>\n            <strong>ethers.js is generally preferred for:</strong>\n            <ul>\n                <li>Smaller bundle size</li>\n                <li>Better TypeScript support</li>\n                <li>Cleaner API design</li>\n                <li>Built-in ENS and utilities</li>\n            </ul>\n        ",
+    "tags": [
+      "development",
+      "javascript",
+      "difficulty-intermediate"
+    ],
+    "order": 43
+  },
+  {
+    "title": "What is IPFS?",
+    "answer": "\n            <p><strong>IPFS</strong> (InterPlanetary File System) is a decentralized storage protocol for storing and sharing files.</p>\n            <strong>How it works:</strong>\n            <ul>\n                <li>Content is addressed by its hash (CID)</li>\n                <li>Same content always has same address</li>\n                <li>Files distributed across network nodes</li>\n                <li>No central server</li>\n            </ul>\n            <strong>Use in Web3:</strong>\n            <ul>\n                <li>NFT metadata and images</li>\n                <li>dApp frontends</li>\n                <li>Document storage</li>\n            </ul>\n            <pre><code>// IPFS URL format\nipfs://QmPK1s3pNYLi9ERiq3BDxKa4XosgWwFRQUydHUtz4YgpqB\n\n// Gateway URL\nhttps://ipfs.io/ipfs/QmPK1s3pNYLi9ERiq3BDxKa4XosgWwFRQUydHUtz4YgpqB</code></pre>\n            <strong>Pinning services:</strong> Pinata, Infura, NFT.Storage\n        ",
+    "tags": [
+      "storage",
+      "decentralized",
+      "difficulty-intermediate"
+    ],
+    "order": 44
+  }
+]

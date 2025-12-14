@@ -1,0 +1,542 @@
+[
+  {
+    "title": "Why is Rust popular for blockchain development?",
+    "answer": "\n            <p><strong>Rust</strong> has become the preferred language for blockchain development due to its unique combination of safety and performance.</p>\n            <strong>Key advantages:</strong>\n            <ul>\n                <li><strong>Memory safety:</strong> No null pointers, buffer overflows, or data races</li>\n                <li><strong>Zero-cost abstractions:</strong> High-level features compile to efficient code</li>\n                <li><strong>No garbage collector:</strong> Predictable performance, crucial for consensus</li>\n                <li><strong>Strong type system:</strong> Catches bugs at compile time</li>\n                <li><strong>Concurrency:</strong> Fearless concurrency with ownership model</li>\n            </ul>\n            <strong>Major blockchain projects in Rust:</strong>\n            <ul>\n                <li>Solana</li>\n                <li>Polkadot/Substrate</li>\n                <li>Near Protocol</li>\n                <li>Cosmos SDK (some components)</li>\n                <li>Aptos, Sui (Move VM is Rust-based)</li>\n            </ul>\n        ",
+    "tags": [
+      "rust",
+      "blockchain",
+      "difficulty-intermediate"
+    ],
+    "order": 0
+  },
+  {
+    "title": "What is ownership in Rust and why does it matter?",
+    "answer": "\n            <p><strong>Ownership</strong> is Rust's core concept that enables memory safety without garbage collection.</p>\n            <strong>Ownership rules:</strong>\n            <ol>\n                <li>Each value has exactly one owner</li>\n                <li>When owner goes out of scope, value is dropped</li>\n                <li>Ownership can be transferred (moved)</li>\n            </ol>\n            <pre><code class=\"language-rust\">fn main() {\n    let s1 = String::from(\"hello\");\n    let s2 = s1;  // s1 is MOVED to s2\n    // println!(\"{}\", s1);  // ERROR: s1 no longer valid\n    \n    let s3 = s2.clone();  // Deep copy\n    println!(\"{} {}\", s2, s3);  // Both valid\n}\n\nfn takes_ownership(s: String) {\n    println!(\"{}\", s);\n}  // s is dropped here\n\nfn main() {\n    let s = String::from(\"hello\");\n    takes_ownership(s);\n    // s is no longer valid here\n}</code></pre>\n            <strong>Why it matters for blockchain:</strong>\n            <ul>\n                <li>Prevents double-spending bugs at compile time</li>\n                <li>No memory leaks in long-running nodes</li>\n                <li>Predictable resource cleanup</li>\n            </ul>\n        ",
+    "tags": [
+      "rust",
+      "difficulty-intermediate"
+    ],
+    "order": 1
+  },
+  {
+    "title": "What are borrowing and references in Rust?",
+    "answer": "\n            <p><strong>Borrowing</strong> allows accessing data without taking ownership, using references.</p>\n            <strong>Reference rules:</strong>\n            <ul>\n                <li>Many immutable references OR one mutable reference (not both)</li>\n                <li>References must always be valid (no dangling)</li>\n            </ul>\n            <pre><code class=\"language-rust\">fn main() {\n    let mut s = String::from(\"hello\");\n    \n    // Immutable borrow\n    let len = calculate_length(&s);\n    println!(\"Length: {}\", len);\n    \n    // Mutable borrow\n    change(&mut s);\n    println!(\"{}\", s);\n}\n\nfn calculate_length(s: &String) -> usize {\n    s.len()  // Can read, cannot modify\n}\n\nfn change(s: &mut String) {\n    s.push_str(\", world\");  // Can modify\n}\n\n// This won't compile:\nfn bad() {\n    let mut s = String::from(\"hello\");\n    let r1 = &s;\n    let r2 = &s;      // OK: multiple immutable\n    let r3 = &mut s;  // ERROR: can't borrow mutably\n}</code></pre>\n        ",
+    "tags": [
+      "rust",
+      "difficulty-intermediate"
+    ],
+    "order": 2
+  },
+  {
+    "title": "What are lifetimes in Rust?",
+    "answer": "\n            <p><strong>Lifetimes</strong> are Rust's way of ensuring references are valid for as long as they're used.</p>\n            <strong>Lifetime annotations:</strong>\n            <pre><code class=\"language-rust\">// Lifetime parameter 'a\nfn longest<'a>(x: &'a str, y: &'a str) -> &'a str {\n    if x.len() > y.len() { x } else { y }\n}\n\n// Tells compiler: returned reference lives as long as\n// the shorter of x or y\n\nfn main() {\n    let s1 = String::from(\"long\");\n    let result;\n    {\n        let s2 = String::from(\"short\");\n        result = longest(&s1, &s2);\n        println!(\"{}\", result);  // OK here\n    }\n    // println!(\"{}\", result);  // ERROR: s2 dropped\n}</code></pre>\n            <strong>Struct lifetimes:</strong>\n            <pre><code class=\"language-rust\">struct Transaction<'a> {\n    sender: &'a str,\n    receiver: &'a str,\n    amount: u64,\n}\n\n// Transaction can't outlive the strings it references</code></pre>\n        ",
+    "tags": [
+      "rust",
+      "difficulty-advanced"
+    ],
+    "order": 3
+  },
+  {
+    "title": "What are traits in Rust?",
+    "answer": "\n            <p><strong>Traits</strong> define shared behavior, similar to interfaces in other languages.</p>\n            <pre><code class=\"language-rust\">// Define a trait\ntrait Hashable {\n    fn hash(&self) -> Vec<u8>;\n    \n    // Default implementation\n    fn hash_hex(&self) -> String {\n        hex::encode(self.hash())\n    }\n}\n\n// Implement for a struct\nstruct Transaction {\n    from: String,\n    to: String,\n    amount: u64,\n}\n\nimpl Hashable for Transaction {\n    fn hash(&self) -> Vec<u8> {\n        use sha2::{Sha256, Digest};\n        let data = format!(\"{}{}{}\", self.from, self.to, self.amount);\n        Sha256::digest(data.as_bytes()).to_vec()\n    }\n}\n\n// Trait bounds\nfn process<T: Hashable>(item: T) {\n    println!(\"Hash: {}\", item.hash_hex());\n}\n\n// Multiple bounds\nfn complex<T: Hashable + Clone + Send>(item: T) { }</code></pre>\n            <strong>Common traits:</strong> Clone, Copy, Debug, Default, Send, Sync\n        ",
+    "tags": [
+      "rust",
+      "difficulty-intermediate"
+    ],
+    "order": 4
+  },
+  {
+    "title": "What is Result and Option in Rust?",
+    "answer": "\n            <p><strong>Result</strong> and <strong>Option</strong> are enums for handling errors and optional values safely.</p>\n            <strong>Option - for optional values:</strong>\n            <pre><code class=\"language-rust\">enum Option<T> {\n    Some(T),\n    None,\n}\n\nfn find_balance(address: &str) -> Option<u64> {\n    if address == \"0x123\" {\n        Some(1000)\n    } else {\n        None\n    }\n}\n\nfn main() {\n    match find_balance(\"0x123\") {\n        Some(balance) => println!(\"Balance: {}\", balance),\n        None => println!(\"Address not found\"),\n    }\n    \n    // Or use combinators\n    let balance = find_balance(\"0x123\").unwrap_or(0);\n}</code></pre>\n            <strong>Result - for errors:</strong>\n            <pre><code class=\"language-rust\">enum Result<T, E> {\n    Ok(T),\n    Err(E),\n}\n\nfn transfer(amount: u64) -> Result<(), TransferError> {\n    if amount == 0 {\n        return Err(TransferError::ZeroAmount);\n    }\n    Ok(())\n}\n\n// ? operator for propagation\nfn process() -> Result<(), Error> {\n    let balance = get_balance()?;  // Returns early if Err\n    transfer(balance)?;\n    Ok(())\n}</code></pre>\n        ",
+    "tags": [
+      "rust",
+      "difficulty-intermediate"
+    ],
+    "order": 5
+  },
+  {
+    "title": "What are enums and pattern matching in Rust?",
+    "answer": "\n            <p><strong>Enums</strong> in Rust can hold data and are matched exhaustively with <strong>pattern matching</strong>.</p>\n            <pre><code class=\"language-rust\">// Enum with variants holding data\nenum Transaction {\n    Transfer { from: String, to: String, amount: u64 },\n    Stake { validator: String, amount: u64 },\n    Unstake { validator: String },\n    Governance { proposal_id: u32, vote: bool },\n}\n\nfn process(tx: Transaction) {\n    match tx {\n        Transaction::Transfer { from, to, amount } => {\n            println!(\"{} sends {} to {}\", from, amount, to);\n        }\n        Transaction::Stake { validator, amount } => {\n            println!(\"Staking {} to {}\", amount, validator);\n        }\n        Transaction::Unstake { validator } => {\n            println!(\"Unstaking from {}\", validator);\n        }\n        Transaction::Governance { proposal_id, vote } => {\n            let v = if vote { \"yes\" } else { \"no\" };\n            println!(\"Vote {} on proposal {}\", v, proposal_id);\n        }\n    }\n}\n\n// if let for single pattern\nif let Transaction::Transfer { amount, .. } = tx {\n    println!(\"Transfer of {}\", amount);\n}</code></pre>\n        ",
+    "tags": [
+      "rust",
+      "difficulty-intermediate"
+    ],
+    "order": 6
+  },
+  {
+    "title": "What is async/await in Rust?",
+    "answer": "\n            <p><strong>Async/await</strong> enables non-blocking concurrent programming in Rust.</p>\n            <pre><code class=\"language-rust\">use tokio;\n\n// Async function\nasync fn fetch_block(height: u64) -> Result<Block, Error> {\n    let response = client.get(&format!(\"/block/{}\", height)).await?;\n    let block: Block = response.json().await?;\n    Ok(block)\n}\n\n// Main with tokio runtime\n#[tokio::main]\nasync fn main() {\n    // Sequential\n    let block1 = fetch_block(1).await.unwrap();\n    let block2 = fetch_block(2).await.unwrap();\n    \n    // Concurrent\n    let (b1, b2) = tokio::join!(\n        fetch_block(1),\n        fetch_block(2)\n    );\n    \n    // Spawn tasks\n    let handle = tokio::spawn(async {\n        fetch_block(100).await\n    });\n    let result = handle.await.unwrap();\n}</code></pre>\n            <strong>Async runtimes:</strong>\n            <ul>\n                <li><strong>Tokio:</strong> Most popular, used by many blockchain clients</li>\n                <li><strong>async-std:</strong> Standard library-like API</li>\n                <li><strong>smol:</strong> Lightweight</li>\n            </ul>\n        ",
+    "tags": [
+      "rust",
+      "async",
+      "difficulty-intermediate"
+    ],
+    "order": 7
+  },
+  {
+    "title": "What are macros in Rust?",
+    "answer": "\n            <p><strong>Macros</strong> are code that writes code, enabling metaprogramming.</p>\n            <strong>Declarative macros (macro_rules!):</strong>\n            <pre><code class=\"language-rust\">// Simple macro\nmacro_rules! vec_of_strings {\n    ($($x:expr),*) => {\n        vec![$($x.to_string()),*]\n    };\n}\n\nlet strings = vec_of_strings![\"a\", \"b\", \"c\"];\n\n// Pattern matching in macros\nmacro_rules! hash_map {\n    ($($key:expr => $value:expr),* $(,)?) => {{\n        let mut map = std::collections::HashMap::new();\n        $(map.insert($key, $value);)*\n        map\n    }};\n}\n\nlet balances = hash_map! {\n    \"alice\" => 100,\n    \"bob\" => 200,\n};</code></pre>\n            <strong>Procedural macros:</strong>\n            <pre><code class=\"language-rust\">// Derive macros (like in Substrate)\n#[derive(Debug, Clone, Encode, Decode)]\nstruct Block {\n    number: u64,\n    hash: Hash,\n}\n\n// Attribute macros\n#[pallet::call]\nimpl<T: Config> Pallet<T> {\n    #[pallet::weight(10_000)]\n    pub fn transfer(origin: OriginFor<T>) -> DispatchResult {\n        // ...\n    }\n}</code></pre>\n        ",
+    "tags": [
+      "rust",
+      "difficulty-advanced"
+    ],
+    "order": 8
+  },
+  {
+    "title": "What is Cargo and how is it used?",
+    "answer": "\n            <p><strong>Cargo</strong> is Rust's package manager and build system.</p>\n            <strong>Common commands:</strong>\n            <pre><code class=\"language-bash\"># Create new project\ncargo new my_project\ncargo new --lib my_library\n\n# Build\ncargo build           # Debug build\ncargo build --release # Optimized build\n\n# Run\ncargo run\ncargo run --release\n\n# Test\ncargo test\ncargo test specific_test\n\n# Check without building\ncargo check\n\n# Format and lint\ncargo fmt\ncargo clippy</code></pre>\n            <strong>Cargo.toml:</strong>\n            <pre><code class=\"language-toml\">[package]\nname = \"my_project\"\nversion = \"0.1.0\"\nedition = \"2021\"\n\n[dependencies]\ntokio = { version = \"1\", features = [\"full\"] }\nserde = { version = \"1\", features = [\"derive\"] }\nsha2 = \"0.10\"\n\n[dev-dependencies]\ncriterion = \"0.4\"</code></pre>\n        ",
+    "tags": [
+      "rust",
+      "tools",
+      "difficulty-basic"
+    ],
+    "order": 9
+  },
+  {
+    "title": "How do you handle serialization in Rust for blockchain?",
+    "answer": "\n            <p>Blockchain data requires efficient serialization. Rust offers several options.</p>\n            <strong>Serde (most common):</strong>\n            <pre><code class=\"language-rust\">use serde::{Serialize, Deserialize};\n\n#[derive(Serialize, Deserialize)]\nstruct Transaction {\n    from: String,\n    to: String,\n    amount: u64,\n    #[serde(skip_serializing_if = \"Option::is_none\")]\n    memo: Option<String>,\n}\n\n// JSON\nlet json = serde_json::to_string(&tx)?;\nlet tx: Transaction = serde_json::from_str(&json)?;\n\n// Binary (more compact)\nlet bytes = bincode::serialize(&tx)?;\nlet tx: Transaction = bincode::deserialize(&bytes)?;</code></pre>\n            <strong>SCALE (Substrate):</strong>\n            <pre><code class=\"language-rust\">use parity_scale_codec::{Encode, Decode};\n\n#[derive(Encode, Decode)]\nstruct Block {\n    number: u32,\n    parent_hash: [u8; 32],\n}\n\nlet encoded: Vec<u8> = block.encode();\nlet decoded = Block::decode(&mut &encoded[..])?;</code></pre>\n            <strong>Why different formats:</strong>\n            <ul>\n                <li>JSON: Human readable, APIs</li>\n                <li>Bincode: Compact, fast</li>\n                <li>SCALE: Substrate-specific, compact</li>\n            </ul>\n        ",
+    "tags": [
+      "rust",
+      "serialization",
+      "difficulty-intermediate"
+    ],
+    "order": 10
+  },
+  {
+    "title": "What is the Rust standard library's relevance to blockchain?",
+    "answer": "\n            <p>Rust's <strong>standard library</strong> provides essential types, but blockchain development often uses <code>no_std</code> for constrained environments.</p>\n            <strong>Key std types used:</strong>\n            <pre><code class=\"language-rust\">use std::collections::{HashMap, HashSet, BTreeMap};\nuse std::sync::{Arc, Mutex, RwLock};\nuse std::vec::Vec;\n\n// Collections for state\nlet mut balances: HashMap<Address, u64> = HashMap::new();\n\n// Thread-safe shared state\nlet state = Arc::new(RwLock::new(ChainState::default()));\n\n// Clone for multiple ownership\nlet state_clone = Arc::clone(&state);</code></pre>\n            <strong>no_std for blockchain runtimes:</strong>\n            <pre><code class=\"language-rust\">#![no_std]\n// No heap allocations, no std\n\nextern crate alloc;\nuse alloc::vec::Vec;  // Vec from alloc crate\nuse alloc::string::String;\n\n// Substrate pallets are no_std\n// Allows running in WASM</code></pre>\n            <strong>Why no_std:</strong>\n            <ul>\n                <li>WASM runtime compatibility</li>\n                <li>Deterministic execution</li>\n                <li>Smaller binary size</li>\n            </ul>\n        ",
+    "tags": [
+      "rust",
+      "difficulty-intermediate"
+    ],
+    "order": 11
+  },
+  {
+    "title": "What is Substrate?",
+    "answer": "\n            <p><strong>Substrate</strong> is a modular blockchain framework built in Rust that allows developers to build custom blockchains.</p>\n            <strong>Key features:</strong>\n            <ul>\n                <li><strong>Modular:</strong> Pick and choose components (pallets)</li>\n                <li><strong>Forkless upgrades:</strong> Runtime upgrades without hard forks</li>\n                <li><strong>Interoperable:</strong> Can connect to Polkadot as parachain</li>\n                <li><strong>WASM-based:</strong> Runtime compiled to WebAssembly</li>\n            </ul>\n            <strong>Substrate layers:</strong>\n            <pre><code>┌─────────────────────────────────┐\n│          Runtime (WASM)         │ ← Your business logic\n├─────────────────────────────────┤\n│         Substrate Core          │ ← Networking, consensus, DB\n├─────────────────────────────────┤\n│              libp2p             │ ← P2P networking\n└─────────────────────────────────┘</code></pre>\n            <strong>Projects built with Substrate:</strong> Polkadot, Kusama, Acala, Moonbeam, Astar\n        ",
+    "tags": [
+      "substrate",
+      "polkadot",
+      "difficulty-intermediate"
+    ],
+    "order": 12
+  },
+  {
+    "title": "What is a Pallet in Substrate?",
+    "answer": "\n            <p>A <strong>Pallet</strong> is a modular component that encapsulates specific blockchain logic.</p>\n            <strong>Pallet structure:</strong>\n            <pre><code class=\"language-rust\">#[frame_support::pallet]\npub mod pallet {\n    use frame_support::pallet_prelude::*;\n    use frame_system::pallet_prelude::*;\n\n    #[pallet::pallet]\n    pub struct Pallet<T>(_);\n\n    #[pallet::config]\n    pub trait Config: frame_system::Config {\n        type RuntimeEvent: From<Event<Self>>;\n        type MaxLength: Get<u32>;\n    }\n\n    #[pallet::storage]\n    pub type Balances<T: Config> = StorageMap<_, Blake2_128Concat, T::AccountId, u128>;\n\n    #[pallet::event]\n    #[pallet::generate_deposit(pub(super) fn deposit_event)]\n    pub enum Event<T: Config> {\n        Transferred { from: T::AccountId, to: T::AccountId, amount: u128 },\n    }\n\n    #[pallet::error]\n    pub enum Error<T> {\n        InsufficientBalance,\n    }\n\n    #[pallet::call]\n    impl<T: Config> Pallet<T> {\n        #[pallet::weight(10_000)]\n        pub fn transfer(origin: OriginFor<T>, to: T::AccountId, amount: u128) -> DispatchResult {\n            let sender = ensure_signed(origin)?;\n            // Logic here\n            Ok(())\n        }\n    }\n}</code></pre>\n        ",
+    "tags": [
+      "substrate",
+      "difficulty-intermediate"
+    ],
+    "order": 13
+  },
+  {
+    "title": "How does Substrate storage work?",
+    "answer": "\n            <p>Substrate provides several <strong>storage primitives</strong> for persisting blockchain state.</p>\n            <strong>Storage types:</strong>\n            <pre><code class=\"language-rust\">// Single value\n#[pallet::storage]\npub type Counter<T> = StorageValue<_, u32, ValueQuery>;\n\n// Key-value map\n#[pallet::storage]\npub type Balances<T: Config> = StorageMap<\n    _,\n    Blake2_128Concat,    // Hasher\n    T::AccountId,        // Key\n    u128,                // Value\n    ValueQuery           // Default behavior\n>;\n\n// Double map\n#[pallet::storage]\npub type Allowances<T: Config> = StorageDoubleMap<\n    _,\n    Blake2_128Concat, T::AccountId,  // Key 1\n    Blake2_128Concat, T::AccountId,  // Key 2\n    u128,                             // Value\n    ValueQuery\n>;\n\n// N-map for complex keys\n#[pallet::storage]\npub type ComplexStorage<T: Config> = StorageNMap<\n    _,\n    (NMapKey<Blake2_128Concat, u32>, NMapKey<Twox64Concat, u32>),\n    Vec<u8>,\n>;</code></pre>\n            <strong>Query types:</strong>\n            <ul>\n                <li><strong>ValueQuery:</strong> Returns default if not found</li>\n                <li><strong>OptionQuery:</strong> Returns None if not found</li>\n            </ul>\n        ",
+    "tags": [
+      "substrate",
+      "storage",
+      "difficulty-intermediate"
+    ],
+    "order": 14
+  },
+  {
+    "title": "What is FRAME in Substrate?",
+    "answer": "\n            <p><strong>FRAME</strong> (Framework for Runtime Aggregation of Modularized Entities) is the framework for building Substrate runtimes.</p>\n            <strong>FRAME components:</strong>\n            <ul>\n                <li><strong>frame_support:</strong> Macros and utilities for pallets</li>\n                <li><strong>frame_system:</strong> Core blockchain functionality</li>\n                <li><strong>frame_executive:</strong> Block execution orchestration</li>\n            </ul>\n            <strong>Essential pallets:</strong>\n            <pre><code class=\"language-rust\">// In runtime/lib.rs\nconstruct_runtime!(\n    pub enum Runtime where\n        Block = Block,\n        NodeBlock = opaque::Block,\n        UncheckedExtrinsic = UncheckedExtrinsic\n    {\n        System: frame_system,           // Core system\n        Timestamp: pallet_timestamp,     // Block timestamps\n        Balances: pallet_balances,       // Native token\n        TransactionPayment: pallet_transaction_payment,\n        Sudo: pallet_sudo,               // Superuser\n        \n        // Custom pallets\n        MyPallet: my_pallet,\n    }\n);</code></pre>\n        ",
+    "tags": [
+      "substrate",
+      "frame",
+      "difficulty-intermediate"
+    ],
+    "order": 15
+  },
+  {
+    "title": "How do extrinsics work in Substrate?",
+    "answer": "\n            <p><strong>Extrinsics</strong> are pieces of external information included in blocks - similar to transactions.</p>\n            <strong>Types of extrinsics:</strong>\n            <ul>\n                <li><strong>Signed:</strong> Regular transactions with signature</li>\n                <li><strong>Unsigned:</strong> No signature (requires validation)</li>\n                <li><strong>Inherent:</strong> Data inserted by block author (timestamp)</li>\n            </ul>\n            <pre><code class=\"language-rust\">#[pallet::call]\nimpl<T: Config> Pallet<T> {\n    // Signed extrinsic (most common)\n    #[pallet::weight(10_000)]\n    pub fn signed_action(origin: OriginFor<T>, data: u32) -> DispatchResult {\n        let who = ensure_signed(origin)?;\n        // ...\n        Ok(())\n    }\n    \n    // Unsigned extrinsic (no fee, needs validation)\n    #[pallet::weight(0)]\n    pub fn unsigned_action(origin: OriginFor<T>, data: u32) -> DispatchResult {\n        ensure_none(origin)?;\n        // ...\n        Ok(())\n    }\n}\n\n// Unsigned validation\n#[pallet::validate_unsigned]\nimpl<T: Config> ValidateUnsigned for Pallet<T> {\n    type Call = Call<T>;\n    fn validate_unsigned(_source: TransactionSource, call: &Self::Call) -> TransactionValidity {\n        // Custom validation logic\n        ValidTransaction::with_tag_prefix(\"my_pallet\").build()\n    }\n}</code></pre>\n        ",
+    "tags": [
+      "substrate",
+      "transactions",
+      "difficulty-intermediate"
+    ],
+    "order": 16
+  },
+  {
+    "title": "What is the Substrate runtime and how is it upgraded?",
+    "answer": "\n            <p>The <strong>runtime</strong> is the core business logic of a Substrate blockchain, compiled to WASM.</p>\n            <strong>Runtime structure:</strong>\n            <pre><code class=\"language-rust\">#[sp_version::runtime_version]\npub const VERSION: RuntimeVersion = RuntimeVersion {\n    spec_name: create_runtime_str!(\"my-chain\"),\n    impl_name: create_runtime_str!(\"my-chain\"),\n    authoring_version: 1,\n    spec_version: 100,  // Increment for upgrades\n    impl_version: 1,\n    apis: RUNTIME_API_VERSIONS,\n    transaction_version: 1,\n    state_version: 1,\n};</code></pre>\n            <strong>Forkless upgrade process:</strong>\n            <ol>\n                <li>Build new runtime WASM</li>\n                <li>Submit runtime upgrade extrinsic (usually via governance/sudo)</li>\n                <li>New runtime stored in chain state</li>\n                <li>Next block uses new runtime</li>\n            </ol>\n            <pre><code class=\"language-rust\">// Using sudo for upgrade\n#[pallet::call]\nfn set_code(origin: OriginFor<T>, code: Vec<u8>) -> DispatchResult {\n    ensure_root(origin)?;\n    Self::can_set_code(&code)?;\n    T::OnSetCode::on_set_code(code);\n    Ok(())\n}</code></pre>\n        ",
+    "tags": [
+      "substrate",
+      "runtime",
+      "difficulty-advanced"
+    ],
+    "order": 17
+  },
+  {
+    "title": "What is the difference between native and WASM runtime?",
+    "answer": "\n            <p>Substrate nodes can execute runtime in two ways: <strong>native</strong> (compiled for host) or <strong>WASM</strong> (portable).</p>\n            <table>\n                <tr><th>Aspect</th><th>Native</th><th>WASM</th></tr>\n                <tr><td>Speed</td><td>Faster</td><td>~2x slower</td></tr>\n                <tr><td>Upgrades</td><td>Requires node restart</td><td>Hot-swappable</td></tr>\n                <tr><td>Consensus</td><td>May diverge</td><td>Deterministic</td></tr>\n                <tr><td>Use case</td><td>Development</td><td>Production</td></tr>\n            </table>\n            <strong>Execution strategies:</strong>\n            <pre><code class=\"language-bash\"># In node config\n--execution native     # Use native only\n--execution wasm       # Use WASM only (default)\n--execution both       # Execute both, compare results</code></pre>\n            <strong>Why WASM matters:</strong>\n            <ul>\n                <li>Forkless upgrades possible</li>\n                <li>Guaranteed determinism across nodes</li>\n                <li>Light client execution</li>\n            </ul>\n        ",
+    "tags": [
+      "substrate",
+      "runtime",
+      "difficulty-advanced"
+    ],
+    "order": 18
+  },
+  {
+    "title": "How does Substrate handle weights and fees?",
+    "answer": "\n            <p><strong>Weights</strong> represent computational cost in Substrate, translated to fees.</p>\n            <strong>Weight calculation:</strong>\n            <pre><code class=\"language-rust\">// Simple constant weight\n#[pallet::weight(10_000)]\npub fn simple_action(origin: OriginFor<T>) -> DispatchResult {\n    // ...\n}\n\n// Dynamic weight\n#[pallet::weight(T::WeightInfo::complex_action(data.len() as u32))]\npub fn complex_action(origin: OriginFor<T>, data: Vec<u8>) -> DispatchResult {\n    // ...\n}\n\n// Benchmarked weights (recommended)\n#[pallet::weight(T::WeightInfo::transfer())]\npub fn transfer(origin: OriginFor<T>, to: T::AccountId, amount: u128) \n    -> DispatchResultWithPostInfo \n{\n    // ...\n    // Return actual weight consumed\n    Ok(Some(actual_weight).into())\n}</code></pre>\n            <strong>Fee calculation:</strong>\n            <pre><code>fee = base_fee + (weight * weight_to_fee) + length_fee + tip</code></pre>\n            <strong>Benchmarking:</strong>\n            <pre><code class=\"language-rust\">#[benchmarks]\nmod benchmarks {\n    #[benchmark]\n    fn transfer() {\n        let caller: T::AccountId = whitelisted_caller();\n        #[extrinsic_call]\n        transfer(RawOrigin::Signed(caller), recipient, 1000);\n    }\n}</code></pre>\n        ",
+    "tags": [
+      "substrate",
+      "fees",
+      "difficulty-intermediate"
+    ],
+    "order": 19
+  },
+  {
+    "title": "What are hooks in Substrate pallets?",
+    "answer": "\n            <p><strong>Hooks</strong> allow pallets to execute logic at specific points in the block lifecycle.</p>\n            <pre><code class=\"language-rust\">#[pallet::hooks]\nimpl<T: Config> Hooks<BlockNumberFor<T>> for Pallet<T> {\n    // Start of each block\n    fn on_initialize(n: BlockNumberFor<T>) -> Weight {\n        log::info!(\"Block {} starting\", n);\n        Weight::zero()\n    }\n    \n    // End of each block  \n    fn on_finalize(n: BlockNumberFor<T>) {\n        log::info!(\"Block {} finalizing\", n);\n    }\n    \n    // After all extrinsics, before finalize\n    fn on_idle(n: BlockNumberFor<T>, remaining_weight: Weight) -> Weight {\n        // Use remaining block weight for cleanup\n        Self::do_cleanup(remaining_weight)\n    }\n    \n    // After runtime upgrade\n    fn on_runtime_upgrade() -> Weight {\n        migration::migrate::<T>()\n    }\n    \n    // Check runtime invariants (dev mode)\n    #[cfg(feature = \"try-runtime\")]\n    fn try_state(_n: BlockNumberFor<T>) -> Result<(), &'static str> {\n        Self::check_invariants()\n    }\n}</code></pre>\n        ",
+    "tags": [
+      "substrate",
+      "hooks",
+      "difficulty-intermediate"
+    ],
+    "order": 20
+  },
+  {
+    "title": "How does cross-pallet communication work in Substrate?",
+    "answer": "\n            <p>Pallets can interact through <strong>tight coupling</strong> or <strong>loose coupling</strong>.</p>\n            <strong>Tight coupling (direct dependency):</strong>\n            <pre><code class=\"language-rust\">// Your pallet depends on Balances\n#[pallet::config]\npub trait Config: frame_system::Config + pallet_balances::Config {\n    // ...\n}\n\n// Direct call to Balances pallet\nimpl<T: Config> Pallet<T> {\n    fn pay(who: &T::AccountId, amount: T::Balance) {\n        pallet_balances::Pallet::<T>::transfer(...);\n    }\n}</code></pre>\n            <strong>Loose coupling (traits):</strong>\n            <pre><code class=\"language-rust\">// Define trait for what you need\npub trait Currency<AccountId> {\n    type Balance;\n    fn transfer(from: &AccountId, to: &AccountId, amount: Self::Balance);\n}\n\n// Your pallet uses the trait\n#[pallet::config]\npub trait Config: frame_system::Config {\n    type Currency: Currency<Self::AccountId>;\n}\n\n// In runtime, wire it up\nimpl my_pallet::Config for Runtime {\n    type Currency = Balances;  // pallet_balances implements Currency\n}</code></pre>\n            <strong>Benefits of loose coupling:</strong> Testability, flexibility, cleaner dependencies\n        ",
+    "tags": [
+      "substrate",
+      "difficulty-intermediate"
+    ],
+    "order": 21
+  },
+  {
+    "title": "What is an Origin in Substrate?",
+    "answer": "\n            <p><strong>Origin</strong> identifies who or what is calling a dispatchable function.</p>\n            <strong>Common origin types:</strong>\n            <pre><code class=\"language-rust\">// Signed - regular user\npub fn user_action(origin: OriginFor<T>) -> DispatchResult {\n    let who = ensure_signed(origin)?;\n    // who is the signing account\n}\n\n// Root - sudo/governance (superuser)\npub fn privileged_action(origin: OriginFor<T>) -> DispatchResult {\n    ensure_root(origin)?;\n    // Only root can call\n}\n\n// None - inherent or unsigned\npub fn inherent_action(origin: OriginFor<T>) -> DispatchResult {\n    ensure_none(origin)?;\n    // No sender\n}\n\n// Custom origins\npub fn council_action(origin: OriginFor<T>) -> DispatchResult {\n    T::CouncilOrigin::ensure_origin(origin)?;\n    // Only council can call\n}</code></pre>\n            <strong>Creating custom origins:</strong>\n            <pre><code class=\"language-rust\">#[pallet::origin]\npub enum Origin {\n    Council,\n    TechnicalCommittee,\n}</code></pre>\n        ",
+    "tags": [
+      "substrate",
+      "security",
+      "difficulty-intermediate"
+    ],
+    "order": 22
+  },
+  {
+    "title": "How do you write tests for Substrate pallets?",
+    "answer": "\n            <p>Substrate provides a <strong>mock runtime</strong> system for unit testing pallets.</p>\n            <pre><code class=\"language-rust\">// tests.rs or mock.rs\nuse crate as my_pallet;\nuse frame_support::{parameter_types, traits::ConstU32};\nuse sp_runtime::testing::Header;\n\ntype UncheckedExtrinsic = frame_system::mocking::MockUncheckedExtrinsic<Test>;\ntype Block = frame_system::mocking::MockBlock<Test>;\n\n// Construct test runtime\nframe_support::construct_runtime!(\n    pub enum Test where\n        Block = Block,\n        NodeBlock = Block,\n        UncheckedExtrinsic = UncheckedExtrinsic,\n    {\n        System: frame_system,\n        Balances: pallet_balances,\n        MyPallet: my_pallet,\n    }\n);\n\n// Configure mock runtime\nimpl frame_system::Config for Test {\n    type AccountId = u64;\n    // ... other configs\n}\n\nimpl my_pallet::Config for Test {\n    type RuntimeEvent = RuntimeEvent;\n}\n\n// Test helper\nfn new_test_ext() -> sp_io::TestExternalities {\n    let mut t = frame_system::GenesisConfig::default().build_storage::<Test>().unwrap();\n    // Add initial state\n    t.into()\n}\n\n// Actual tests\n#[test]\nfn transfer_works() {\n    new_test_ext().execute_with(|| {\n        assert_ok!(MyPallet::transfer(RuntimeOrigin::signed(1), 2, 100));\n        assert_eq!(MyPallet::balance(2), 100);\n    });\n}</code></pre>\n        ",
+    "tags": [
+      "substrate",
+      "testing",
+      "difficulty-intermediate"
+    ],
+    "order": 23
+  },
+  {
+    "title": "What is Polkadot's XCM (Cross-Consensus Messaging)?",
+    "answer": "\n            <p><strong>XCM</strong> is a messaging format for communication between different consensus systems (parachains, relay chain).</p>\n            <strong>XCM basics:</strong>\n            <pre><code class=\"language-rust\">// XCM message structure\nlet message = Xcm(vec![\n    WithdrawAsset((Here, 1_000_000).into()),\n    BuyExecution { fees: (Here, 100_000).into(), weight_limit: Limited(1_000) },\n    DepositAsset { \n        assets: All.into(), \n        beneficiary: AccountId32 { network: None, id: recipient.into() }.into() \n    },\n]);\n\n// Send XCM\npallet_xcm::Pallet::<T>::send_xcm(\n    Here,\n    Parachain(1000),  // Destination\n    message,\n)?;</code></pre>\n            <strong>Key XCM instructions:</strong>\n            <ul>\n                <li><strong>WithdrawAsset:</strong> Take assets from origin</li>\n                <li><strong>DepositAsset:</strong> Put assets somewhere</li>\n                <li><strong>BuyExecution:</strong> Pay for execution</li>\n                <li><strong>Transact:</strong> Execute encoded call</li>\n                <li><strong>TransferAsset:</strong> Combined withdraw+deposit</li>\n            </ul>\n            <strong>MultiLocation:</strong> Describes locations across consensus\n            <pre><code class=\"language-rust\">// Relay chain\nParent\n// Parachain 1000\nParachain(1000)\n// Account on parachain\n(Parachain(1000), AccountId32 { id: [1u8; 32], network: None })</code></pre>\n        ",
+    "tags": [
+      "substrate",
+      "polkadot",
+      "xcm",
+      "difficulty-advanced"
+    ],
+    "order": 24
+  },
+  {
+    "title": "How do you implement a Substrate RPC extension?",
+    "answer": "\n            <p><strong>RPC extensions</strong> expose custom node APIs for external interaction.</p>\n            <strong>Define RPC trait:</strong>\n            <pre><code class=\"language-rust\">// Runtime API (in runtime)\nsp_api::decl_runtime_api! {\n    pub trait MyApi {\n        fn get_value(key: Vec<u8>) -> Option<Vec<u8>>;\n    }\n}\n\n// RPC trait (in rpc crate)\n#[rpc(server)]\npub trait MyRpcApi<BlockHash> {\n    #[method(name = \"my_getValue\")]\n    fn get_value(&self, key: Vec<u8>, at: Option<BlockHash>) -> RpcResult<Option<Vec<u8>>>;\n}\n\n// Implementation\npub struct MyRpc<C, Block> {\n    client: Arc<C>,\n    _marker: PhantomData<Block>,\n}\n\nimpl<C, Block> MyRpcApiServer<<Block as BlockT>::Hash> for MyRpc<C, Block>\nwhere\n    C: ProvideRuntimeApi<Block> + Send + Sync + 'static,\n    C::Api: MyApi<Block>,\n    Block: BlockT,\n{\n    fn get_value(&self, key: Vec<u8>, at: Option<<Block as BlockT>::Hash>) -> RpcResult<Option<Vec<u8>>> {\n        let api = self.client.runtime_api();\n        let at = at.unwrap_or_else(|| self.client.info().best_hash);\n        api.get_value(at, key).map_err(|e| Error::RuntimeError(e.to_string()))\n    }\n}</code></pre>\n        ",
+    "tags": [
+      "substrate",
+      "rpc",
+      "difficulty-advanced"
+    ],
+    "order": 25
+  },
+  {
+    "title": "What is off-chain workers in Substrate?",
+    "answer": "\n            <p><strong>Off-chain workers</strong> run outside the blockchain runtime but can interact with it.</p>\n            <strong>Use cases:</strong>\n            <ul>\n                <li>Fetching external data (oracles)</li>\n                <li>Expensive computations</li>\n                <li>Sleeping/waiting</li>\n                <li>Submitting unsigned transactions</li>\n            </ul>\n            <pre><code class=\"language-rust\">#[pallet::hooks]\nimpl<T: Config> Hooks<BlockNumberFor<T>> for Pallet<T> {\n    fn offchain_worker(block_number: BlockNumberFor<T>) {\n        // Runs after block import\n        log::info!(\"OCW running for block {:?}\", block_number);\n        \n        // HTTP request\n        let response = http::Request::get(\"https://api.example.com/price\")\n            .send()\n            .unwrap();\n        let price: u32 = response.body().collect().unwrap();\n        \n        // Submit unsigned transaction with result\n        let call = Call::submit_price { price };\n        SubmitTransaction::<T, Call<T>>::submit_unsigned_transaction(call.into());\n    }\n}\n\n// Off-chain storage (local to node)\nfn store_locally(key: &[u8], value: &[u8]) {\n    sp_io::offchain::local_storage_set(StorageKind::PERSISTENT, key, value);\n}</code></pre>\n        ",
+    "tags": [
+      "substrate",
+      "offchain",
+      "difficulty-advanced"
+    ],
+    "order": 26
+  },
+  {
+    "title": "What is the difference between ink! and Substrate pallets?",
+    "answer": "\n            <p><strong>ink!</strong> is for smart contracts, while <strong>pallets</strong> are for runtime modules.</p>\n            <table>\n                <tr><th>Aspect</th><th>ink! Contracts</th><th>Pallets</th></tr>\n                <tr><td>Deployment</td><td>By users anytime</td><td>At genesis or upgrade</td></tr>\n                <tr><td>Execution</td><td>In sandbox (metered)</td><td>Native runtime</td></tr>\n                <tr><td>Trust level</td><td>Untrusted code</td><td>Trusted, audited</td></tr>\n                <tr><td>Upgrades</td><td>User-controlled</td><td>Governance</td></tr>\n                <tr><td>Gas/Weight</td><td>Gas metering</td><td>Weights (can refund)</td></tr>\n                <tr><td>Storage</td><td>Per-contract</td><td>Chain-wide</td></tr>\n                <tr><td>Use case</td><td>User applications</td><td>Core chain features</td></tr>\n            </table>\n            <strong>When to use each:</strong>\n            <ul>\n                <li><strong>Pallet:</strong> Core functionality, needs high performance</li>\n                <li><strong>ink!:</strong> User-deployed apps, rapid iteration</li>\n            </ul>\n        ",
+    "tags": [
+      "substrate",
+      "ink",
+      "difficulty-intermediate"
+    ],
+    "order": 27
+  },
+  {
+    "title": "What is Solana's programming model?",
+    "answer": "\n            <p><strong>Solana</strong> uses a unique account-based programming model with programs written in Rust.</p>\n            <strong>Key concepts:</strong>\n            <ul>\n                <li><strong>Programs:</strong> Stateless executable code (smart contracts)</li>\n                <li><strong>Accounts:</strong> Store state and SOL balances</li>\n                <li><strong>Instructions:</strong> Commands to programs with accounts</li>\n                <li><strong>Transactions:</strong> Bundles of instructions</li>\n            </ul>\n            <strong>Account structure:</strong>\n            <pre><code class=\"language-rust\">pub struct Account {\n    pub lamports: u64,          // Balance (1 SOL = 1B lamports)\n    pub data: Vec<u8>,          // Arbitrary data\n    pub owner: Pubkey,          // Program that owns this account\n    pub executable: bool,        // Is this a program?\n    pub rent_epoch: u64,        // Rent tracking\n}</code></pre>\n            <strong>Key differences from Ethereum:</strong>\n            <ul>\n                <li>State stored in accounts, not in programs</li>\n                <li>Programs are stateless</li>\n                <li>Parallel transaction execution</li>\n            </ul>\n        ",
+    "tags": [
+      "solana",
+      "difficulty-intermediate"
+    ],
+    "order": 28
+  },
+  {
+    "title": "How do you create a Solana program with Anchor?",
+    "answer": "\n            <p><strong>Anchor</strong> is a framework for Solana that simplifies program development.</p>\n            <strong>Basic Anchor program:</strong>\n            <pre><code class=\"language-rust\">use anchor_lang::prelude::*;\n\ndeclare_id!(\"Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS\");\n\n#[program]\npub mod my_program {\n    use super::*;\n    \n    pub fn initialize(ctx: Context<Initialize>, data: u64) -> Result<()> {\n        let my_account = &mut ctx.accounts.my_account;\n        my_account.data = data;\n        my_account.authority = ctx.accounts.authority.key();\n        Ok(())\n    }\n    \n    pub fn update(ctx: Context<Update>, new_data: u64) -> Result<()> {\n        let my_account = &mut ctx.accounts.my_account;\n        my_account.data = new_data;\n        Ok(())\n    }\n}\n\n#[derive(Accounts)]\npub struct Initialize<'info> {\n    #[account(init, payer = authority, space = 8 + 8 + 32)]\n    pub my_account: Account<'info, MyAccount>,\n    #[account(mut)]\n    pub authority: Signer<'info>,\n    pub system_program: Program<'info, System>,\n}\n\n#[derive(Accounts)]\npub struct Update<'info> {\n    #[account(mut, has_one = authority)]\n    pub my_account: Account<'info, MyAccount>,\n    pub authority: Signer<'info>,\n}\n\n#[account]\npub struct MyAccount {\n    pub data: u64,\n    pub authority: Pubkey,\n}</code></pre>\n        ",
+    "tags": [
+      "solana",
+      "anchor",
+      "difficulty-intermediate"
+    ],
+    "order": 29
+  },
+  {
+    "title": "What are PDAs (Program Derived Addresses) in Solana?",
+    "answer": "\n            <p><strong>PDAs</strong> are deterministic addresses that programs can sign for, enabling program-owned accounts.</p>\n            <strong>Creating a PDA:</strong>\n            <pre><code class=\"language-rust\">// Finding a PDA\nlet (pda, bump) = Pubkey::find_program_address(\n    &[\n        b\"my_seed\",\n        user.key().as_ref(),\n    ],\n    program_id\n);\n\n// In Anchor\n#[derive(Accounts)]\npub struct CreateVault<'info> {\n    #[account(\n        init,\n        seeds = [b\"vault\", user.key().as_ref()],\n        bump,\n        payer = user,\n        space = 8 + 32 + 8\n    )]\n    pub vault: Account<'info, Vault>,\n    #[account(mut)]\n    pub user: Signer<'info>,\n    pub system_program: Program<'info, System>,\n}\n\n// Using PDA to sign\nlet seeds = &[b\"vault\", user.key().as_ref(), &[bump]];\nlet signer_seeds = &[&seeds[..]];\n\ninvoke_signed(\n    &transfer_instruction,\n    &[vault.to_account_info(), destination.to_account_info()],\n    signer_seeds\n)?;</code></pre>\n            <strong>Use cases:</strong> Vaults, escrows, token accounts, program configuration\n        ",
+    "tags": [
+      "solana",
+      "pda",
+      "difficulty-intermediate"
+    ],
+    "order": 30
+  },
+  {
+    "title": "How does Solana's rent system work?",
+    "answer": "\n            <p><strong>Rent</strong> is the fee for storing data on Solana. Accounts must maintain minimum balance or be rent-exempt.</p>\n            <strong>Rent calculation:</strong>\n            <pre><code class=\"language-rust\">// Minimum rent-exempt balance\nlet rent = Rent::get()?;\nlet min_balance = rent.minimum_balance(account_data_size);\n\n// In Anchor - automatic calculation\n#[account(init, payer = user, space = 8 + 32 + 8)]\npub my_account: Account<'info, MyAccount>,\n// Space: 8 (discriminator) + 32 (Pubkey) + 8 (u64)</code></pre>\n            <strong>Rent rules:</strong>\n            <ul>\n                <li><strong>Rent-exempt:</strong> Hold 2 years of rent (permanent)</li>\n                <li><strong>Rent collection:</strong> Deducted on transaction touch</li>\n                <li><strong>Account deletion:</strong> Balance hits 0, account removed</li>\n            </ul>\n            <strong>Space calculation:</strong>\n            <pre><code class=\"language-rust\">// Common type sizes\nPubkey: 32 bytes\nu64: 8 bytes\nbool: 1 byte\nString: 4 + length bytes\nVec<T>: 4 + (length * size_of::<T>())\nOption<T>: 1 + size_of::<T>()</code></pre>\n        ",
+    "tags": [
+      "solana",
+      "rent",
+      "difficulty-intermediate"
+    ],
+    "order": 31
+  },
+  {
+    "title": "What is CPIs (Cross-Program Invocations) in Solana?",
+    "answer": "\n            <p><strong>CPI</strong> allows a Solana program to call another program's instructions.</p>\n            <strong>Basic CPI:</strong>\n            <pre><code class=\"language-rust\">use anchor_lang::prelude::*;\nuse anchor_spl::token::{self, Transfer, Token, TokenAccount};\n\n// CPI to transfer tokens\npub fn transfer_tokens(ctx: Context<TransferTokens>, amount: u64) -> Result<()> {\n    let cpi_accounts = Transfer {\n        from: ctx.accounts.from.to_account_info(),\n        to: ctx.accounts.to.to_account_info(),\n        authority: ctx.accounts.authority.to_account_info(),\n    };\n    let cpi_program = ctx.accounts.token_program.to_account_info();\n    let cpi_ctx = CpiContext::new(cpi_program, cpi_accounts);\n    \n    token::transfer(cpi_ctx, amount)?;\n    Ok(())\n}\n\n// CPI with PDA signer\npub fn transfer_from_vault(ctx: Context<TransferFromVault>, amount: u64) -> Result<()> {\n    let seeds = &[b\"vault\", ctx.accounts.user.key().as_ref(), &[ctx.bumps.vault]];\n    let signer_seeds = &[&seeds[..]];\n    \n    let cpi_ctx = CpiContext::new_with_signer(\n        ctx.accounts.token_program.to_account_info(),\n        Transfer {\n            from: ctx.accounts.vault_token.to_account_info(),\n            to: ctx.accounts.user_token.to_account_info(),\n            authority: ctx.accounts.vault.to_account_info(),\n        },\n        signer_seeds\n    );\n    \n    token::transfer(cpi_ctx, amount)\n}</code></pre>\n        ",
+    "tags": [
+      "solana",
+      "cpi",
+      "difficulty-intermediate"
+    ],
+    "order": 32
+  },
+  {
+    "title": "How do you handle errors in Solana/Anchor programs?",
+    "answer": "\n            <p>Anchor provides structured error handling with custom error codes.</p>\n            <strong>Defining errors:</strong>\n            <pre><code class=\"language-rust\">#[error_code]\npub enum MyError {\n    #[msg(\"You are not authorized to perform this action\")]\n    Unauthorized,\n    #[msg(\"Insufficient funds: required {required}, available {available}\")]\n    InsufficientFunds { required: u64, available: u64 },\n    #[msg(\"Invalid parameter provided\")]\n    InvalidParameter,\n    #[msg(\"Account already initialized\")]\n    AlreadyInitialized,\n}\n\n// Using errors\npub fn withdraw(ctx: Context<Withdraw>, amount: u64) -> Result<()> {\n    require!(\n        ctx.accounts.vault.authority == ctx.accounts.user.key(),\n        MyError::Unauthorized\n    );\n    \n    require_gte!(\n        ctx.accounts.vault.balance,\n        amount,\n        MyError::InsufficientFunds { \n            required: amount, \n            available: ctx.accounts.vault.balance \n        }\n    );\n    \n    // Proceed with withdrawal\n    Ok(())\n}</code></pre>\n            <strong>Anchor constraints as validation:</strong>\n            <pre><code class=\"language-rust\">#[derive(Accounts)]\npub struct Withdraw<'info> {\n    #[account(\n        mut,\n        constraint = vault.authority == user.key() @ MyError::Unauthorized\n    )]\n    pub vault: Account<'info, Vault>,\n    pub user: Signer<'info>,\n}</code></pre>\n        ",
+    "tags": [
+      "solana",
+      "anchor",
+      "errors",
+      "difficulty-intermediate"
+    ],
+    "order": 33
+  },
+  {
+    "title": "What are Solana's account constraints in Anchor?",
+    "answer": "\n            <p>Anchor <strong>constraints</strong> validate accounts before instruction execution.</p>\n            <strong>Common constraints:</strong>\n            <pre><code class=\"language-rust\">#[derive(Accounts)]\npub struct MyInstruction<'info> {\n    // Initialize new account\n    #[account(init, payer = user, space = 8 + 32)]\n    pub new_account: Account<'info, MyAccount>,\n    \n    // Mutable account\n    #[account(mut)]\n    pub mutable_account: Account<'info, MyAccount>,\n    \n    // PDA with seeds\n    #[account(\n        seeds = [b\"config\", user.key().as_ref()],\n        bump\n    )]\n    pub config: Account<'info, Config>,\n    \n    // Ownership check\n    #[account(has_one = authority)]\n    pub owned_account: Account<'info, MyAccount>,\n    \n    // Custom constraint\n    #[account(constraint = amount > 0 @ MyError::InvalidAmount)]\n    pub data_account: Account<'info, Data>,\n    \n    // Close account (send lamports to user)\n    #[account(mut, close = user)]\n    pub closeable: Account<'info, Temp>,\n    \n    // Realloc (resize account)\n    #[account(mut, realloc = 100, realloc::payer = user, realloc::zero = true)]\n    pub resizable: Account<'info, Resizable>,\n    \n    #[account(mut)]\n    pub user: Signer<'info>,\n    pub authority: Signer<'info>,\n    pub system_program: Program<'info, System>,\n}</code></pre>\n        ",
+    "tags": [
+      "solana",
+      "anchor",
+      "difficulty-intermediate"
+    ],
+    "order": 34
+  },
+  {
+    "title": "How do you create SPL tokens with Rust?",
+    "answer": "\n            <p><strong>SPL Token</strong> is Solana's token standard, similar to ERC-20.</p>\n            <strong>Creating a token mint:</strong>\n            <pre><code class=\"language-rust\">use anchor_spl::token::{Mint, Token, TokenAccount, MintTo};\n\n#[derive(Accounts)]\npub struct CreateToken<'info> {\n    #[account(\n        init,\n        payer = authority,\n        mint::decimals = 9,\n        mint::authority = authority,\n    )]\n    pub mint: Account<'info, Mint>,\n    #[account(mut)]\n    pub authority: Signer<'info>,\n    pub token_program: Program<'info, Token>,\n    pub system_program: Program<'info, System>,\n    pub rent: Sysvar<'info, Rent>,\n}\n\n// Minting tokens\npub fn mint_tokens(ctx: Context<MintTokens>, amount: u64) -> Result<()> {\n    let cpi_accounts = MintTo {\n        mint: ctx.accounts.mint.to_account_info(),\n        to: ctx.accounts.token_account.to_account_info(),\n        authority: ctx.accounts.authority.to_account_info(),\n    };\n    let cpi_ctx = CpiContext::new(\n        ctx.accounts.token_program.to_account_info(), \n        cpi_accounts\n    );\n    token::mint_to(cpi_ctx, amount)\n}\n\n#[derive(Accounts)]\npub struct MintTokens<'info> {\n    #[account(mut)]\n    pub mint: Account<'info, Mint>,\n    #[account(mut)]\n    pub token_account: Account<'info, TokenAccount>,\n    pub authority: Signer<'info>,\n    pub token_program: Program<'info, Token>,\n}</code></pre>\n        ",
+    "tags": [
+      "solana",
+      "tokens",
+      "difficulty-intermediate"
+    ],
+    "order": 35
+  },
+  {
+    "title": "What is Solana's transaction structure?",
+    "answer": "\n            <p>Solana transactions bundle multiple instructions with signatures and account references.</p>\n            <strong>Transaction anatomy:</strong>\n            <pre><code class=\"language-rust\">// Transaction structure\nstruct Transaction {\n    signatures: Vec<Signature>,     // All required signatures\n    message: Message {\n        header: MessageHeader {\n            num_required_signatures: u8,\n            num_readonly_signed: u8,\n            num_readonly_unsigned: u8,\n        },\n        account_keys: Vec<Pubkey>,  // All accounts used\n        recent_blockhash: Hash,      // For replay protection\n        instructions: Vec<CompiledInstruction>,\n    }\n}\n\n// Building a transaction in Anchor client\nlet tx = Transaction::new_signed_with_payer(\n    &[\n        instruction1,\n        instruction2,  // Multiple instructions\n    ],\n    Some(&payer.pubkey()),\n    &[&payer, &other_signer],\n    recent_blockhash,\n);</code></pre>\n            <strong>Transaction limits:</strong>\n            <ul>\n                <li>Max 1232 bytes per transaction</li>\n                <li>Max 64 accounts per transaction</li>\n                <li>Max 200k compute units (default)</li>\n            </ul>\n        ",
+    "tags": [
+      "solana",
+      "transactions",
+      "difficulty-intermediate"
+    ],
+    "order": 36
+  },
+  {
+    "title": "How does Solana achieve parallel execution?",
+    "answer": "\n            <p><strong>Sealevel</strong> is Solana's parallel smart contract runtime.</p>\n            <strong>How it works:</strong>\n            <ul>\n                <li>Transactions declare accounts upfront</li>\n                <li>Non-overlapping transactions run in parallel</li>\n                <li>Overlapping transactions run sequentially</li>\n            </ul>\n            <pre><code class=\"language-rust\">// Tx1: Uses accounts [A, B]\n// Tx2: Uses accounts [C, D]\n// Tx3: Uses accounts [A, C]\n\n// Execution:\n// Parallel:   Tx1 || Tx2  (no overlap)\n// Sequential: Tx3 after Tx1 and Tx2 (overlaps with both)</code></pre>\n            <strong>Optimization tips:</strong>\n            <pre><code class=\"language-rust\">// Bad: Single global account bottleneck\n#[account(mut)]\npub global_state: Account<'info, GlobalState>,\n\n// Good: Per-user accounts (parallelizable)\n#[account(\n    seeds = [b\"user_state\", user.key().as_ref()],\n    bump\n)]\npub user_state: Account<'info, UserState>,</code></pre>\n            <strong>Account locking:</strong> Read-only accounts can be shared, writable accounts are exclusive\n        ",
+    "tags": [
+      "solana",
+      "sealevel",
+      "difficulty-advanced"
+    ],
+    "order": 37
+  },
+  {
+    "title": "What is NEAR Protocol's programming model?",
+    "answer": "\n            <p><strong>NEAR Protocol</strong> uses a sharded, proof-of-stake blockchain with smart contracts written in Rust or AssemblyScript.</p>\n            <strong>Key concepts:</strong>\n            <ul>\n                <li><strong>Accounts:</strong> Human-readable names (alice.near)</li>\n                <li><strong>Access Keys:</strong> Full-access and function-call keys</li>\n                <li><strong>Sharding:</strong> Nightshade dynamic sharding</li>\n                <li><strong>Gas:</strong> Prepaid compute in NEAR tokens</li>\n            </ul>\n            <strong>Account structure:</strong>\n            <pre><code class=\"language-rust\">// NEAR accounts can have:\n// - Balance (NEAR tokens)\n// - Contract code (WASM)\n// - Storage (key-value)\n// - Access keys (for signing)\n\n// Account naming:\n// Top-level: alice.near\n// Sub-accounts: app.alice.near</code></pre>\n            <strong>Contract example:</strong>\n            <pre><code class=\"language-rust\">use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};\nuse near_sdk::{near_bindgen, env};\n\n#[near_bindgen]\n#[derive(BorshDeserialize, BorshSerialize, Default)]\npub struct Contract {\n    greeting: String,\n}\n\n#[near_bindgen]\nimpl Contract {\n    #[init]\n    pub fn new(greeting: String) -> Self {\n        Self { greeting }\n    }\n    \n    pub fn get_greeting(&self) -> String {\n        self.greeting.clone()\n    }\n    \n    pub fn set_greeting(&mut self, greeting: String) {\n        self.greeting = greeting;\n    }\n}</code></pre>\n        ",
+    "tags": [
+      "near",
+      "difficulty-intermediate"
+    ],
+    "order": 38
+  },
+  {
+    "title": "How do cross-contract calls work in NEAR?",
+    "answer": "\n            <p>NEAR supports <strong>asynchronous cross-contract calls</strong> with promises.</p>\n            <strong>Cross-contract call pattern:</strong>\n            <pre><code class=\"language-rust\">use near_sdk::{ext_contract, Promise, Gas, Balance};\n\nconst TGAS: Gas = Gas(10u64.pow(12));\nconst NO_DEPOSIT: Balance = 0;\n\n// Define external contract interface\n#[ext_contract(ext_ft)]\npub trait FungibleToken {\n    fn ft_transfer(&mut self, receiver_id: AccountId, amount: U128);\n    fn ft_balance_of(&self, account_id: AccountId) -> U128;\n}\n\n// Define callback interface\n#[ext_contract(ext_self)]\npub trait ExtSelf {\n    fn callback_after_transfer(&self) -> bool;\n}\n\n#[near_bindgen]\nimpl Contract {\n    pub fn transfer_tokens(&self, token: AccountId, to: AccountId, amount: U128) -> Promise {\n        ext_ft::ext(token)\n            .with_attached_deposit(1)\n            .with_static_gas(Gas(5 * TGAS))\n            .ft_transfer(to, amount)\n            .then(\n                ext_self::ext(env::current_account_id())\n                    .with_static_gas(Gas(5 * TGAS))\n                    .callback_after_transfer()\n            )\n    }\n    \n    #[private]  // Only callable by this contract\n    pub fn callback_after_transfer(&self) -> bool {\n        match env::promise_result(0) {\n            PromiseResult::Successful(_) => true,\n            _ => false,\n        }\n    }\n}</code></pre>\n        ",
+    "tags": [
+      "near",
+      "cross-contract",
+      "difficulty-intermediate"
+    ],
+    "order": 39
+  },
+  {
+    "title": "What is NEAR's storage staking model?",
+    "answer": "\n            <p>NEAR uses <strong>storage staking</strong> where accounts lock NEAR tokens proportional to storage used.</p>\n            <strong>Storage costs:</strong>\n            <pre><code class=\"language-rust\">// 1 NEAR = 10 KB of storage\n// 0.00001 NEAR per byte\n\n// Managing storage in contracts\nuse near_sdk::collections::{LookupMap, UnorderedMap};\n\n#[near_bindgen]\n#[derive(BorshDeserialize, BorshSerialize)]\npub struct Contract {\n    // Efficient storage collections\n    records: LookupMap<AccountId, Record>,\n    items: UnorderedMap<String, Item>,\n}\n\nimpl Contract {\n    // Storage deposit pattern\n    #[payable]\n    pub fn storage_deposit(&mut self) {\n        let account_id = env::predecessor_account_id();\n        let deposit = env::attached_deposit();\n        \n        // Track storage per user\n        let storage_before = env::storage_usage();\n        self.internal_register_account(&account_id);\n        let storage_after = env::storage_usage();\n        \n        let storage_cost = (storage_after - storage_before) as u128 \n            * env::storage_byte_cost();\n        \n        assert!(deposit >= storage_cost, \"Insufficient deposit\");\n        \n        // Refund excess\n        if deposit > storage_cost {\n            Promise::new(account_id).transfer(deposit - storage_cost);\n        }\n    }\n}</code></pre>\n        ",
+    "tags": [
+      "near",
+      "storage",
+      "difficulty-intermediate"
+    ],
+    "order": 40
+  },
+  {
+    "title": "How do you implement NEP-141 (Fungible Token) in NEAR?",
+    "answer": "\n            <p><strong>NEP-141</strong> is NEAR's fungible token standard, similar to ERC-20.</p>\n            <pre><code class=\"language-rust\">use near_sdk::json_types::U128;\nuse near_sdk::{near_bindgen, AccountId, Balance, Promise};\n\n// Core trait\npub trait FungibleTokenCore {\n    fn ft_transfer(&mut self, receiver_id: AccountId, amount: U128, memo: Option<String>);\n    fn ft_transfer_call(&mut self, receiver_id: AccountId, amount: U128, \n                        memo: Option<String>, msg: String) -> Promise;\n    fn ft_total_supply(&self) -> U128;\n    fn ft_balance_of(&self, account_id: AccountId) -> U128;\n}\n\n#[near_bindgen]\nimpl FungibleTokenCore for Contract {\n    #[payable]\n    fn ft_transfer(&mut self, receiver_id: AccountId, amount: U128, memo: Option<String>) {\n        assert_one_yocto();  // Require 1 yoctoNEAR for security\n        let sender_id = env::predecessor_account_id();\n        let amount: Balance = amount.into();\n        \n        self.internal_transfer(&sender_id, &receiver_id, amount, memo);\n    }\n    \n    fn ft_balance_of(&self, account_id: AccountId) -> U128 {\n        self.accounts.get(&account_id).unwrap_or(0).into()\n    }\n    \n    fn ft_total_supply(&self) -> U128 {\n        self.total_supply.into()\n    }\n}</code></pre>\n            <strong>Using the SDK:</strong>\n            <pre><code class=\"language-rust\">use near_contract_standards::fungible_token::FungibleToken;\n\n#[near_bindgen]\n#[derive(BorshDeserialize, BorshSerialize, PanicOnDefault)]\npub struct Contract {\n    token: FungibleToken,\n}\n\n#[near_bindgen]\nimpl Contract {\n    #[init]\n    pub fn new(total_supply: U128) -> Self {\n        let mut token = FungibleToken::new(b\"t\".to_vec());\n        token.internal_register_account(&env::predecessor_account_id());\n        token.internal_deposit(&env::predecessor_account_id(), total_supply.into());\n        Self { token }\n    }\n}</code></pre>\n        ",
+    "tags": [
+      "near",
+      "tokens",
+      "difficulty-intermediate"
+    ],
+    "order": 41
+  },
+  {
+    "title": "What are NEAR access keys and how do they work?",
+    "answer": "\n            <p>NEAR has a unique <strong>access key</strong> system for flexible account security.</p>\n            <strong>Access key types:</strong>\n            <pre><code class=\"language-rust\">// Full Access Key\n// - Can do anything: transfer, deploy, delete account\n// - Like a master key\n\n// Function Call Key\n// - Limited to specific contract methods\n// - Optional allowance (gas budget)\n// - Great for dApp sessions\n\n// Adding keys programmatically\n#[near_bindgen]\nimpl Contract {\n    pub fn add_access_key(&self, public_key: PublicKey) -> Promise {\n        Promise::new(env::current_account_id()).add_access_key(\n            public_key,\n            250000000000000000000000,  // Allowance: 0.25 NEAR\n            env::current_account_id(),  // Receiver\n            \"increment,decrement\".to_string(),  // Methods\n        )\n    }\n    \n    // Remove access key\n    pub fn remove_access_key(&self, public_key: PublicKey) -> Promise {\n        Promise::new(env::current_account_id()).delete_key(public_key)\n    }\n}</code></pre>\n            <strong>Use cases:</strong>\n            <ul>\n                <li>Session keys for games (no popup per action)</li>\n                <li>Limited access for team members</li>\n                <li>Subscription services with allowance</li>\n            </ul>\n        ",
+    "tags": [
+      "near",
+      "security",
+      "difficulty-intermediate"
+    ],
+    "order": 42
+  },
+  {
+    "title": "How do you test NEAR smart contracts?",
+    "answer": "\n            <p>NEAR provides unit testing and simulation testing frameworks.</p>\n            <strong>Unit tests:</strong>\n            <pre><code class=\"language-rust\">#[cfg(test)]\nmod tests {\n    use super::*;\n    use near_sdk::test_utils::{accounts, VMContextBuilder};\n    use near_sdk::testing_env;\n\n    fn get_context(predecessor: AccountId) -> VMContextBuilder {\n        let mut builder = VMContextBuilder::new();\n        builder\n            .predecessor_account_id(predecessor)\n            .current_account_id(accounts(0))\n            .signer_account_id(predecessor)\n            .attached_deposit(1);\n        builder\n    }\n\n    #[test]\n    fn test_transfer() {\n        let context = get_context(accounts(1));\n        testing_env!(context.build());\n        \n        let mut contract = Contract::new(U128(1000));\n        \n        contract.ft_transfer(accounts(2), U128(100), None);\n        \n        assert_eq!(contract.ft_balance_of(accounts(1)), U128(900));\n        assert_eq!(contract.ft_balance_of(accounts(2)), U128(100));\n    }\n    \n    #[test]\n    #[should_panic(expected = \"Insufficient balance\")]\n    fn test_transfer_insufficient_balance() {\n        let context = get_context(accounts(1));\n        testing_env!(context.build());\n        \n        let mut contract = Contract::new(U128(100));\n        contract.ft_transfer(accounts(2), U128(200), None);\n    }\n}</code></pre>\n            <strong>Workspaces-rs (simulation testing):</strong>\n            <pre><code class=\"language-rust\">use near_workspaces::{Account, Contract, Worker};\n\n#[tokio::test]\nasync fn test_cross_contract() -> anyhow::Result<()> {\n    let worker = near_workspaces::sandbox().await?;\n    let contract = worker.dev_deploy(include_bytes!(\"../out/contract.wasm\")).await?;\n    \n    let result = contract.call(\"set_greeting\")\n        .args_json(json!({\"greeting\": \"Hello\"}))\n        .transact()\n        .await?;\n    \n    assert!(result.is_success());\n    Ok(())\n}</code></pre>\n        ",
+    "tags": [
+      "near",
+      "testing",
+      "difficulty-intermediate"
+    ],
+    "order": 43
+  },
+  {
+    "title": "What is NEAR's upgrade pattern for contracts?",
+    "answer": "\n            <p>NEAR contracts can be upgraded by redeploying code, but state migration needs care.</p>\n            <strong>Upgrade pattern:</strong>\n            <pre><code class=\"language-rust\">// Version 1\n#[near_bindgen]\n#[derive(BorshDeserialize, BorshSerialize)]\npub struct ContractV1 {\n    data: String,\n}\n\n// Version 2 - Added new field\n#[near_bindgen]\n#[derive(BorshDeserialize, BorshSerialize)]\npub struct ContractV2 {\n    data: String,\n    new_field: u64,  // New!\n}\n\n// Migration\nimpl Contract {\n    #[private]\n    #[init(ignore_state)]\n    pub fn migrate() -> Self {\n        let old_state: ContractV1 = env::state_read().expect(\"failed to read state\");\n        \n        Self {\n            data: old_state.data,\n            new_field: 0,  // Default for new field\n        }\n    }\n}\n\n// Deployment script\nnear deploy --wasmFile new_contract.wasm --initFunction migrate --initArgs '{}' --accountId contract.near</code></pre>\n            <strong>Upgrade patterns:</strong>\n            <ul>\n                <li><strong>Lazy migration:</strong> Migrate records on access</li>\n                <li><strong>Versioned enums:</strong> Store state version</li>\n                <li><strong>Separate data contract:</strong> Logic upgrades easier</li>\n            </ul>\n        ",
+    "tags": [
+      "near",
+      "upgrades",
+      "difficulty-advanced"
+    ],
+    "order": 44
+  },
+  {
+    "title": "How does NEAR handle errors and panics?",
+    "answer": "\n            <p>NEAR contracts can panic (abort transaction) or return Result types.</p>\n            <strong>Error handling:</strong>\n            <pre><code class=\"language-rust\">use near_sdk::FunctionError;\n\n// Custom error enum\n#[derive(FunctionError, BorshSerialize)]\npub enum ContractError {\n    InsufficientBalance { required: u128, available: u128 },\n    Unauthorized,\n    InvalidInput(String),\n}\n\n#[near_bindgen]\nimpl Contract {\n    // Using require! macro (panics with message)\n    pub fn transfer(&mut self, to: AccountId, amount: U128) {\n        let sender = env::predecessor_account_id();\n        let balance = self.get_balance(&sender);\n        \n        require!(amount.0 <= balance, \"Insufficient balance\");\n        require!(amount.0 > 0, \"Amount must be positive\");\n        \n        self.internal_transfer(&sender, &to, amount.0);\n    }\n    \n    // Using Result type\n    pub fn safe_transfer(&mut self, to: AccountId, amount: U128) -> Result<(), ContractError> {\n        let sender = env::predecessor_account_id();\n        let balance = self.get_balance(&sender);\n        \n        if amount.0 > balance {\n            return Err(ContractError::InsufficientBalance {\n                required: amount.0,\n                available: balance,\n            });\n        }\n        \n        self.internal_transfer(&sender, &to, amount.0);\n        Ok(())\n    }\n}\n\n// Assert macros\nassert!(condition, \"message\");\nassert_eq!(a, b, \"a should equal b\");\nrequire!(condition, \"message\");  // NEAR-specific</code></pre>\n        ",
+    "tags": [
+      "near",
+      "errors",
+      "difficulty-intermediate"
+    ],
+    "order": 45
+  },
+  {
+    "title": "What is CosmWasm?",
+    "answer": "\n            <p><strong>CosmWasm</strong> is a smart contract platform for the Cosmos ecosystem, using Rust compiled to WebAssembly.</p>\n            <strong>Key features:</strong>\n            <ul>\n                <li><strong>Multi-chain:</strong> Deploy same contract across Cosmos chains</li>\n                <li><strong>Actor model:</strong> Contracts communicate via messages</li>\n                <li><strong>Capabilities:</strong> Fine-grained permissions system</li>\n                <li><strong>IBC-enabled:</strong> Cross-chain contract calls</li>\n            </ul>\n            <strong>Contract lifecycle:</strong>\n            <pre><code class=\"language-rust\">// 1. Store code on chain\nwasmd tx wasm store contract.wasm --from wallet\n\n// 2. Instantiate contract\nwasmd tx wasm instantiate $CODE_ID '{\"count\": 0}' --label \"counter\"\n\n// 3. Execute messages\nwasmd tx wasm execute $CONTRACT '{\"increment\": {}}'\n\n// 4. Query state\nwasmd query wasm contract-state smart $CONTRACT '{\"get_count\": {}}'</code></pre>\n            <strong>Chains using CosmWasm:</strong> Osmosis, Juno, Terra, Neutron, Injective\n        ",
+    "tags": [
+      "cosmwasm",
+      "cosmos",
+      "difficulty-intermediate"
+    ],
+    "order": 46
+  },
+  {
+    "title": "What is the basic structure of a CosmWasm contract?",
+    "answer": "\n            <p>CosmWasm contracts have three entry points: <strong>instantiate</strong>, <strong>execute</strong>, and <strong>query</strong>.</p>\n            <pre><code class=\"language-rust\">use cosmwasm_std::{\n    entry_point, Binary, Deps, DepsMut, Env, MessageInfo, Response, StdResult,\n};\n\n// Contract state\n#[cw_serde]\npub struct State {\n    pub count: i32,\n    pub owner: Addr,\n}\n\n// Messages\n#[cw_serde]\npub struct InstantiateMsg {\n    pub count: i32,\n}\n\n#[cw_serde]\npub enum ExecuteMsg {\n    Increment {},\n    Reset { count: i32 },\n}\n\n#[cw_serde]\npub enum QueryMsg {\n    GetCount {},\n}\n\n// Entry points\n#[entry_point]\npub fn instantiate(\n    deps: DepsMut,\n    _env: Env,\n    info: MessageInfo,\n    msg: InstantiateMsg,\n) -> StdResult<Response> {\n    let state = State {\n        count: msg.count,\n        owner: info.sender.clone(),\n    };\n    STATE.save(deps.storage, &state)?;\n    Ok(Response::new().add_attribute(\"method\", \"instantiate\"))\n}\n\n#[entry_point]\npub fn execute(\n    deps: DepsMut,\n    _env: Env,\n    info: MessageInfo,\n    msg: ExecuteMsg,\n) -> StdResult<Response> {\n    match msg {\n        ExecuteMsg::Increment {} => execute_increment(deps),\n        ExecuteMsg::Reset { count } => execute_reset(deps, info, count),\n    }\n}\n\n#[entry_point]\npub fn query(deps: Deps, _env: Env, msg: QueryMsg) -> StdResult<Binary> {\n    match msg {\n        QueryMsg::GetCount {} => to_binary(&query_count(deps)?),\n    }\n}</code></pre>\n        ",
+    "tags": [
+      "cosmwasm",
+      "difficulty-intermediate"
+    ],
+    "order": 47
+  },
+  {
+    "title": "How does CosmWasm storage work?",
+    "answer": "\n            <p>CosmWasm provides storage primitives through <strong>cw-storage-plus</strong>.</p>\n            <pre><code class=\"language-rust\">use cw_storage_plus::{Item, Map, IndexedMap, MultiIndex, Index};\n\n// Simple item (single value)\npub const CONFIG: Item<Config> = Item::new(\"config\");\n\n// Map (key-value)\npub const BALANCES: Map<&Addr, Uint128> = Map::new(\"balances\");\n\n// Map with tuple key\npub const ALLOWANCES: Map<(&Addr, &Addr), Uint128> = Map::new(\"allowances\");\n\n// Usage\nfn example(deps: DepsMut) -> StdResult<()> {\n    // Save item\n    CONFIG.save(deps.storage, &config)?;\n    \n    // Load item\n    let config = CONFIG.load(deps.storage)?;\n    let config_maybe = CONFIG.may_load(deps.storage)?; // Returns Option\n    \n    // Map operations\n    BALANCES.save(deps.storage, &addr, &Uint128::new(1000))?;\n    let balance = BALANCES.load(deps.storage, &addr)?;\n    \n    // Update\n    BALANCES.update(deps.storage, &addr, |bal| -> StdResult<_> {\n        Ok(bal.unwrap_or_default() + amount)\n    })?;\n    \n    // Iterate\n    let all: StdResult<Vec<_>> = BALANCES\n        .range(deps.storage, None, None, Order::Ascending)\n        .collect();\n    \n    Ok(())\n}</code></pre>\n            <strong>Indexed maps for complex queries:</strong>\n            <pre><code class=\"language-rust\">pub struct TokenIndexes<'a> {\n    pub owner: MultiIndex<'a, Addr, TokenInfo, String>,\n}\n\nimpl<'a> IndexList<TokenInfo> for TokenIndexes<'a> {\n    fn get_indexes(&'_ self) -> Box<dyn Iterator<Item = &'_ dyn Index<TokenInfo>> + '_> {\n        let v: Vec<&dyn Index<TokenInfo>> = vec![&self.owner];\n        Box::new(v.into_iter())\n    }\n}\n\npub fn tokens<'a>() -> IndexedMap<'a, &'a str, TokenInfo, TokenIndexes<'a>> {\n    let indexes = TokenIndexes {\n        owner: MultiIndex::new(|_, d| d.owner.clone(), \"tokens\", \"tokens__owner\"),\n    };\n    IndexedMap::new(\"tokens\", indexes)\n}</code></pre>\n        ",
+    "tags": [
+      "cosmwasm",
+      "storage",
+      "difficulty-intermediate"
+    ],
+    "order": 48
+  },
+  {
+    "title": "How do you handle funds in CosmWasm?",
+    "answer": "\n            <p>CosmWasm contracts can receive and send native tokens through <strong>MessageInfo</strong> and <strong>BankMsg</strong>.</p>\n            <pre><code class=\"language-rust\">use cosmwasm_std::{BankMsg, Coin, coins, Uint128};\n\n#[entry_point]\npub fn execute(\n    deps: DepsMut,\n    _env: Env,\n    info: MessageInfo,  // Contains sender and funds\n    msg: ExecuteMsg,\n) -> Result<Response, ContractError> {\n    match msg {\n        ExecuteMsg::Deposit {} => {\n            // Check received funds\n            let payment = info\n                .funds\n                .iter()\n                .find(|c| c.denom == \"uatom\")\n                .ok_or(ContractError::NoFunds {})?;\n            \n            // Must be exactly 1 ATOM\n            if payment.amount != Uint128::new(1_000_000) {\n                return Err(ContractError::InvalidAmount {});\n            }\n            \n            // Store deposit...\n            Ok(Response::new())\n        }\n        \n        ExecuteMsg::Withdraw { amount } => {\n            // Send funds to caller\n            let msg = BankMsg::Send {\n                to_address: info.sender.to_string(),\n                amount: coins(amount.u128(), \"uatom\"),\n            };\n            \n            Ok(Response::new().add_message(msg))\n        }\n        \n        ExecuteMsg::Burn { amount } => {\n            // Burn tokens (send to module)\n            let msg = BankMsg::Burn {\n                amount: coins(amount.u128(), \"uatom\"),\n            };\n            \n            Ok(Response::new().add_message(msg))\n        }\n    }\n}\n\n// Query contract balance\nfn query_balance(deps: Deps, env: Env) -> StdResult<Coin> {\n    deps.querier.query_balance(env.contract.address, \"uatom\")\n}</code></pre>\n        ",
+    "tags": [
+      "cosmwasm",
+      "funds",
+      "difficulty-intermediate"
+    ],
+    "order": 49
+  },
+  {
+    "title": "What is submessage and reply pattern in CosmWasm?",
+    "answer": "\n            <p><strong>Submessages</strong> allow contracts to get callbacks after executing messages.</p>\n            <pre><code class=\"language-rust\">use cosmwasm_std::{SubMsg, Reply, ReplyOn};\n\nconst INSTANTIATE_REPLY_ID: u64 = 1;\n\npub fn execute_create_token(deps: DepsMut, env: Env) -> Result<Response, ContractError> {\n    let instantiate_msg = WasmMsg::Instantiate {\n        admin: Some(env.contract.address.to_string()),\n        code_id: CW20_CODE_ID,\n        msg: to_binary(&cw20_msg)?,\n        funds: vec![],\n        label: \"My Token\".to_string(),\n    };\n    \n    // SubMsg with reply\n    let submsg = SubMsg {\n        id: INSTANTIATE_REPLY_ID,\n        msg: instantiate_msg.into(),\n        gas_limit: None,\n        reply_on: ReplyOn::Success,  // Only reply on success\n    };\n    \n    Ok(Response::new().add_submessage(submsg))\n}\n\n#[entry_point]\npub fn reply(deps: DepsMut, _env: Env, msg: Reply) -> Result<Response, ContractError> {\n    match msg.id {\n        INSTANTIATE_REPLY_ID => {\n            // Parse the instantiation response\n            let res = parse_reply_instantiate_data(msg)?;\n            let token_addr = deps.api.addr_validate(&res.contract_address)?;\n            \n            // Store the new token address\n            TOKEN_ADDR.save(deps.storage, &token_addr)?;\n            \n            Ok(Response::new()\n                .add_attribute(\"token_address\", token_addr))\n        }\n        _ => Err(ContractError::UnknownReplyId { id: msg.id }),\n    }\n}</code></pre>\n            <strong>ReplyOn options:</strong>\n            <ul>\n                <li><strong>Always:</strong> Reply on success or error</li>\n                <li><strong>Success:</strong> Only reply on success</li>\n                <li><strong>Error:</strong> Only reply on error</li>\n                <li><strong>Never:</strong> Fire and forget</li>\n            </ul>\n        ",
+    "tags": [
+      "cosmwasm",
+      "submessages",
+      "difficulty-advanced"
+    ],
+    "order": 50
+  },
+  {
+    "title": "How do you implement CW20 (fungible token) in CosmWasm?",
+    "answer": "\n            <p><strong>CW20</strong> is the CosmWasm standard for fungible tokens, similar to ERC-20.</p>\n            <pre><code class=\"language-rust\">// Using cw20-base as foundation\nuse cw20_base::contract::{execute as cw20_execute, query as cw20_query};\nuse cw20_base::msg::{ExecuteMsg as Cw20ExecuteMsg, QueryMsg as Cw20QueryMsg};\n\n// Custom wrapper with additional functionality\n#[entry_point]\npub fn execute(\n    deps: DepsMut,\n    env: Env,\n    info: MessageInfo,\n    msg: ExecuteMsg,\n) -> Result<Response, ContractError> {\n    match msg {\n        // Handle CW20 standard messages\n        ExecuteMsg::Transfer { recipient, amount } => {\n            cw20_execute(deps, env, info, Cw20ExecuteMsg::Transfer { recipient, amount })\n                .map_err(Into::into)\n        }\n        // Custom message\n        ExecuteMsg::Mint { recipient, amount } => execute_mint(deps, env, info, recipient, amount),\n    }\n}\n\n// Or implement from scratch\n#[cw_serde]\npub struct TokenInfo {\n    pub name: String,\n    pub symbol: String,\n    pub decimals: u8,\n    pub total_supply: Uint128,\n}\n\npub fn execute_transfer(\n    deps: DepsMut,\n    _env: Env,\n    info: MessageInfo,\n    recipient: String,\n    amount: Uint128,\n) -> Result<Response, ContractError> {\n    let recipient = deps.api.addr_validate(&recipient)?;\n    \n    BALANCES.update(deps.storage, &info.sender, |bal| -> StdResult<_> {\n        Ok(bal.unwrap_or_default().checked_sub(amount)?)\n    })?;\n    \n    BALANCES.update(deps.storage, &recipient, |bal| -> StdResult<_> {\n        Ok(bal.unwrap_or_default() + amount)\n    })?;\n    \n    Ok(Response::new()\n        .add_attribute(\"action\", \"transfer\")\n        .add_attribute(\"from\", info.sender)\n        .add_attribute(\"to\", recipient)\n        .add_attribute(\"amount\", amount))\n}</code></pre>\n        ",
+    "tags": [
+      "cosmwasm",
+      "cw20",
+      "tokens",
+      "difficulty-intermediate"
+    ],
+    "order": 51
+  },
+  {
+    "title": "What is IBC in CosmWasm and how do you use it?",
+    "answer": "\n            <p><strong>IBC (Inter-Blockchain Communication)</strong> enables cross-chain communication in Cosmos.</p>\n            <pre><code class=\"language-rust\">use cosmwasm_std::{IbcMsg, IbcTimeout, IbcChannel};\n\n// Send IBC packet\npub fn execute_send_ibc(\n    deps: DepsMut,\n    env: Env,\n    channel_id: String,\n    data: Binary,\n) -> Result<Response, ContractError> {\n    let timeout = IbcTimeout::with_timestamp(env.block.time.plus_seconds(300));\n    \n    let msg = IbcMsg::SendPacket {\n        channel_id,\n        data,\n        timeout,\n    };\n    \n    Ok(Response::new().add_message(msg))\n}\n\n// IBC entry points\n#[entry_point]\npub fn ibc_channel_open(\n    _deps: DepsMut,\n    _env: Env,\n    msg: IbcChannelOpenMsg,\n) -> Result<IbcChannelOpenResponse, ContractError> {\n    // Validate channel parameters\n    let channel = msg.channel();\n    if channel.order != IbcOrder::Unordered {\n        return Err(ContractError::OnlyUnorderedChannel {});\n    }\n    Ok(None)  // Accept channel\n}\n\n#[entry_point]\npub fn ibc_packet_receive(\n    deps: DepsMut,\n    _env: Env,\n    msg: IbcPacketReceiveMsg,\n) -> Result<IbcReceiveResponse, ContractError> {\n    let packet = msg.packet;\n    let data: PacketData = from_binary(&packet.data)?;\n    \n    // Process received data\n    let response = process_packet(deps, data)?;\n    \n    Ok(IbcReceiveResponse::new()\n        .add_attribute(\"action\", \"receive\")\n        .set_ack(to_binary(&Ack::Success)?))\n}\n\n#[entry_point]\npub fn ibc_packet_ack(\n    deps: DepsMut,\n    _env: Env,\n    msg: IbcPacketAckMsg,\n) -> Result<Response, ContractError> {\n    // Handle acknowledgement\n    let ack: Ack = from_binary(&msg.acknowledgement.data)?;\n    match ack {\n        Ack::Success => { /* Success handling */ }\n        Ack::Error(err) => { /* Rollback on error */ }\n    }\n    Ok(Response::new())\n}</code></pre>\n        ",
+    "tags": [
+      "cosmwasm",
+      "ibc",
+      "difficulty-advanced"
+    ],
+    "order": 52
+  },
+  {
+    "title": "How do you test CosmWasm contracts?",
+    "answer": "\n            <p>CosmWasm provides <strong>cw-multi-test</strong> for integration testing.</p>\n            <pre><code class=\"language-rust\">#[cfg(test)]\nmod tests {\n    use cosmwasm_std::testing::{mock_dependencies, mock_env, mock_info};\n    use cosmwasm_std::{coins, from_binary};\n    use cw_multi_test::{App, ContractWrapper, Executor};\n\n    // Unit test with mocks\n    #[test]\n    fn proper_initialization() {\n        let mut deps = mock_dependencies();\n        let msg = InstantiateMsg { count: 17 };\n        let info = mock_info(\"creator\", &coins(1000, \"earth\"));\n        \n        let res = instantiate(deps.as_mut(), mock_env(), info, msg).unwrap();\n        assert_eq!(0, res.messages.len());\n        \n        // Query state\n        let res = query(deps.as_ref(), mock_env(), QueryMsg::GetCount {}).unwrap();\n        let value: CountResponse = from_binary(&res).unwrap();\n        assert_eq!(17, value.count);\n    }\n\n    // Integration test with multi-test\n    #[test]\n    fn multi_contract_interaction() {\n        let mut app = App::default();\n        \n        // Upload contracts\n        let counter_code = ContractWrapper::new(execute, instantiate, query);\n        let counter_id = app.store_code(Box::new(counter_code));\n        \n        // Instantiate\n        let counter_addr = app\n            .instantiate_contract(\n                counter_id,\n                Addr::unchecked(\"owner\"),\n                &InstantiateMsg { count: 0 },\n                &[],\n                \"Counter\",\n                None,\n            )\n            .unwrap();\n        \n        // Execute\n        app.execute_contract(\n            Addr::unchecked(\"anyone\"),\n            counter_addr.clone(),\n            &ExecuteMsg::Increment {},\n            &[],\n        ).unwrap();\n        \n        // Query\n        let resp: CountResponse = app\n            .wrap()\n            .query_wasm_smart(counter_addr, &QueryMsg::GetCount {})\n            .unwrap();\n        assert_eq!(resp.count, 1);\n    }\n}</code></pre>\n        ",
+    "tags": [
+      "cosmwasm",
+      "testing",
+      "difficulty-intermediate"
+    ],
+    "order": 53
+  },
+  {
+    "title": "What are admin and migration patterns in CosmWasm?",
+    "answer": "\n            <p>CosmWasm contracts can have an <strong>admin</strong> for upgrades and a <strong>migrate</strong> entry point.</p>\n            <pre><code class=\"language-rust\">// Set admin during instantiation\nwasmd tx wasm instantiate $CODE_ID '{}' --admin $ADMIN_ADDR\n\n// Migration entry point\n#[entry_point]\npub fn migrate(deps: DepsMut, _env: Env, msg: MigrateMsg) -> Result<Response, ContractError> {\n    // Check contract version\n    let version: ContractVersion = get_contract_version(deps.storage)?;\n    if version.contract != CONTRACT_NAME {\n        return Err(ContractError::CannotMigrate {\n            previous_contract: version.contract,\n        });\n    }\n    \n    // Version check\n    let old_version: Version = version.version.parse()?;\n    let new_version: Version = CONTRACT_VERSION.parse()?;\n    \n    if old_version >= new_version {\n        return Err(ContractError::CannotMigrate {\n            previous_contract: version.version,\n        });\n    }\n    \n    // Perform migration\n    migrate_state_v1_to_v2(deps.storage)?;\n    \n    // Update version\n    set_contract_version(deps.storage, CONTRACT_NAME, CONTRACT_VERSION)?;\n    \n    Ok(Response::new()\n        .add_attribute(\"action\", \"migrate\")\n        .add_attribute(\"from_version\", version.version)\n        .add_attribute(\"to_version\", CONTRACT_VERSION))\n}\n\n// State migration helper\nfn migrate_state_v1_to_v2(storage: &mut dyn Storage) -> StdResult<()> {\n    #[cw_serde]\n    struct OldState { value: u32 }\n    \n    let old_state: OldState = Item::new(\"state\").load(storage)?;\n    \n    let new_state = State { \n        value: old_state.value,\n        new_field: Default::default(),\n    };\n    \n    STATE.save(storage, &new_state)\n}</code></pre>\n            <strong>Migrate command:</strong>\n            <pre><code class=\"language-bash\">wasmd tx wasm migrate $CONTRACT $NEW_CODE_ID '{\"new_param\": \"value\"}'</code></pre>\n        ",
+    "tags": [
+      "cosmwasm",
+      "upgrades",
+      "difficulty-advanced"
+    ],
+    "order": 54
+  }
+]
