@@ -70,17 +70,62 @@ web3question/
 
 ## 🚀 Getting Started
 
-1. Clone the repository
-2. Open `index.html` in a browser (or use a local server)
-3. Start learning!
+
+## 🏃‍♂️ How to Run
+
+### 1. Clone the repository
 
 ```bash
-# Using Python's built-in server
-python -m http.server 8000
+git clone https://github.com/bhupenderkumar/web3questions.git
+cd web3questions
+```
 
-# Using Node.js http-server
+### 2. Run the Backend API
+
+You can run the backend (API + database) using Docker (recommended) or locally:
+
+#### Using Docker (Recommended)
+
+```bash
+# From the project root
+docker-compose up -d
+# API: http://localhost:3001
+# DB:  localhost:5433
+```
+
+#### Local Development
+
+1. Start Postgres:
+	```bash
+	docker-compose up -d postgres
+	```
+2. Setup backend:
+	```bash
+	cd backend
+	cp .env.example .env
+	npm install
+	npx prisma generate
+	npx prisma db push
+	npm run db:seed
+	npm run dev
+	```
+
+See backend/README.md for API endpoints and advanced usage.
+
+### 3. Run the Frontend
+
+You can open `index.html` directly in your browser, or use a local server for best results:
+
+```bash
+# Python (from project root)
+python -m http.server 8000
+# or Node.js
 npx http-server
 ```
+
+Then visit: http://localhost:8000
+
+---
 
 ## 💡 Key Features
 
