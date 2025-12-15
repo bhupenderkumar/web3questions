@@ -1,9 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
-const { PrismaClient } = require('@prisma/client');
-
-const prisma = new PrismaClient();
+const fs = require('fs');
+const path = require('path');
 const app = express();
 
 const PORT = process.env.PORT || 3001;
@@ -19,22 +18,31 @@ app.get('/api/health', (req, res) => {
 });
 
 // ============ Categories ============
-
-// Get all categories with question counts
+// Get all categories with question counts (from JSON files)
 app.get('/api/categories', async (req, res) => {
   try {
-    const categories = await prisma.category.findMany({
-      orderBy: { order: 'asc' },
-      include: {
-        _count: {
-          select: { questions: true }
-        }
+    const categoriesPath = path.join(__dirname, '../prisma/data/categories.json');
+    const categories = JSON.parse(fs.readFileSync(categoriesPath, 'utf-8'));
+    // For each category, count questions from the corresponding file
+    const counts = {};
+    for (const cat of categories) {
+      let file = null;
+      if (cat.name === 'basic') file = 'basic-questions.json';
+      else if (cat.name === 'intermediate') file = 'intermediate-questions.json';
+      else if (cat.name === 'advanced') file = 'advanced-questions.json';
+      else if (cat.name === 'projects') file = 'projects-questions.json';
+      else if (cat.name === 'rust') file = 'rust-questions.json';
+      if (file) {
+        const questionsPath = path.join(__dirname, `../prisma/data/${file}`);
+        const questions = JSON.parse(fs.readFileSync(questionsPath, 'utf-8'));
+        counts[cat.name] = questions.length;
+      } else {
+        counts[cat.name] = 0;
       }
-    });
-    
+    }
     res.json(categories.map(cat => ({
       ...cat,
-      questionCount: cat._count.questions
+      questionCount: counts[cat.name] || 0
     })));
   } catch (error) {
     console.error('Error fetching categories:', error);
@@ -43,37 +51,29 @@ app.get('/api/categories', async (req, res) => {
 });
 
 // ============ Questions ============
-
-// Get questions by category
+// Get questions by category (from JSON files)
 app.get('/api/questions/:category', async (req, res) => {
   try {
     const { category } = req.params;
-    const sessionId = req.headers['x-session-id'];
-
-    const questions = await prisma.question.findMany({
-      where: {
-        category: { name: category }
-      },
-      orderBy: { order: 'asc' },
-      include: {
-        tags: true,
-        bookmarks: sessionId ? {
-          where: { sessionId }
-        } : false,
-        completions: sessionId ? {
-          where: { sessionId }
-        } : false
-      }
-    });
-
-    res.json(questions.map(q => ({
-      id: q.id,
+    let file = null;
+    if (category === 'basic') file = 'basic-questions.json';
+    else if (category === 'intermediate') file = 'intermediate-questions.json';
+    else if (category === 'advanced') file = 'advanced-questions.json';
+    else if (category === 'projects') file = 'projects-questions.json';
+    else if (category === 'rust') file = 'rust-questions.json';
+    if (!file) return res.status(404).json({ error: 'Category not found' });
+    const questionsPath = path.join(__dirname, `../prisma/data/${file}`);
+    const questions = JSON.parse(fs.readFileSync(questionsPath, 'utf-8'));
+    // Add id field for frontend compatibility
+    res.json(questions.map((q, i) => ({
+      id: `${category}-${i}`,
       title: q.title,
       answer: q.answer,
       order: q.order,
-      tags: q.tags.map(t => t.name),
-      isBookmarked: q.bookmarks?.length > 0,
-      isCompleted: q.completions?.length > 0
+      tags: q.tags,
+      // No bookmarks/completions in file mode
+      isBookmarked: false,
+      isCompleted: false
     })));
   } catch (error) {
     console.error('Error fetching questions:', error);
