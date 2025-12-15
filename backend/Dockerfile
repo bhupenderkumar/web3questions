@@ -10,7 +10,7 @@ COPY . .
 
 RUN npx prisma generate
 
-RUN apk add --no-cache openssl1.1-compat
+RUN apk add --no-cache openssl=1.1.1n-r7
 
 EXPOSE 3001
 
