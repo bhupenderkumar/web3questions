@@ -1,0 +1,710 @@
+[
+  {
+    "title": "What are Optimistic Rollups and how do they work?",
+    "answer": "\n            <p><strong>Optimistic Rollups</strong> execute transactions off-chain and post data to L1, assuming transactions are valid unless challenged.</p>\n            <strong>How they work:</strong>\n            <pre><code>1. Users submit transactions to L2 sequencer\n2. Sequencer batches and executes transactions\n3. State root posted to L1 contract\n4. 7-day challenge period begins\n5. If no valid fraud proof → finalized\n6. If fraud proven → state reverted, prover rewarded</code></pre>\n            <strong>Fraud proof process:</strong>\n            <ol>\n                <li>Challenger identifies invalid state transition</li>\n                <li>Interactive dispute game begins</li>\n                <li>Binary search to find exact invalid step</li>\n                <li>L1 executes single step to verify</li>\n            </ol>\n            <strong>Examples:</strong> Arbitrum, Optimism, Base\n            <strong>Trade-offs:</strong>\n            <ul>\n                <li>+ EVM compatible</li>\n                <li>+ Lower fees than L1</li>\n                <li>- 7-day withdrawal delay</li>\n                <li>- Sequencer centralization risk</li>\n            </ul>\n        ",
+    "tags": [
+      "layer2",
+      "rollups",
+      "difficulty-advanced"
+    ],
+    "order": 0
+  },
+  {
+    "title": "What are ZK-Rollups and how do they work?",
+    "answer": "\n            <p><strong>ZK-Rollups</strong> use zero-knowledge proofs to cryptographically prove transaction validity without revealing details.</p>\n            <strong>How they work:</strong>\n            <pre><code>1. Transactions executed off-chain\n2. Prover generates validity proof (ZK-SNARK/STARK)\n3. Proof + state diff posted to L1\n4. L1 verifier contract validates proof\n5. If valid → state updated immediately\n6. No challenge period needed</code></pre>\n            <strong>Types of ZK proofs:</strong>\n            <table>\n                <tr><th>Type</th><th>Proof Size</th><th>Prover Time</th><th>Trusted Setup</th></tr>\n                <tr><td>SNARK</td><td>Small (~200B)</td><td>Slower</td><td>Required</td></tr>\n                <tr><td>STARK</td><td>Larger (~50KB)</td><td>Faster</td><td>Not required</td></tr>\n            </table>\n            <strong>Examples:</strong> zkSync Era, Starknet, Polygon zkEVM, Scroll\n            <strong>Trade-offs:</strong>\n            <ul>\n                <li>+ Instant finality</li>\n                <li>+ Highest security</li>\n                <li>- Proving is computationally expensive</li>\n                <li>- EVM compatibility challenges</li>\n            </ul>\n        ",
+    "tags": [
+      "layer2",
+      "rollups",
+      "zk",
+      "difficulty-advanced"
+    ],
+    "order": 1
+  },
+  {
+    "title": "What is the difference between Optimistic and ZK Rollups?",
+    "answer": "\n            <p>Both scale Ethereum but use different approaches to ensure validity.</p>\n            <table>\n                <tr><th>Aspect</th><th>Optimistic</th><th>ZK</th></tr>\n                <tr><td>Validity</td><td>Fraud proofs</td><td>Validity proofs</td></tr>\n                <tr><td>Finality</td><td>7 days</td><td>Minutes (after proof)</td></tr>\n                <tr><td>Withdrawals</td><td>7 day delay</td><td>Fast</td></tr>\n                <tr><td>EVM support</td><td>Full compatibility</td><td>Challenging (zkEVM)</td></tr>\n                <tr><td>Computation</td><td>Minimal off-chain</td><td>Heavy proving</td></tr>\n                <tr><td>Data on L1</td><td>Full tx data</td><td>State diffs only</td></tr>\n            </table>\n            <strong>When to use:</strong>\n            <ul>\n                <li><strong>Optimistic:</strong> General purpose, dApp deployment</li>\n                <li><strong>ZK:</strong> Payments, exchanges, privacy needs</li>\n            </ul>\n        ",
+    "tags": [
+      "layer2",
+      "rollups",
+      "difficulty-advanced"
+    ],
+    "order": 2
+  },
+  {
+    "title": "What is EIP-4844 (Proto-Danksharding)?",
+    "answer": "\n            <p><strong>EIP-4844</strong> introduces \"blob\" transactions to dramatically reduce L2 data posting costs.</p>\n            <strong>Key concepts:</strong>\n            <pre><code>// Blob-carrying transaction\n{\n    type: 0x03,\n    maxFeePerBlobGas: ...,\n    blobVersionedHashes: [...],\n    // Blobs attached separately, not in execution\n}\n\n// Blobs:\n// - 128 KB each\n// - Up to 6 per block (initially)\n// - Pruned after ~18 days\n// - Not accessible to EVM</code></pre>\n            <strong>Benefits for L2s:</strong>\n            <ul>\n                <li>10-100x cheaper data availability</li>\n                <li>Separate fee market from execution</li>\n                <li>Path to full Danksharding</li>\n            </ul>\n            <strong>Impact:</strong> L2 fees dropped significantly after Dencun upgrade\n        ",
+    "tags": [
+      "layer2",
+      "ethereum",
+      "scaling",
+      "difficulty-advanced"
+    ],
+    "order": 3
+  },
+  {
+    "title": "What is data availability and why does it matter?",
+    "answer": "\n            <p><strong>Data availability (DA)</strong> ensures transaction data is accessible to verify state transitions.</p>\n            <strong>Why it matters:</strong>\n            <ul>\n                <li>Without data, can't verify fraud proofs (Optimistic)</li>\n                <li>Can't reconstruct state if sequencer fails</li>\n                <li>Enables trustless withdrawals</li>\n            </ul>\n            <strong>DA solutions:</strong>\n            <table>\n                <tr><th>Solution</th><th>Cost</th><th>Security</th></tr>\n                <tr><td>Ethereum calldata</td><td>High</td><td>Highest</td></tr>\n                <tr><td>Ethereum blobs</td><td>Medium</td><td>High</td></tr>\n                <tr><td>Celestia</td><td>Low</td><td>Own security</td></tr>\n                <tr><td>EigenDA</td><td>Low</td><td>Ethereum restaking</td></tr>\n                <tr><td>DAC (Data Availability Committee)</td><td>Lowest</td><td>Trust assumptions</td></tr>\n            </table>\n            <strong>Trade-off:</strong> Cheaper DA = weaker security guarantees\n        ",
+    "tags": [
+      "layer2",
+      "scaling",
+      "difficulty-advanced"
+    ],
+    "order": 4
+  },
+  {
+    "title": "What is a sequencer and what are its risks?",
+    "answer": "\n            <p>A <strong>sequencer</strong> orders and batches transactions on L2 before posting to L1.</p>\n            <strong>Sequencer responsibilities:</strong>\n            <ul>\n                <li>Receive user transactions</li>\n                <li>Order transactions (can extract MEV)</li>\n                <li>Execute and batch transactions</li>\n                <li>Post batches to L1</li>\n            </ul>\n            <strong>Centralization risks:</strong>\n            <ul>\n                <li><strong>Censorship:</strong> Can refuse to include transactions</li>\n                <li><strong>Liveness:</strong> Single point of failure</li>\n                <li><strong>MEV extraction:</strong> Can front-run users</li>\n            </ul>\n            <strong>Mitigations:</strong>\n            <ul>\n                <li><strong>Forced inclusion:</strong> Submit tx directly to L1</li>\n                <li><strong>Decentralized sequencers:</strong> In development</li>\n                <li><strong>Shared sequencing:</strong> Espresso, Astria</li>\n                <li><strong>Based rollups:</strong> L1 validators as sequencers</li>\n            </ul>\n        ",
+    "tags": [
+      "layer2",
+      "rollups",
+      "difficulty-advanced"
+    ],
+    "order": 5
+  },
+  {
+    "title": "What are Validiums and Volitions?",
+    "answer": "\n            <p><strong>Validiums</strong> and <strong>Volitions</strong> are scaling solutions with different data availability trade-offs.</p>\n            <strong>Validium:</strong>\n            <ul>\n                <li>Validity proofs (like ZK rollup)</li>\n                <li>Data stored off-chain (DAC)</li>\n                <li>Much cheaper than rollups</li>\n                <li>Weaker security guarantees</li>\n            </ul>\n            <strong>Volition:</strong>\n            <ul>\n                <li>Hybrid: user chooses per-transaction</li>\n                <li>Option for on-chain (rollup mode)</li>\n                <li>Option for off-chain (validium mode)</li>\n                <li>Flexibility vs cost trade-off</li>\n            </ul>\n            <pre><code>// User choice per transaction:\nRollup mode: Higher cost, full security\nValidium mode: Lower cost, DA trust assumptions\n\n// StarkEx, zkSync support this model</code></pre>\n        ",
+    "tags": [
+      "layer2",
+      "scaling",
+      "difficulty-advanced"
+    ],
+    "order": 6
+  },
+  {
+    "title": "What is account abstraction (ERC-4337)?",
+    "answer": "\n            <p><strong>Account abstraction</strong> makes smart contracts first-class accounts, enabling advanced wallet features.</p>\n            <strong>ERC-4337 architecture:</strong>\n            <pre><code>UserOperation (not transaction) {\n    sender: smart wallet address,\n    nonce: ...,\n    callData: what to execute,\n    callGasLimit: ...,\n    verificationGasLimit: ...,\n    preVerificationGas: ...,\n    maxFeePerGas: ...,\n    maxPriorityFeePerGas: ...,\n    paymasterAndData: optional sponsor,\n    signature: ...\n}\n\nFlow:\nUser → Bundler → EntryPoint Contract → Wallet Contract</code></pre>\n            <strong>Features enabled:</strong>\n            <ul>\n                <li>Gasless transactions (paymasters)</li>\n                <li>Social recovery</li>\n                <li>Multi-sig built-in</li>\n                <li>Session keys</li>\n                <li>Batch transactions</li>\n                <li>Any signature scheme</li>\n            </ul>\n        ",
+    "tags": [
+      "layer2",
+      "wallets",
+      "difficulty-advanced"
+    ],
+    "order": 7
+  },
+  {
+    "title": "How do state channels work?",
+    "answer": "\n            <p><strong>State channels</strong> allow parties to transact off-chain with on-chain settlement only for disputes.</p>\n            <strong>How they work:</strong>\n            <pre><code>1. Open channel: Lock funds in multisig contract\n2. Off-chain: Exchange signed state updates\n3. Each update has incrementing nonce\n4. Either party can submit latest state to chain\n5. Challenge period for disputes\n6. Close: Funds distributed per final state</code></pre>\n            <strong>Lightning Network (Bitcoin):</strong>\n            <ul>\n                <li>Payment channels network</li>\n                <li>HTLCs for multi-hop payments</li>\n                <li>Instant, near-zero fees</li>\n            </ul>\n            <strong>Limitations:</strong>\n            <ul>\n                <li>Need to lock capital</li>\n                <li>Both parties must be online (or watchtowers)</li>\n                <li>Not suitable for general computation</li>\n            </ul>\n        ",
+    "tags": [
+      "layer2",
+      "scaling",
+      "difficulty-advanced"
+    ],
+    "order": 8
+  },
+  {
+    "title": "What is cross-L2 communication?",
+    "answer": "\n            <p><strong>Cross-L2 communication</strong> enables transactions between different Layer 2 networks.</p>\n            <strong>Approaches:</strong>\n            <ul>\n                <li><strong>Via L1:</strong> L2A → L1 → L2B (slow, secure)</li>\n                <li><strong>Liquidity networks:</strong> Atomic swaps with LPs</li>\n                <li><strong>Shared sequencing:</strong> Atomic cross-L2 bundles</li>\n                <li><strong>Superchain:</strong> Native interop (Optimism vision)</li>\n            </ul>\n            <strong>Fast bridges:</strong>\n            <pre><code>// Liquidity provider model\n1. User wants to go L2A → L2B\n2. LP has funds on both L2s\n3. User sends to LP on L2A\n4. LP sends to user on L2B\n5. LP rebalances later via slow bridge</code></pre>\n            <strong>Examples:</strong> Across, Hop, Stargate, Connext\n        ",
+    "tags": [
+      "layer2",
+      "bridges",
+      "difficulty-advanced"
+    ],
+    "order": 9
+  },
+  {
+    "title": "What is a Based Rollup?",
+    "answer": "\n            <p>A <strong>Based Rollup</strong> uses Ethereum L1 validators as the sequencer instead of a centralized sequencer.</p>\n            <strong>How it works:</strong>\n            <pre><code>Traditional Rollup:\nUser → Centralized Sequencer → L1\n\nBased Rollup:\nUser → L1 Block Proposer → L1\n\nL1 proposers include L2 transactions directly\nNo separate sequencer needed</code></pre>\n            <strong>Benefits:</strong>\n            <ul>\n                <li>Inherits L1 liveness and censorship resistance</li>\n                <li>No sequencer centralization</li>\n                <li>L1 economic security from day 1</li>\n                <li>Simpler architecture</li>\n            </ul>\n            <strong>Trade-offs:</strong>\n            <ul>\n                <li>Slower block times (L1 speed)</li>\n                <li>Higher latency for users</li>\n                <li>MEV flows to L1</li>\n            </ul>\n            <strong>Example:</strong> Taiko\n        ",
+    "tags": [
+      "layer2",
+      "rollups",
+      "difficulty-advanced"
+    ],
+    "order": 10
+  },
+  {
+    "title": "What are Plasma chains?",
+    "answer": "\n            <p><strong>Plasma</strong> is a scaling framework where child chains periodically commit to the main chain.</p>\n            <strong>How it works:</strong>\n            <pre><code>1. Child chain processes transactions\n2. Merkle root of state committed to L1 periodically\n3. Users can exit with Merkle proof\n4. Challenge period for fraud\n5. Mass exit problem if operator misbehaves</code></pre>\n            <strong>Plasma types:</strong>\n            <ul>\n                <li><strong>Plasma MVP:</strong> Simple UTXO model</li>\n                <li><strong>Plasma Cash:</strong> NFT-like unique tokens</li>\n                <li><strong>Plasma Debit:</strong> Account-based</li>\n            </ul>\n            <strong>Why Plasma lost to Rollups:</strong>\n            <ul>\n                <li>Data availability issues</li>\n                <li>Mass exit problem</li>\n                <li>Complex exit games</li>\n                <li>Doesn't support general smart contracts well</li>\n            </ul>\n        ",
+    "tags": [
+      "layer2",
+      "scaling",
+      "difficulty-advanced"
+    ],
+    "order": 11
+  },
+  {
+    "title": "How do Automated Market Makers (AMMs) work mathematically?",
+    "answer": "\n            <p>AMMs use mathematical formulas to determine token prices and enable permissionless trading.</p>\n            <strong>Constant Product (Uniswap V2):</strong>\n            <pre><code>x * y = k\n// x = reserve of token A\n// y = reserve of token B  \n// k = constant (invariant)\n\n// Price of A in terms of B\nPrice = y / x\n\n// For a swap of Δx tokens A:\nΔy = y - (k / (x + Δx))</code></pre>\n            <strong>Constant Sum:</strong>\n            <pre><code>x + y = k\n// Fixed price, limited use (runs out of tokens)</code></pre>\n            <strong>StableSwap (Curve):</strong>\n            <pre><code>// Combines constant product and constant sum\n// Optimized for assets that should be equal value\nAn^n * sum(xi) + D = ADn^n + D^(n+1) / (n^n * prod(xi))</code></pre>\n            <strong>Concentrated Liquidity (Uniswap V3):</strong>\n            <ul>\n                <li>LPs provide liquidity in price ranges</li>\n                <li>Virtual reserves within each range</li>\n                <li>Tick-based price system</li>\n            </ul>\n        ",
+    "tags": [
+      "defi",
+      "amm",
+      "difficulty-advanced"
+    ],
+    "order": 12
+  },
+  {
+    "title": "What is impermanent loss and how is it calculated?",
+    "answer": "\n            <p><strong>Impermanent loss (IL)</strong> is the difference between holding tokens in an AMM vs simply holding them.</p>\n            <strong>Formula:</strong>\n            <pre><code>IL = 2 * sqrt(price_ratio) / (1 + price_ratio) - 1\n\n// Where price_ratio = new_price / old_price\n\n// Examples:\n1.25x price change → 0.6% IL\n1.50x price change → 2.0% IL\n2x price change → 5.7% IL  \n3x price change → 13.4% IL\n5x price change → 25.5% IL</code></pre>\n            <strong>Why it happens:</strong>\n            <ul>\n                <li>Arbitrageurs rebalance pool as prices change</li>\n                <li>You end up with more of the depreciated asset</li>\n                <li>Less of the appreciated asset</li>\n            </ul>\n            <strong>Mitigation:</strong>\n            <ul>\n                <li>Provide to correlated pairs</li>\n                <li>Earn enough fees to offset IL</li>\n                <li>Use concentrated liquidity carefully</li>\n            </ul>\n        ",
+    "tags": [
+      "defi",
+      "amm",
+      "difficulty-advanced"
+    ],
+    "order": 13
+  },
+  {
+    "title": "How do liquidations work in lending protocols?",
+    "answer": "\n            <p><strong>Liquidation</strong> occurs when a borrower's collateral value falls below the required threshold.</p>\n            <strong>Key metrics:</strong>\n            <pre><code>Health Factor = (Collateral Value * Liquidation Threshold) / Debt\n\n// If Health Factor < 1 → Liquidatable\n\nLTV (Loan-to-Value) = Debt / Collateral\nLiquidation Threshold = Max LTV before liquidation\n\n// Example (Aave):\n// ETH: 80% LTV, 82.5% Liquidation Threshold\n// Deposit $10,000 ETH\n// Max borrow: $8,000\n// Liquidation when debt > $8,250 value of collateral</code></pre>\n            <strong>Liquidation process:</strong>\n            <ol>\n                <li>Liquidator repays portion of debt</li>\n                <li>Receives collateral at discount (liquidation bonus)</li>\n                <li>Protocol takes small fee</li>\n                <li>Borrower's position is partially closed</li>\n            </ol>\n            <strong>Liquidation bonus:</strong> Typically 5-15% incentive for liquidators\n        ",
+    "tags": [
+      "defi",
+      "lending",
+      "difficulty-advanced"
+    ],
+    "order": 14
+  },
+  {
+    "title": "What are flash loans and how do they work technically?",
+    "answer": "\n            <p><strong>Flash loans</strong> are uncollateralized loans that must be borrowed and repaid within a single transaction.</p>\n            <strong>Technical implementation:</strong>\n            <pre><code class=\"language-solidity\">// Aave Flash Loan\ncontract FlashLoanReceiver is IFlashLoanReceiver {\n    function executeOperation(\n        address[] calldata assets,\n        uint256[] calldata amounts,\n        uint256[] calldata premiums,\n        address initiator,\n        bytes calldata params\n    ) external override returns (bool) {\n        // 1. You have the borrowed funds here\n        uint256 borrowed = amounts[0];\n        \n        // 2. Do something profitable\n        // - Arbitrage\n        // - Collateral swap\n        // - Self-liquidation\n        \n        // 3. Approve repayment\n        uint256 amountOwed = amounts[0] + premiums[0];\n        IERC20(assets[0]).approve(address(POOL), amountOwed);\n        \n        return true;\n    }\n    \n    function requestFlashLoan(address asset, uint256 amount) external {\n        address[] memory assets = new address[](1);\n        assets[0] = asset;\n        // ... initiate flash loan\n    }\n}</code></pre>\n            <strong>Fees:</strong> Typically 0.05-0.3% of borrowed amount\n        ",
+    "tags": [
+      "defi",
+      "flash-loans",
+      "difficulty-advanced"
+    ],
+    "order": 15
+  },
+  {
+    "title": "What is MEV (Maximal Extractable Value)?",
+    "answer": "\n            <p><strong>MEV</strong> is the maximum value that can be extracted from block production beyond standard rewards.</p>\n            <strong>Types of MEV:</strong>\n            <ul>\n                <li><strong>Arbitrage:</strong> Price differences between DEXs</li>\n                <li><strong>Liquidations:</strong> Claiming liquidation bonuses</li>\n                <li><strong>Sandwich attacks:</strong> Front and back-running trades</li>\n                <li><strong>JIT liquidity:</strong> Providing liquidity just for one trade</li>\n            </ul>\n            <strong>MEV supply chain:</strong>\n            <pre><code>Searchers → Builders → Validators\n    ↓           ↓           ↓\nFind MEV    Bundle txs    Include blocks</code></pre>\n            <strong>MEV Protection:</strong>\n            <ul>\n                <li><strong>Flashbots Protect:</strong> Private transaction submission</li>\n                <li><strong>MEV Blocker:</strong> Rebates from backrunning</li>\n                <li><strong>CoW Protocol:</strong> Batch auctions</li>\n            </ul>\n            <strong>Stats:</strong> MEV extraction has exceeded $600M+ on Ethereum\n        ",
+    "tags": [
+      "mev",
+      "defi",
+      "difficulty-advanced"
+    ],
+    "order": 16
+  },
+  {
+    "title": "How do bridges work technically?",
+    "answer": "\n            <p><strong>Bridges</strong> transfer assets between blockchains using various trust models.</p>\n            <strong>Lock and Mint Pattern:</strong>\n            <pre><code class=\"language-solidity\">// Source Chain (Lock)\ncontract SourceBridge {\n    function lock(address token, uint256 amount, uint256 destChainId) external {\n        IERC20(token).transferFrom(msg.sender, address(this), amount);\n        emit Locked(msg.sender, token, amount, destChainId);\n    }\n}\n\n// Destination Chain (Mint)\ncontract DestBridge {\n    function mint(\n        address user, address token, uint256 amount, \n        bytes memory proof\n    ) external {\n        require(verifyProof(proof), \"Invalid proof\");\n        wrappedToken.mint(user, amount);\n    }\n}</code></pre>\n            <strong>Bridge types:</strong>\n            <ul>\n                <li><strong>Trusted:</strong> Multisig validators (fast, centralized)</li>\n                <li><strong>Light client:</strong> Verify proofs on-chain (trustless, expensive)</li>\n                <li><strong>Optimistic:</strong> Fraud proofs with challenge period</li>\n                <li><strong>ZK:</strong> Validity proofs (trustless, complex)</li>\n            </ul>\n            <strong>Risks:</strong> Bridge hacks account for $2B+ in losses\n        ",
+    "tags": [
+      "bridges",
+      "crosschain",
+      "difficulty-advanced"
+    ],
+    "order": 17
+  },
+  {
+    "title": "What are ERC-4626 tokenized vaults?",
+    "answer": "\n            <p><strong>ERC-4626</strong> is a standard for tokenized vaults, providing a consistent interface for yield-bearing tokens.</p>\n            <strong>Core functions:</strong>\n            <pre><code class=\"language-solidity\">interface IERC4626 is IERC20 {\n    // Asset info\n    function asset() external view returns (address);\n    function totalAssets() external view returns (uint256);\n    \n    // Deposit/Withdraw\n    function deposit(uint256 assets, address receiver) \n        external returns (uint256 shares);\n    function withdraw(uint256 assets, address receiver, address owner) \n        external returns (uint256 shares);\n    function redeem(uint256 shares, address receiver, address owner) \n        external returns (uint256 assets);\n    \n    // Conversion\n    function convertToShares(uint256 assets) external view returns (uint256);\n    function convertToAssets(uint256 shares) external view returns (uint256);\n    \n    // Preview\n    function previewDeposit(uint256 assets) external view returns (uint256);\n    function previewMint(uint256 shares) external view returns (uint256);\n    function previewWithdraw(uint256 assets) external view returns (uint256);\n    function previewRedeem(uint256 shares) external view returns (uint256);\n}</code></pre>\n            <strong>Benefits:</strong>\n            <ul>\n                <li>Composability across DeFi</li>\n                <li>Standardized yield calculation</li>\n                <li>Easier integrations</li>\n            </ul>\n        ",
+    "tags": [
+      "tokens",
+      "defi",
+      "difficulty-advanced"
+    ],
+    "order": 18
+  },
+  {
+    "title": "How do perpetual futures work on-chain?",
+    "answer": "\n            <p><strong>Perpetual futures</strong> are derivatives with no expiry that track underlying asset prices via funding rates.</p>\n            <strong>Funding rate mechanism:</strong>\n            <pre><code>// If perp price > spot price:\n// Longs pay shorts → incentivizes shorting → price decreases\n\n// If perp price < spot price:\n// Shorts pay longs → incentivizes longing → price increases\n\nFunding Rate = (Perp Price - Spot Price) / Spot Price * Factor\n// Paid every 8 hours typically</code></pre>\n            <strong>Key components:</strong>\n            <ul>\n                <li><strong>Margin:</strong> Collateral deposited</li>\n                <li><strong>Leverage:</strong> Position size / margin (1x-100x)</li>\n                <li><strong>Liquidation price:</strong> When losses exceed margin</li>\n                <li><strong>Mark price:</strong> Fair price for liquidations</li>\n            </ul>\n            <strong>Protocols:</strong> dYdX, GMX, Perpetual Protocol, Gains Network\n        ",
+    "tags": [
+      "defi",
+      "derivatives",
+      "difficulty-advanced"
+    ],
+    "order": 19
+  },
+  {
+    "title": "What is veTokenomics?",
+    "answer": "\n            <p><strong>veTokenomics</strong> (vote-escrowed tokenomics) locks tokens for governance power and rewards.</p>\n            <strong>How it works:</strong>\n            <pre><code>// Lock TOKEN for 1-4 years\n// Receive veTOKEN based on lock duration\n\nveTOKEN = TOKEN * (lock_duration / max_duration)\n\n// 100 TOKEN locked for 4 years = 100 veTOKEN\n// 100 TOKEN locked for 1 year = 25 veTOKEN\n\n// veTOKEN decreases linearly as lock expires</code></pre>\n            <strong>Benefits of veTOKEN:</strong>\n            <ul>\n                <li>Governance voting power</li>\n                <li>Boosted rewards</li>\n                <li>Protocol revenue share</li>\n                <li>Gauge weight voting (direct emissions)</li>\n            </ul>\n            <strong>Examples:</strong>\n            <ul>\n                <li><strong>veCRV:</strong> Curve Finance</li>\n                <li><strong>veBAL:</strong> Balancer</li>\n                <li><strong>veFXS:</strong> Frax</li>\n            </ul>\n        ",
+    "tags": [
+      "defi",
+      "governance",
+      "tokenomics",
+      "difficulty-advanced"
+    ],
+    "order": 20
+  },
+  {
+    "title": "How do liquidity gauges and bribes work?",
+    "answer": "\n            <p><strong>Liquidity gauges</strong> direct token emissions to pools based on governance votes. <strong>Bribes</strong> are incentives to vote for specific pools.</p>\n            <strong>Gauge voting system:</strong>\n            <pre><code>// Each epoch (week), veTOKEN holders vote\n// Votes determine emission distribution\n\nPool A gets 30% of votes → 30% of emissions\nPool B gets 50% of votes → 50% of emissions\nPool C gets 20% of votes → 20% of emissions</code></pre>\n            <strong>Bribe markets:</strong>\n            <ol>\n                <li>Protocols want emissions for their pools</li>\n                <li>They bribe veTOKEN holders to vote for their gauge</li>\n                <li>Voters receive bribes + their regular rewards</li>\n            </ol>\n            <strong>Economics:</strong>\n            <pre><code>// If $1 of bribe directs $2 of emissions\n// ROI for briber: 100%\n// Voter earns bribe + regular APR</code></pre>\n            <strong>Bribe platforms:</strong> Votium, Warden, Hidden Hand\n        ",
+    "tags": [
+      "defi",
+      "governance",
+      "difficulty-advanced"
+    ],
+    "order": 21
+  },
+  {
+    "title": "What are Merkle trees and how are they used in DeFi?",
+    "answer": "\n            <p><strong>Merkle trees</strong> are data structures that enable efficient and secure verification of large datasets.</p>\n            <strong>Structure:</strong>\n            <pre><code>        [Root Hash]\n           /    \\\n      [AB]        [CD]\n      /  \\        /  \\\n    [A]  [B]    [C]  [D]\n     ↓    ↓      ↓    ↓\n   Leaf  Leaf  Leaf  Leaf</code></pre>\n            <strong>DeFi applications:</strong>\n            <ul>\n                <li><strong>Airdrops:</strong> Merkle proofs for claiming</li>\n                <li><strong>Rollups:</strong> State roots for verification</li>\n                <li><strong>Whitelist mints:</strong> Prove address is included</li>\n            </ul>\n            <pre><code class=\"language-solidity\">function claim(\n    uint256 index,\n    address account,\n    uint256 amount,\n    bytes32[] calldata merkleProof\n) external {\n    bytes32 node = keccak256(abi.encodePacked(index, account, amount));\n    require(MerkleProof.verify(merkleProof, merkleRoot, node), \"Invalid proof\");\n    // Process claim...\n}</code></pre>\n            <strong>Benefits:</strong> O(log n) proof size, O(log n) verification\n        ",
+    "tags": [
+      "cryptography",
+      "defi",
+      "difficulty-advanced"
+    ],
+    "order": 22
+  },
+  {
+    "title": "How does Uniswap V3 concentrated liquidity work?",
+    "answer": "\n            <p><strong>Concentrated liquidity</strong> allows LPs to provide liquidity within custom price ranges.</p>\n            <strong>Tick system:</strong>\n            <pre><code>// Price at tick i:\nprice(i) = 1.0001^i\n\n// Tick spacing depends on fee tier:\n// 0.05% fee → 10 tick spacing\n// 0.30% fee → 60 tick spacing\n// 1.00% fee → 200 tick spacing\n\n// Position defined by:\n// - Lower tick\n// - Upper tick  \n// - Liquidity amount</code></pre>\n            <strong>Virtual liquidity:</strong>\n            <ul>\n                <li>Within range: position acts like infinite liquidity</li>\n                <li>Outside range: position is all one token, earns nothing</li>\n                <li>Capital efficiency: up to 4000x vs V2</li>\n            </ul>\n            <strong>LP NFTs:</strong> Each position is a unique NFT with:\n            <ul>\n                <li>Pool address</li>\n                <li>Tick range</li>\n                <li>Liquidity amount</li>\n                <li>Fees earned</li>\n            </ul>\n        ",
+    "tags": [
+      "defi",
+      "amm",
+      "difficulty-advanced"
+    ],
+    "order": 23
+  },
+  {
+    "title": "What is an intent-based trading system?",
+    "answer": "\n            <p><strong>Intent-based trading</strong> separates what users want (intent) from how it's executed.</p>\n            <strong>How it works:</strong>\n            <pre><code>// User signs intent (not transaction):\nIntent {\n    sellToken: USDC,\n    buyToken: ETH,\n    sellAmount: 1000,\n    minBuyAmount: 0.5,  // Slippage protection\n    deadline: timestamp,\n    signature: ...\n}\n\n// Solvers compete to fill:\n// - Find best execution path\n// - May use multiple DEXs\n// - Can batch with other intents</code></pre>\n            <strong>Benefits:</strong>\n            <ul>\n                <li>MEV protection (private submission)</li>\n                <li>Better prices (solver competition)</li>\n                <li>Gasless for users (solver pays)</li>\n                <li>Cross-chain capable</li>\n            </ul>\n            <strong>Protocols:</strong> CoW Protocol, UniswapX, 1inch Fusion\n        ",
+    "tags": [
+      "defi",
+      "trading",
+      "difficulty-advanced"
+    ],
+    "order": 24
+  },
+  {
+    "title": "How do options protocols work on-chain?",
+    "answer": "\n            <p><strong>On-chain options</strong> provide the right (not obligation) to buy/sell at a strike price.</p>\n            <strong>Option types:</strong>\n            <ul>\n                <li><strong>Call:</strong> Right to buy at strike price</li>\n                <li><strong>Put:</strong> Right to sell at strike price</li>\n                <li><strong>European:</strong> Exercise only at expiry</li>\n                <li><strong>American:</strong> Exercise anytime before expiry</li>\n            </ul>\n            <strong>Pricing (Black-Scholes on-chain is complex):</strong>\n            <pre><code>// Simplified factors:\nOption Price = Intrinsic Value + Time Value\n\nIntrinsic (Call) = max(0, Spot - Strike)\nIntrinsic (Put) = max(0, Strike - Spot)\n\nTime Value depends on:\n- Time to expiry\n- Volatility\n- Interest rates</code></pre>\n            <strong>Collateralization:</strong>\n            <ul>\n                <li>Covered calls: Lock underlying asset</li>\n                <li>Cash-secured puts: Lock strike amount</li>\n                <li>Spreads: Partially collateralized</li>\n            </ul>\n            <strong>Protocols:</strong> Opyn, Dopex, Lyra, Hegic\n        ",
+    "tags": [
+      "defi",
+      "derivatives",
+      "difficulty-advanced"
+    ],
+    "order": 25
+  },
+  {
+    "title": "What are zero-knowledge proofs and how do they work?",
+    "answer": "\n            <p><strong>Zero-knowledge proofs (ZKPs)</strong> allow proving a statement is true without revealing any information beyond the statement's validity.</p>\n            <strong>Properties:</strong>\n            <ul>\n                <li><strong>Completeness:</strong> If statement is true, honest verifier will be convinced</li>\n                <li><strong>Soundness:</strong> If statement is false, no cheating prover can convince verifier</li>\n                <li><strong>Zero-knowledge:</strong> Verifier learns nothing except that statement is true</li>\n            </ul>\n            <strong>Classic example (Ali Baba's cave):</strong>\n            <pre><code>// Peggy wants to prove she knows secret password\n// Without revealing the password\n\n1. Victor waits outside, Peggy enters cave\n2. Cave has two paths meeting at locked door\n3. Victor shouts which path to return from\n4. If Peggy knows password, she can always comply\n5. Repeat many times → convinces Victor</code></pre>\n            <strong>Applications:</strong> Private transactions, identity verification, rollups\n        ",
+    "tags": [
+      "cryptography",
+      "zk",
+      "difficulty-advanced"
+    ],
+    "order": 26
+  },
+  {
+    "title": "What is the difference between SNARKs and STARKs?",
+    "answer": "\n            <p><strong>SNARKs</strong> and <strong>STARKs</strong> are two types of zero-knowledge proof systems.</p>\n            <table>\n                <tr><th>Aspect</th><th>SNARK</th><th>STARK</th></tr>\n                <tr><td>Full name</td><td>Succinct Non-interactive ARgument of Knowledge</td><td>Scalable Transparent ARgument of Knowledge</td></tr>\n                <tr><td>Trusted setup</td><td>Required</td><td>Not required</td></tr>\n                <tr><td>Proof size</td><td>~200 bytes</td><td>~50 KB</td></tr>\n                <tr><td>Verification time</td><td>Fast</td><td>Slightly slower</td></tr>\n                <tr><td>Prover time</td><td>Slower</td><td>Faster (scalable)</td></tr>\n                <tr><td>Quantum resistance</td><td>No</td><td>Yes</td></tr>\n                <tr><td>Cryptographic basis</td><td>Elliptic curves</td><td>Hash functions</td></tr>\n            </table>\n            <strong>Use cases:</strong>\n            <ul>\n                <li><strong>SNARKs:</strong> Zcash, zkSync, Polygon zkEVM</li>\n                <li><strong>STARKs:</strong> StarkNet, StarkEx</li>\n            </ul>\n        ",
+    "tags": [
+      "cryptography",
+      "zk",
+      "difficulty-advanced"
+    ],
+    "order": 27
+  },
+  {
+    "title": "What is a trusted setup and why is it needed?",
+    "answer": "\n            <p>A <strong>trusted setup</strong> is a ceremony that generates public parameters for SNARK systems.</p>\n            <strong>The problem:</strong>\n            <pre><code>// During setup, \"toxic waste\" is generated\n// If anyone keeps this data, they can:\n// - Create fake proofs\n// - Break the entire system\n\n// Solution: Multi-party computation (MPC)\n1. Many participants contribute randomness\n2. Each destroys their secret\n3. System is secure if ANY ONE participant is honest</code></pre>\n            <strong>Types of setups:</strong>\n            <ul>\n                <li><strong>Per-circuit:</strong> New setup for each program (Groth16)</li>\n                <li><strong>Universal:</strong> One setup for any program (PLONK, Marlin)</li>\n                <li><strong>Transparent:</strong> No trusted setup needed (STARKs)</li>\n            </ul>\n            <strong>Famous ceremonies:</strong>\n            <ul>\n                <li>Zcash Powers of Tau (87 participants)</li>\n                <li>Hermez ceremony (over 100 participants)</li>\n            </ul>\n        ",
+    "tags": [
+      "cryptography",
+      "zk",
+      "difficulty-advanced"
+    ],
+    "order": 28
+  },
+  {
+    "title": "How do zk-SNARKs work at a high level?",
+    "answer": "\n            <p><strong>zk-SNARKs</strong> convert computational problems into polynomial equations that can be verified efficiently.</p>\n            <strong>Pipeline:</strong>\n            <pre><code>1. COMPUTATION → Write program logic\n   ↓\n2. ARITHMETIC CIRCUIT → Gates and wires\n   ↓\n3. R1CS → Rank-1 Constraint System (equations)\n   ↓\n4. QAP → Quadratic Arithmetic Program (polynomials)\n   ↓\n5. PROOF → Elliptic curve cryptography\n   ↓\n6. VERIFY → Check polynomial relationships</code></pre>\n            <strong>Key insight:</strong>\n            <ul>\n                <li>Polynomials are used because they have useful properties</li>\n                <li>Two different polynomials rarely intersect</li>\n                <li>Checking at random point is sufficient</li>\n            </ul>\n            <strong>Prover work:</strong> O(n log n) - must process entire computation\n            <strong>Verifier work:</strong> O(1) - constant time regardless of computation size\n        ",
+    "tags": [
+      "cryptography",
+      "zk",
+      "difficulty-advanced"
+    ],
+    "order": 29
+  },
+  {
+    "title": "What is Circom and how is it used?",
+    "answer": "\n            <p><strong>Circom</strong> is a domain-specific language for writing arithmetic circuits for ZK proofs.</p>\n            <strong>Example circuit:</strong>\n            <pre><code class=\"language-javascript\">pragma circom 2.0.0;\n\ntemplate Multiplier() {\n    signal input a;\n    signal input b;\n    signal output c;\n    \n    c <== a * b;  // Constraint: c must equal a * b\n}\n\ntemplate ProveSolution() {\n    signal input x;      // Private input\n    signal output hash;  // Public output\n    \n    component hasher = Poseidon(1);\n    hasher.inputs[0] <== x;\n    hash <== hasher.out;\n    \n    // Proves: \"I know x such that Poseidon(x) = hash\"\n}\n\ncomponent main = ProveSolution();</code></pre>\n            <strong>Workflow:</strong>\n            <ol>\n                <li>Write circuit in Circom</li>\n                <li>Compile to R1CS + WASM</li>\n                <li>Generate proving/verification keys</li>\n                <li>Create proofs with snarkjs</li>\n                <li>Verify on-chain with Solidity verifier</li>\n            </ol>\n        ",
+    "tags": [
+      "cryptography",
+      "zk",
+      "development",
+      "difficulty-advanced"
+    ],
+    "order": 30
+  },
+  {
+    "title": "What is the difference between PLONK and Groth16?",
+    "answer": "\n            <p><strong>Groth16</strong> and <strong>PLONK</strong> are different proving systems with distinct trade-offs.</p>\n            <table>\n                <tr><th>Aspect</th><th>Groth16</th><th>PLONK</th></tr>\n                <tr><td>Trusted setup</td><td>Per circuit</td><td>Universal</td></tr>\n                <tr><td>Proof size</td><td>~200 bytes (smallest)</td><td>~400 bytes</td></tr>\n                <tr><td>Verification</td><td>Fastest</td><td>Fast</td></tr>\n                <tr><td>Prover time</td><td>Slow</td><td>Moderate</td></tr>\n                <tr><td>Flexibility</td><td>Fixed circuit</td><td>Any circuit</td></tr>\n            </table>\n            <strong>When to use:</strong>\n            <ul>\n                <li><strong>Groth16:</strong> Single, fixed application (Zcash)</li>\n                <li><strong>PLONK:</strong> General purpose, upgradeable systems</li>\n            </ul>\n            <strong>PLONK variants:</strong> TurboPLONK, UltraPLONK, HyperPLONK\n        ",
+    "tags": [
+      "cryptography",
+      "zk",
+      "difficulty-advanced"
+    ],
+    "order": 31
+  },
+  {
+    "title": "What is recursive proof composition?",
+    "answer": "\n            <p><strong>Recursive proofs</strong> allow a proof to verify other proofs, enabling unlimited scalability.</p>\n            <strong>How it works:</strong>\n            <pre><code>// Instead of verifying each proof individually:\nProof1 + Proof2 + Proof3 + ... + ProofN\n\n// Create proof that verifies proofs:\nRecursiveProof = prove(\n    \"Proof1 is valid\" AND \n    \"Proof2 is valid\" AND\n    ...\n)\n\n// Can nest further:\nFinalProof = prove(\"RecursiveProof is valid\")</code></pre>\n            <strong>Applications:</strong>\n            <ul>\n                <li><strong>Rollup aggregation:</strong> One proof for thousands of txs</li>\n                <li><strong>Incremental computation:</strong> Verify ongoing process</li>\n                <li><strong>Proof compression:</strong> Reduce on-chain verification</li>\n            </ul>\n            <strong>Challenge:</strong> Verifying SNARK inside SNARK is expensive\n            <strong>Solution:</strong> Cycle of curves (Pasta curves, used by Mina)\n        ",
+    "tags": [
+      "cryptography",
+      "zk",
+      "difficulty-advanced"
+    ],
+    "order": 32
+  },
+  {
+    "title": "What is KZG polynomial commitment?",
+    "answer": "\n            <p><strong>KZG</strong> (Kate-Zaverucha-Goldberg) is a polynomial commitment scheme used in many ZK systems.</p>\n            <strong>How it works:</strong>\n            <pre><code>// Commitment\n1. Have polynomial P(x)\n2. Commit: C = [P(τ)]₁ (evaluate at secret τ in elliptic curve group)\n3. Commitment is single group element (48 bytes)\n\n// Opening\nTo prove P(z) = y:\n1. Compute quotient polynomial Q(x) = (P(x) - y) / (x - z)\n2. Proof: π = [Q(τ)]₁\n3. Verify using pairing: e(C - [y]₁, [1]₂) = e(π, [τ - z]₂)</code></pre>\n            <strong>Properties:</strong>\n            <ul>\n                <li>Constant size commitment (48 bytes)</li>\n                <li>Constant size proofs</li>\n                <li>Requires trusted setup</li>\n            </ul>\n            <strong>Used in:</strong> EIP-4844 blobs, PLONK, Ethereum's future data sharding\n        ",
+    "tags": [
+      "cryptography",
+      "difficulty-advanced"
+    ],
+    "order": 33
+  },
+  {
+    "title": "What is elliptic curve cryptography in blockchain?",
+    "answer": "\n            <p><strong>Elliptic curve cryptography (ECC)</strong> provides the mathematical foundation for blockchain signatures and addresses.</p>\n            <strong>Curve equation:</strong>\n            <pre><code>y² = x³ + ax + b (mod p)\n\n// secp256k1 (Bitcoin, Ethereum):\ny² = x³ + 7 (mod p)\np = 2²⁵⁶ - 2³² - 977</code></pre>\n            <strong>Key generation:</strong>\n            <pre><code>1. Private key: Random 256-bit number (k)\n2. Public key: k × G (scalar multiplication)\n   where G is generator point\n3. Address: Hash of public key</code></pre>\n            <strong>ECDSA Signature:</strong>\n            <pre><code>Sign(message, privateKey):\n1. Hash message → z\n2. Pick random k\n3. R = k × G\n4. r = R.x mod n\n5. s = k⁻¹(z + r × privateKey) mod n\n6. Signature = (r, s)</code></pre>\n            <strong>Why ECC:</strong> Same security as RSA with much smaller keys\n        ",
+    "tags": [
+      "cryptography",
+      "difficulty-advanced"
+    ],
+    "order": 34
+  },
+  {
+    "title": "What is BLS signature aggregation?",
+    "answer": "\n            <p><strong>BLS signatures</strong> (Boneh-Lynn-Shacham) allow multiple signatures to be aggregated into one.</p>\n            <strong>Key benefit:</strong>\n            <pre><code>// Traditional (n signatures):\nVerify(sig₁, pk₁, msg) AND Verify(sig₂, pk₂, msg) AND ...\n// n separate verifications, n signatures stored\n\n// BLS aggregation:\naggSig = sig₁ + sig₂ + ... + sigₙ\nVerify(aggSig, aggPk, msg)\n// ONE verification, ONE signature stored</code></pre>\n            <strong>How it works:</strong>\n            <ul>\n                <li>Uses pairing-friendly curves (BLS12-381)</li>\n                <li>Signatures are curve points</li>\n                <li>Addition of points = signature aggregation</li>\n            </ul>\n            <strong>Used in:</strong>\n            <ul>\n                <li>Ethereum 2.0 consensus (validators)</li>\n                <li>Threshold signatures</li>\n                <li>Multi-signatures</li>\n            </ul>\n            <strong>Trade-off:</strong> Slower than ECDSA for single signatures\n        ",
+    "tags": [
+      "cryptography",
+      "difficulty-advanced"
+    ],
+    "order": 35
+  },
+  {
+    "title": "What is a commitment scheme?",
+    "answer": "\n            <p>A <strong>commitment scheme</strong> allows committing to a value without revealing it, then opening later.</p>\n            <strong>Properties:</strong>\n            <ul>\n                <li><strong>Hiding:</strong> Commitment reveals nothing about value</li>\n                <li><strong>Binding:</strong> Cannot change value after commitment</li>\n            </ul>\n            <strong>Hash commitment:</strong>\n            <pre><code>// Commit\ncommitment = hash(value || salt)\n\n// Open\nreveal(value, salt)\nverify: hash(value || salt) == commitment</code></pre>\n            <strong>Pedersen commitment:</strong>\n            <pre><code>// Commit\nC = vG + rH\n// v = value, r = random blinding factor\n// G, H = generator points\n\n// Homomorphic property:\nC₁ + C₂ = (v₁ + v₂)G + (r₁ + r₂)H\n// Can add commitments without opening!</code></pre>\n            <strong>Uses:</strong> Voting, sealed-bid auctions, zero-knowledge proofs\n        ",
+    "tags": [
+      "cryptography",
+      "difficulty-advanced"
+    ],
+    "order": 36
+  },
+  {
+    "title": "What is a Merkle-Patricia Trie?",
+    "answer": "\n            <p>The <strong>Merkle-Patricia Trie</strong> is Ethereum's data structure for storing state, combining Merkle trees and Patricia tries.</p>\n            <strong>Structure:</strong>\n            <pre><code>// Node types:\n1. Null node (empty)\n2. Leaf node: [encodedPath, value]\n3. Extension node: [encodedPath, key to next node]\n4. Branch node: [v0...v15, value] (16 children + value)\n\n// Path encoding (hex):\nAddress: 0x123...\nPath through trie follows hex digits</code></pre>\n            <strong>Benefits:</strong>\n            <ul>\n                <li>Cryptographic proof of state</li>\n                <li>Efficient updates (only change affected path)</li>\n                <li>Light client proofs</li>\n            </ul>\n            <strong>Ethereum tries:</strong>\n            <ul>\n                <li>State trie: account data</li>\n                <li>Storage trie: contract storage</li>\n                <li>Transactions trie: block transactions</li>\n                <li>Receipts trie: transaction receipts</li>\n            </ul>\n        ",
+    "tags": [
+      "cryptography",
+      "ethereum",
+      "difficulty-advanced"
+    ],
+    "order": 37
+  },
+  {
+    "title": "What is Shamir's Secret Sharing?",
+    "answer": "\n            <p><strong>Shamir's Secret Sharing</strong> splits a secret into n shares where k shares are needed to reconstruct.</p>\n            <strong>How it works:</strong>\n            <pre><code>// (k, n) threshold scheme\n// k shares needed to reconstruct from n total\n\n// Create shares:\n1. Secret = s (constant term)\n2. Create random polynomial of degree k-1:\n   f(x) = s + a₁x + a₂x² + ... + aₖ₋₁xᵏ⁻¹\n3. Shares are points on polynomial:\n   Share₁ = (1, f(1))\n   Share₂ = (2, f(2))\n   ...\n\n// Reconstruct:\nUse Lagrange interpolation with any k shares\nto find f(0) = s</code></pre>\n            <strong>Properties:</strong>\n            <ul>\n                <li>k-1 shares reveal nothing about secret</li>\n                <li>Any k shares can reconstruct</li>\n                <li>Information-theoretic security</li>\n            </ul>\n            <strong>Uses:</strong> Multi-party key management, social recovery wallets\n        ",
+    "tags": [
+      "cryptography",
+      "security",
+      "difficulty-advanced"
+    ],
+    "order": 38
+  },
+  {
+    "title": "What is multi-party computation (MPC)?",
+    "answer": "\n            <p><strong>Multi-party computation</strong> allows multiple parties to jointly compute a function while keeping inputs private.</p>\n            <strong>Example - MPC Wallet:</strong>\n            <pre><code>// Traditional: Single private key → single point of failure\n// MPC: Key split across multiple parties\n\nSigning with MPC:\n1. Key shares held by: User device, Server, Recovery\n2. To sign, parties run MPC protocol\n3. Each contributes partial signature\n4. Combined into valid signature\n5. No party ever has complete key</code></pre>\n            <strong>Properties:</strong>\n            <ul>\n                <li>No single party learns others' inputs</li>\n                <li>Result is correct even with malicious parties</li>\n                <li>Threshold schemes (t-of-n)</li>\n            </ul>\n            <strong>MPC Wallet providers:</strong> Fireblocks, ZenGo, Coinbase\n            <strong>Trade-offs:</strong> Communication overhead, coordination required\n        ",
+    "tags": [
+      "cryptography",
+      "security",
+      "difficulty-advanced"
+    ],
+    "order": 39
+  },
+  {
+    "title": "How does the EVM execute bytecode?",
+    "answer": "\n            <p>The <strong>EVM</strong> is a stack-based virtual machine that executes bytecode instruction by instruction.</p>\n            <strong>Execution model:</strong>\n            <pre><code>// EVM State during execution:\n{\n    stack: [],           // LIFO, max 1024 items\n    memory: bytes,       // Byte-addressable, expandable\n    storage: mapping,    // Persistent key-value store\n    pc: number,          // Program counter\n    gas: number,         // Remaining gas\n    calldata: bytes,     // Input data (read-only)\n    returndata: bytes    // Output from last call\n}\n\n// Execution loop:\nwhile (pc < code.length && gas > 0) {\n    opcode = code[pc]\n    executeOpcode(opcode)\n    pc++\n}</code></pre>\n            <strong>Example bytecode:</strong>\n            <pre><code>// Solidity: return 1 + 2\nPUSH1 0x01  // Push 1 to stack\nPUSH1 0x02  // Push 2 to stack\nADD         // Pop 2 values, push sum (3)\nPUSH1 0x00  // Memory offset\nMSTORE      // Store in memory\nPUSH1 0x20  // Return size (32 bytes)\nPUSH1 0x00  // Return offset\nRETURN      // Return value</code></pre>\n        ",
+    "tags": [
+      "evm",
+      "difficulty-advanced"
+    ],
+    "order": 40
+  },
+  {
+    "title": "What are the most important EVM opcodes?",
+    "answer": "\n            <p>EVM <strong>opcodes</strong> are the low-level instructions that smart contracts execute.</p>\n            <strong>Stack operations:</strong>\n            <pre><code>PUSH1-PUSH32  // Push 1-32 bytes to stack\nPOP           // Remove top item\nDUP1-DUP16    // Duplicate nth item\nSWAP1-SWAP16  // Swap top with nth item</code></pre>\n            <strong>Arithmetic:</strong>\n            <pre><code>ADD, SUB, MUL, DIV    // Basic math\nMOD, EXP              // Modulo, exponent\nADDMOD, MULMOD        // Modular operations\nSIGNEXTEND            // Sign extension</code></pre>\n            <strong>Memory/Storage:</strong>\n            <pre><code>MLOAD, MSTORE, MSTORE8  // Memory (temporary)\nSLOAD, SSTORE           // Storage (persistent)\nCALLDATALOAD           // Read input data\nCODECOPY               // Copy contract code</code></pre>\n            <strong>Control flow:</strong>\n            <pre><code>JUMP, JUMPI    // Unconditional/conditional jump\nJUMPDEST       // Valid jump destination\nREVERT         // Revert with data\nRETURN         // Return with data\nSTOP           // Halt execution</code></pre>\n            <strong>Gas costs vary:</strong> ADD = 3 gas, SSTORE = 20,000 gas (new value)\n        ",
+    "tags": [
+      "evm",
+      "opcodes",
+      "difficulty-advanced"
+    ],
+    "order": 41
+  },
+  {
+    "title": "How does the EVM handle function calls?",
+    "answer": "\n            <p>Function calls use a <strong>function selector</strong> (first 4 bytes of keccak256 hash) to route to the correct function.</p>\n            <strong>Function selector:</strong>\n            <pre><code>// Function: transfer(address,uint256)\nselector = keccak256(\"transfer(address,uint256)\")[:4]\n         = 0xa9059cbb\n\n// Calldata structure:\n[4 bytes selector][32 bytes param1][32 bytes param2]...\n0xa9059cbb\n0000000000000000000000001234567890123456789012345678901234567890\n0000000000000000000000000000000000000000000000000000000000000064</code></pre>\n            <strong>Dispatcher pattern (compiled Solidity):</strong>\n            <pre><code>// Pseudo-bytecode\nCALLDATALOAD(0)      // Load first 32 bytes\nSHR(224)             // Right shift to get 4 bytes\nDUP1\nPUSH4 0xa9059cbb     // transfer selector\nEQ\nPUSH2 [transfer_offset]\nJUMPI                // Jump if match\n// ... check other selectors</code></pre>\n            <strong>External vs Internal calls:</strong>\n            <ul>\n                <li>External: CALL opcode, new context</li>\n                <li>Internal: JUMP opcode, same context</li>\n            </ul>\n        ",
+    "tags": [
+      "evm",
+      "solidity",
+      "difficulty-advanced"
+    ],
+    "order": 42
+  },
+  {
+    "title": "What is the EVM memory model?",
+    "answer": "\n            <p>EVM <strong>memory</strong> is a byte-addressable, linear array that expands dynamically.</p>\n            <strong>Memory layout:</strong>\n            <pre><code>// Solidity memory layout:\n0x00-0x3f (64 bytes): Scratch space\n0x40-0x5f (32 bytes): Free memory pointer\n0x60-0x7f (32 bytes): Zero slot\n0x80+: Actual memory allocations\n\n// Free memory pointer:\nmload(0x40)  // Get current free memory position\nmstore(0x40, newPtr)  // Update after allocation</code></pre>\n            <strong>Memory expansion cost:</strong>\n            <pre><code>// Gas cost grows quadratically\nmemory_cost = (memory_size_words² / 512) + (3 * memory_size_words)\n\n// Accessing memory at offset expands if needed\nMSTORE(offset, value)  // May expand memory</code></pre>\n            <strong>Best practices:</strong>\n            <ul>\n                <li>Memory is cleared between external calls</li>\n                <li>Use memory for temporary calculations</li>\n                <li>Minimize memory expansion</li>\n            </ul>\n        ",
+    "tags": [
+      "evm",
+      "memory",
+      "difficulty-advanced"
+    ],
+    "order": 43
+  },
+  {
+    "title": "How does storage work in the EVM?",
+    "answer": "\n            <p>EVM <strong>storage</strong> is a persistent key-value store with 256-bit keys and values.</p>\n            <strong>Storage layout:</strong>\n            <pre><code>// State variables get sequential slots\ncontract Example {\n    uint256 a;        // slot 0\n    uint256 b;        // slot 1\n    uint128 c;        // slot 2 (first 16 bytes)\n    uint128 d;        // slot 2 (next 16 bytes) - PACKED!\n}\n\n// Mappings and arrays:\nmapping(address => uint) balances;\n// balances[addr] stored at: keccak256(addr . slot)\n\nuint[] dynamicArray;\n// Length at slot n\n// Element i at: keccak256(n) + i</code></pre>\n            <strong>Gas costs:</strong>\n            <pre><code>SLOAD:  2100 gas (cold), 100 gas (warm)\nSSTORE: \n  - 0 → non-zero: 20,000 gas\n  - non-zero → non-zero: 2,900 gas\n  - non-zero → 0: 2,900 gas + 4,800 refund</code></pre>\n            <strong>Optimization:</strong> Pack variables, minimize storage writes\n        ",
+    "tags": [
+      "evm",
+      "storage",
+      "difficulty-advanced"
+    ],
+    "order": 44
+  },
+  {
+    "title": "What is the CREATE and CREATE2 difference?",
+    "answer": "\n            <p><strong>CREATE</strong> and <strong>CREATE2</strong> are opcodes for deploying contracts with different address derivation.</p>\n            <strong>CREATE:</strong>\n            <pre><code>// Address = keccak256(rlp([sender, nonce]))[12:]\naddress = keccak256(\n    rlp.encode([deployer_address, deployer_nonce])\n)[12:32]\n\n// Address changes with each deployment (nonce increases)\n// Cannot predict address before deployment</code></pre>\n            <strong>CREATE2:</strong>\n            <pre><code>// Address = keccak256(0xff ++ sender ++ salt ++ keccak256(initCode))[12:]\naddress = keccak256(\n    0xff,\n    deployer_address,\n    salt,            // User-provided 32 bytes\n    keccak256(bytecode)\n)[12:32]\n\n// Address is deterministic and predictable\n// Same salt + same code = same address (any chain!)</code></pre>\n            <strong>Use cases for CREATE2:</strong>\n            <ul>\n                <li>Counterfactual deployments</li>\n                <li>Cross-chain same address</li>\n                <li>Factory patterns</li>\n                <li>Upgradeable proxies</li>\n            </ul>\n        ",
+    "tags": [
+      "evm",
+      "deployment",
+      "difficulty-advanced"
+    ],
+    "order": 45
+  },
+  {
+    "title": "How do proxy patterns work at the EVM level?",
+    "answer": "\n            <p><strong>Proxy patterns</strong> use DELEGATECALL to execute implementation logic with proxy storage.</p>\n            <strong>Minimal proxy (EIP-1167):</strong>\n            <pre><code>// Clone bytecode (45 bytes)\n3d602d80600a3d3981f3363d3d373d3d3d363d73\n<implementation_address>\n5af43d82803e903d91602b57fd5bf3\n\n// What it does:\n1. Copy calldata to memory\n2. DELEGATECALL to implementation\n3. Copy returndata\n4. Return or revert based on success</code></pre>\n            <strong>Transparent Proxy:</strong>\n            <pre><code>fallback() {\n    if (msg.sender == admin) {\n        // Admin calls go to proxy functions\n        handleAdmin();\n    } else {\n        // User calls delegatecall to implementation\n        delegateToImplementation();\n    }\n}</code></pre>\n            <strong>UUPS (Universal Upgradeable Proxy):</strong>\n            <pre><code>// Upgrade logic in implementation, not proxy\n// Proxy is simpler and cheaper to deploy\nfunction upgradeTo(address newImpl) external {\n    require(msg.sender == owner);\n    StorageSlot.getAddressSlot(IMPL_SLOT).value = newImpl;\n}</code></pre>\n        ",
+    "tags": [
+      "evm",
+      "upgrades",
+      "difficulty-advanced"
+    ],
+    "order": 46
+  },
+  {
+    "title": "What is the EVM call stack and context?",
+    "answer": "\n            <p>Each <strong>call</strong> creates a new execution context on the call stack.</p>\n            <strong>Context includes:</strong>\n            <pre><code>CallContext {\n    address: executing contract address,\n    caller: msg.sender,\n    value: msg.value,\n    calldata: input data,\n    gas: available gas,\n    code: bytecode to execute,\n    storage: contract's storage,\n    memory: fresh memory,\n    returndata: empty initially,\n    stack: empty\n}</code></pre>\n            <strong>Call types and context:</strong>\n            <table>\n                <tr><th>Opcode</th><th>Storage</th><th>msg.sender</th><th>msg.value</th></tr>\n                <tr><td>CALL</td><td>Callee's</td><td>Caller</td><td>Can send</td></tr>\n                <tr><td>DELEGATECALL</td><td>Caller's</td><td>Original</td><td>Preserved</td></tr>\n                <tr><td>STATICCALL</td><td>Callee's (read)</td><td>Caller</td><td>0</td></tr>\n                <tr><td>CALLCODE</td><td>Caller's</td><td>Caller</td><td>Can send</td></tr>\n            </table>\n            <strong>Call stack limit:</strong> 1024 depth (causes stack overflow error)\n        ",
+    "tags": [
+      "evm",
+      "difficulty-advanced"
+    ],
+    "order": 47
+  },
+  {
+    "title": "How does gas metering work in the EVM?",
+    "answer": "\n            <p><strong>Gas metering</strong> ensures execution costs are paid and prevents infinite loops.</p>\n            <strong>Gas calculation:</strong>\n            <pre><code>// Transaction gas\ntx_gas = 21000 (base) + calldata_gas + execution_gas\n\n// Calldata gas:\n- Zero byte: 4 gas\n- Non-zero byte: 16 gas\n\n// Execution gas:\n- Each opcode has specific cost\n- Memory expansion adds cost\n- Storage operations are expensive</code></pre>\n            <strong>EIP-1559 gas model:</strong>\n            <pre><code>max_fee = maxFeePerGas * gasLimit\nactual_fee = (baseFee + priorityFee) * gasUsed\n\n// Burned: baseFee * gasUsed\n// To validator: priorityFee * gasUsed\n// Refunded: (gasLimit - gasUsed) * effectiveGasPrice</code></pre>\n            <strong>Gas optimization patterns:</strong>\n            <ul>\n                <li>Short-circuit evaluation</li>\n                <li>Caching storage reads</li>\n                <li>Packing storage variables</li>\n                <li>Using unchecked for safe math</li>\n            </ul>\n        ",
+    "tags": [
+      "evm",
+      "gas",
+      "difficulty-advanced"
+    ],
+    "order": 48
+  },
+  {
+    "title": "What are precompiled contracts?",
+    "answer": "\n            <p><strong>Precompiles</strong> are contracts at fixed addresses with native implementations for expensive operations.</p>\n            <strong>Ethereum precompiles (addresses 0x01-0x09):</strong>\n            <pre><code>0x01: ecRecover     - Recover signer from signature\n0x02: SHA256        - SHA-256 hash\n0x03: RIPEMD160     - RIPEMD-160 hash\n0x04: identity      - Data copy\n0x05: modexp        - Modular exponentiation\n0x06: ecAdd         - BN256 curve point addition\n0x07: ecMul         - BN256 curve point multiplication\n0x08: ecPairing     - BN256 pairing check\n0x09: blake2f       - BLAKE2 compression</code></pre>\n            <strong>Usage:</strong>\n            <pre><code class=\"language-solidity\">// ecRecover example\nfunction recoverSigner(bytes32 hash, bytes memory sig) \n    public pure returns (address) \n{\n    (bytes32 r, bytes32 s, uint8 v) = splitSig(sig);\n    // Calls precompile at 0x01\n    return ecrecover(hash, v, r, s);\n}</code></pre>\n            <strong>Why precompiles:</strong>\n            <ul>\n                <li>Much cheaper than EVM implementation</li>\n                <li>Enable cryptographic operations</li>\n                <li>Fixed gas costs</li>\n            </ul>\n        ",
+    "tags": [
+      "evm",
+      "difficulty-advanced"
+    ],
+    "order": 49
+  },
+  {
+    "title": "How does the EVM handle errors and reverts?",
+    "answer": "\n            <p>The EVM has several ways to handle errors and revert state changes.</p>\n            <strong>Error types:</strong>\n            <pre><code>// REVERT opcode\n- Returns remaining gas\n- Can include error data\n- State changes undone\n\n// INVALID opcode / Assert failure\n- Consumes all gas (pre-0.8.0)\n- No error data\n- State changes undone\n\n// Out of gas\n- No return data\n- State changes undone</code></pre>\n            <strong>Error encoding (Solidity 0.8+):</strong>\n            <pre><code class=\"language-solidity\">// String error\nrevert(\"Insufficient balance\");\n// Encoded as: Error(string)\n// 0x08c379a0 + abi.encode(\"Insufficient balance\")\n\n// Custom error\nerror InsufficientBalance(uint256 available, uint256 required);\nrevert InsufficientBalance(100, 200);\n// Encoded as: selector + abi.encode(100, 200)\n\n// Panic codes\nassert(x > 0);  // Panic(uint256)\n// 0x01: Assert failure\n// 0x11: Arithmetic overflow\n// 0x12: Division by zero</code></pre>\n        ",
+    "tags": [
+      "evm",
+      "errors",
+      "difficulty-advanced"
+    ],
+    "order": 50
+  },
+  {
+    "title": "What is EVM bytecode optimization?",
+    "answer": "\n            <p><strong>Bytecode optimization</strong> reduces gas costs by minimizing operations and storage access.</p>\n            <strong>Compiler optimizations (solc):</strong>\n            <pre><code>// Optimizer settings\n{\n    \"optimizer\": {\n        \"enabled\": true,\n        \"runs\": 200  // Optimize for ~200 calls\n    }\n}\n\n// runs: trade-off\n// Low runs: smaller bytecode, higher exec cost\n// High runs: larger bytecode, lower exec cost</code></pre>\n            <strong>Manual optimizations:</strong>\n            <pre><code class=\"language-solidity\">// Cache storage reads\nuint256 _balance = balances[user]; // SLOAD once\nrequire(_balance >= amount);\nbalances[user] = _balance - amount;\n\n// Use unchecked for known-safe math\nunchecked {\n    balances[to] += amount; // Skip overflow check\n}\n\n// Short-circuit expensive operations\nrequire(amount > 0 && balances[msg.sender] >= amount);\n\n// Pack structs\nstruct Packed {\n    uint128 a;  // Same slot\n    uint128 b;  // Same slot\n}</code></pre>\n        ",
+    "tags": [
+      "evm",
+      "optimization",
+      "difficulty-advanced"
+    ],
+    "order": 51
+  },
+  {
+    "title": "How do events and logs work at the EVM level?",
+    "answer": "\n            <p><strong>Events</strong> emit logs stored in transaction receipts, not contract storage.</p>\n            <strong>Log structure:</strong>\n            <pre><code>Log {\n    address: contract address,\n    topics: [topic0, topic1, topic2, topic3],  // Max 4 topics\n    data: bytes  // Unlimited size\n}\n\n// topic0 = keccak256(event signature)\n// indexed params → topics (max 3)\n// non-indexed params → data</code></pre>\n            <strong>EVM opcodes:</strong>\n            <pre><code>LOG0  // No topics\nLOG1  // 1 topic\nLOG2  // 2 topics\nLOG3  // 3 topics\nLOG4  // 4 topics\n\n// Gas cost: 375 + 375*numTopics + 8*dataSize</code></pre>\n            <strong>Solidity events:</strong>\n            <pre><code class=\"language-solidity\">event Transfer(\n    address indexed from,   // topic1\n    address indexed to,     // topic2\n    uint256 value          // data\n);\n// topic0 = keccak256(\"Transfer(address,address,uint256)\")\n\nemit Transfer(sender, recipient, amount);</code></pre>\n            <strong>Note:</strong> Logs cannot be read by smart contracts, only off-chain\n        ",
+    "tags": [
+      "evm",
+      "events",
+      "difficulty-advanced"
+    ],
+    "order": 52
+  },
+  {
+    "title": "What is a reentrancy attack?",
+    "answer": "\n            <p>A <strong>reentrancy attack</strong> occurs when a malicious contract calls back into the calling contract before the first execution is complete.</p>\n            <strong>Vulnerable pattern:</strong>\n            <pre><code class=\"language-solidity\">// VULNERABLE\nfunction withdraw() external {\n    uint256 amount = balances[msg.sender];\n    (bool success, ) = msg.sender.call{value: amount}(\"\");\n    require(success);\n    balances[msg.sender] = 0; // State updated AFTER external call\n}\n\n// ATTACKER\nreceive() external payable {\n    if (address(target).balance >= 1 ether) {\n        target.withdraw(); // Reenter before balance is set to 0\n    }\n}</code></pre>\n            <strong>Prevention (Checks-Effects-Interactions):</strong>\n            <pre><code class=\"language-solidity\">function withdraw() external {\n    uint256 amount = balances[msg.sender];\n    balances[msg.sender] = 0; // Update state BEFORE external call\n    (bool success, ) = msg.sender.call{value: amount}(\"\");\n    require(success);\n}</code></pre>\n            <strong>Other mitigations:</strong> ReentrancyGuard modifier, pull payment pattern\n            <strong>Famous exploit:</strong> The DAO hack (2016) - $60M stolen\n        ",
+    "tags": [
+      "security",
+      "vulnerabilities",
+      "difficulty-advanced"
+    ],
+    "order": 53
+  },
+  {
+    "title": "What is the Checks-Effects-Interactions pattern?",
+    "answer": "\n            <p>The <strong>Checks-Effects-Interactions (CEI)</strong> pattern is a best practice for ordering operations in smart contracts to prevent reentrancy.</p>\n            <strong>Pattern order:</strong>\n            <ol>\n                <li><strong>Checks:</strong> Validate all conditions (require, assert)</li>\n                <li><strong>Effects:</strong> Update all state variables</li>\n                <li><strong>Interactions:</strong> External calls last</li>\n            </ol>\n            <pre><code class=\"language-solidity\">function withdraw(uint256 amount) external {\n    // CHECKS\n    require(balances[msg.sender] >= amount, \"Insufficient\");\n    require(amount > 0, \"Zero amount\");\n    \n    // EFFECTS\n    balances[msg.sender] -= amount;\n    totalWithdrawn += amount;\n    \n    // INTERACTIONS\n    (bool success, ) = msg.sender.call{value: amount}(\"\");\n    require(success, \"Transfer failed\");\n}</code></pre>\n            <strong>Why it works:</strong> State is finalized before any external call can re-enter\n        ",
+    "tags": [
+      "security",
+      "patterns",
+      "difficulty-advanced"
+    ],
+    "order": 54
+  },
+  {
+    "title": "What is a flash loan attack?",
+    "answer": "\n            <p>A <strong>flash loan attack</strong> exploits protocols using borrowed funds that are returned within one transaction.</p>\n            <strong>Attack flow:</strong>\n            <ol>\n                <li>Borrow large amount via flash loan</li>\n                <li>Manipulate a vulnerable protocol</li>\n                <li>Extract value from manipulation</li>\n                <li>Repay flash loan + fee</li>\n                <li>Keep the profit</li>\n            </ol>\n            <strong>Common attack vectors:</strong>\n            <ul>\n                <li><strong>Oracle manipulation:</strong> Move prices on low-liquidity DEXs</li>\n                <li><strong>Governance attacks:</strong> Borrow tokens to vote</li>\n                <li><strong>Arbitrage exploitation:</strong> Drain vulnerable pools</li>\n            </ul>\n            <strong>Famous attacks:</strong>\n            <ul>\n                <li>bZx (2020): $1M</li>\n                <li>Cream Finance (2021): $130M</li>\n                <li>Euler Finance (2023): $197M</li>\n            </ul>\n        ",
+    "tags": [
+      "security",
+      "defi",
+      "difficulty-advanced"
+    ],
+    "order": 55
+  },
+  {
+    "title": "What is integer overflow/underflow?",
+    "answer": "\n            <p><strong>Integer overflow/underflow</strong> occurs when arithmetic operations exceed the variable's bounds.</p>\n            <strong>Pre-Solidity 0.8.0 vulnerability:</strong>\n            <pre><code class=\"language-solidity\">// uint8 max is 255\nuint8 a = 255;\na = a + 1; // Overflows to 0!\n\nuint8 b = 0;\nb = b - 1; // Underflows to 255!</code></pre>\n            <strong>Exploitation example:</strong>\n            <pre><code class=\"language-solidity\">// Vulnerable token transfer\nfunction transfer(address to, uint256 amount) {\n    require(balances[msg.sender] - amount >= 0); // Always true with underflow!\n    balances[msg.sender] -= amount;\n    balances[to] += amount;\n}</code></pre>\n            <strong>Solutions:</strong>\n            <ul>\n                <li>Solidity 0.8.0+: Built-in overflow checks (reverts)</li>\n                <li>Pre-0.8.0: Use SafeMath library</li>\n                <li>Use <code>unchecked</code> only when overflow is intended</li>\n            </ul>\n        ",
+    "tags": [
+      "security",
+      "vulnerabilities",
+      "difficulty-advanced"
+    ],
+    "order": 56
+  },
+  {
+    "title": "What is front-running?",
+    "answer": "\n            <p><strong>Front-running</strong> is when someone observes a pending transaction and submits their own with higher gas to execute first.</p>\n            <strong>How it works:</strong>\n            <ol>\n                <li>Attacker monitors mempool</li>\n                <li>Sees profitable pending transaction</li>\n                <li>Submits same/similar transaction with higher gas</li>\n                <li>Their transaction executes first</li>\n            </ol>\n            <strong>Common targets:</strong>\n            <ul>\n                <li>DEX trades (sandwich attacks)</li>\n                <li>NFT mints</li>\n                <li>Liquidations</li>\n                <li>Arbitrage opportunities</li>\n            </ul>\n            <strong>Mitigations:</strong>\n            <ul>\n                <li>Commit-reveal schemes</li>\n                <li>Private mempools (Flashbots Protect)</li>\n                <li>Batch auctions (CoW Protocol)</li>\n                <li>Slippage protection</li>\n            </ul>\n        ",
+    "tags": [
+      "security",
+      "mev",
+      "difficulty-advanced"
+    ],
+    "order": 57
+  },
+  {
+    "title": "What is a sandwich attack?",
+    "answer": "\n            <p>A <strong>sandwich attack</strong> is a type of front-running where an attacker places transactions before AND after a victim's trade.</p>\n            <strong>Attack sequence:</strong>\n            <ol>\n                <li>Victim submits large buy order</li>\n                <li>Attacker front-runs with a buy (raises price)</li>\n                <li>Victim's trade executes at higher price</li>\n                <li>Attacker back-runs with a sell (profits from price increase)</li>\n            </ol>\n            <pre><code>Block execution order:\n1. Attacker: Buy 100 ETH of Token (price goes up)\n2. Victim: Buy 50 ETH of Token (at higher price)\n3. Attacker: Sell 100 ETH of Token (at even higher price)</code></pre>\n            <strong>Protection:</strong>\n            <ul>\n                <li>Set tight slippage tolerance</li>\n                <li>Use private transactions (Flashbots)</li>\n                <li>Use DEXs with MEV protection</li>\n            </ul>\n        ",
+    "tags": [
+      "security",
+      "mev",
+      "difficulty-advanced"
+    ],
+    "order": 58
+  },
+  {
+    "title": "What is access control vulnerability?",
+    "answer": "\n            <p><strong>Access control vulnerabilities</strong> occur when functions can be called by unauthorized users.</p>\n            <strong>Vulnerable patterns:</strong>\n            <pre><code class=\"language-solidity\">// Missing access control\nfunction mint(address to, uint256 amount) external {\n    _mint(to, amount); // Anyone can mint!\n}\n\n// Incorrect modifier logic\nmodifier onlyOwner() {\n    if (msg.sender == owner) {\n        _;\n    }\n    // Doesn't revert if not owner!\n}</code></pre>\n            <strong>Secure implementation:</strong>\n            <pre><code class=\"language-solidity\">modifier onlyOwner() {\n    require(msg.sender == owner, \"Not owner\");\n    _;\n}\n\nfunction mint(address to, uint256 amount) external onlyOwner {\n    _mint(to, amount);\n}</code></pre>\n            <strong>Best practices:</strong>\n            <ul>\n                <li>Use OpenZeppelin's AccessControl or Ownable</li>\n                <li>Implement role-based permissions</li>\n                <li>Always test access control</li>\n            </ul>\n        ",
+    "tags": [
+      "security",
+      "vulnerabilities",
+      "difficulty-advanced"
+    ],
+    "order": 59
+  },
+  {
+    "title": "What is tx.origin vulnerability?",
+    "answer": "\n            <p>Using <strong>tx.origin</strong> for authorization is dangerous because it refers to the original transaction sender, not the immediate caller.</p>\n            <strong>Vulnerable pattern:</strong>\n            <pre><code class=\"language-solidity\">// VULNERABLE\nfunction withdraw() external {\n    require(tx.origin == owner, \"Not owner\");\n    payable(owner).transfer(address(this).balance);\n}\n\n// Attack contract\nfunction attack(VulnerableContract target) external {\n    // If owner calls this, tx.origin is still owner\n    target.withdraw(); // Drains funds to attacker\n}</code></pre>\n            <strong>The attack:</strong>\n            <ol>\n                <li>Attacker tricks owner into calling attacker's contract</li>\n                <li>Attacker's contract calls vulnerable function</li>\n                <li>tx.origin is still the owner</li>\n                <li>Authorization check passes</li>\n            </ol>\n            <strong>Solution:</strong> Always use <code>msg.sender</code> for authorization\n        ",
+    "tags": [
+      "security",
+      "vulnerabilities",
+      "difficulty-advanced"
+    ],
+    "order": 60
+  },
+  {
+    "title": "What is a denial of service (DoS) attack in smart contracts?",
+    "answer": "\n            <p>A <strong>DoS attack</strong> makes a contract unusable by exploiting logic that can be blocked.</p>\n            <strong>Common DoS patterns:</strong>\n            <pre><code class=\"language-solidity\">// Vulnerable to DoS - unbounded loop\nfunction distributeRewards() external {\n    for (uint i = 0; i < users.length; i++) {\n        payable(users[i]).transfer(rewards[i]); // Gas limit reached\n    }\n}\n\n// Vulnerable - revert on external call\nfunction claimFirst() external {\n    require(msg.sender == users[0]);\n    (bool success,) = msg.sender.call{value: prize}(\"\");\n    require(success); // Attacker can always revert\n}</code></pre>\n            <strong>Mitigations:</strong>\n            <ul>\n                <li>Pull over push payments</li>\n                <li>Limit loop iterations</li>\n                <li>Allow partial execution</li>\n                <li>Don't require external call success for critical paths</li>\n            </ul>\n        ",
+    "tags": [
+      "security",
+      "vulnerabilities",
+      "difficulty-advanced"
+    ],
+    "order": 61
+  },
+  {
+    "title": "What is a signature replay attack?",
+    "answer": "\n            <p>A <strong>signature replay attack</strong> reuses a valid signature to execute unauthorized actions.</p>\n            <strong>Vulnerable pattern:</strong>\n            <pre><code class=\"language-solidity\">// VULNERABLE - no replay protection\nfunction executeWithSignature(\n    address to, uint256 amount, bytes memory signature\n) external {\n    bytes32 hash = keccak256(abi.encodePacked(to, amount));\n    address signer = ECDSA.recover(hash, signature);\n    require(signer == owner);\n    _transfer(to, amount);\n    // Same signature can be used again!\n}</code></pre>\n            <strong>Protected version:</strong>\n            <pre><code class=\"language-solidity\">mapping(bytes32 => bool) public usedHashes;\n\nfunction executeWithSignature(\n    address to, uint256 amount, uint256 nonce, bytes memory signature\n) external {\n    bytes32 hash = keccak256(abi.encodePacked(to, amount, nonce, address(this), block.chainid));\n    require(!usedHashes[hash], \"Already used\");\n    usedHashes[hash] = true;\n    // ... verify and execute\n}</code></pre>\n            <strong>Include in hash:</strong> Nonce, contract address, chain ID\n        ",
+    "tags": [
+      "security",
+      "vulnerabilities",
+      "difficulty-advanced"
+    ],
+    "order": 62
+  },
+  {
+    "title": "What is oracle manipulation?",
+    "answer": "\n            <p><strong>Oracle manipulation</strong> exploits reliance on easily manipulated price sources.</p>\n            <strong>Vulnerable patterns:</strong>\n            <ul>\n                <li>Using spot DEX prices directly</li>\n                <li>Low-liquidity price feeds</li>\n                <li>Single oracle source</li>\n            </ul>\n            <strong>Attack example:</strong>\n            <pre><code class=\"language-solidity\">// VULNERABLE - uses spot price\nfunction getPrice() public view returns (uint256) {\n    (uint112 reserve0, uint112 reserve1,) = pair.getReserves();\n    return reserve1 / reserve0; // Easily manipulated with flash loan\n}\n\n// Attack:\n// 1. Flash loan large amount\n// 2. Swap to skew reserves\n// 3. Call vulnerable function (uses wrong price)\n// 4. Profit and repay flash loan</code></pre>\n            <strong>Mitigations:</strong>\n            <ul>\n                <li>Use time-weighted average prices (TWAP)</li>\n                <li>Use Chainlink decentralized oracles</li>\n                <li>Multiple oracle sources</li>\n                <li>Circuit breakers for extreme price moves</li>\n            </ul>\n        ",
+    "tags": [
+      "security",
+      "oracles",
+      "defi",
+      "difficulty-advanced"
+    ],
+    "order": 63
+  },
+  {
+    "title": "What is storage collision in proxy contracts?",
+    "answer": "\n            <p><strong>Storage collision</strong> occurs when a proxy and implementation contract use the same storage slot for different variables.</p>\n            <strong>The problem:</strong>\n            <pre><code class=\"language-solidity\">// Proxy\ncontract Proxy {\n    address public implementation; // Slot 0\n    address public admin;         // Slot 1\n}\n\n// Implementation  \ncontract Token {\n    address public owner;     // Slot 0 - COLLIDES!\n    uint256 public totalSupply; // Slot 1 - COLLIDES!\n}</code></pre>\n            <strong>Solution (EIP-1967 slots):</strong>\n            <pre><code class=\"language-solidity\">// Use specific, calculated slots\nbytes32 constant IMPLEMENTATION_SLOT = \n    bytes32(uint256(keccak256('eip1967.proxy.implementation')) - 1);\n\nfunction _setImplementation(address impl) internal {\n    StorageSlot.getAddressSlot(IMPLEMENTATION_SLOT).value = impl;\n}</code></pre>\n            <strong>Best practice:</strong> Use OpenZeppelin's transparent or UUPS proxy\n        ",
+    "tags": [
+      "security",
+      "upgrades",
+      "difficulty-advanced"
+    ],
+    "order": 64
+  },
+  {
+    "title": "What is the difference between delegatecall and call?",
+    "answer": "\n            <p><strong>call</strong> and <strong>delegatecall</strong> are low-level methods to invoke other contracts, with different execution contexts.</p>\n            <strong>call:</strong>\n            <ul>\n                <li>Executes in the context of the called contract</li>\n                <li>Uses called contract's storage</li>\n                <li>msg.sender is the calling contract</li>\n            </ul>\n            <strong>delegatecall:</strong>\n            <ul>\n                <li>Executes in the context of the calling contract</li>\n                <li>Uses calling contract's storage</li>\n                <li>msg.sender remains the original caller</li>\n            </ul>\n            <pre><code class=\"language-solidity\">// With delegatecall, implementation code modifies proxy storage\ncontract Proxy {\n    address impl;\n    \n    fallback() external payable {\n        (bool success,) = impl.delegatecall(msg.data);\n        require(success);\n    }\n}</code></pre>\n            <strong>Danger:</strong> delegatecall to untrusted code can be catastrophic\n        ",
+    "tags": [
+      "security",
+      "evm",
+      "difficulty-advanced"
+    ],
+    "order": 65
+  },
+  {
+    "title": "What is selfdestruct and its security implications?",
+    "answer": "\n            <p><strong>selfdestruct</strong> removes a contract from the blockchain and sends remaining ETH to a specified address.</p>\n            <strong>Security implications:</strong>\n            <pre><code class=\"language-solidity\">contract Vulnerable {\n    uint256 public balance;\n    \n    function deposit() external payable {\n        balance += msg.value;\n    }\n    \n    function getBalance() public view returns (uint256) {\n        return address(this).balance; // Can be forcibly increased!\n    }\n}\n\n// Attack: selfdestruct sends ETH bypassing receive/fallback\ncontract Attacker {\n    function attack(address target) external payable {\n        selfdestruct(payable(target));\n    }\n}</code></pre>\n            <strong>Issues:</strong>\n            <ul>\n                <li>ETH can be force-sent to contracts</li>\n                <li>Can break invariants relying on balance</li>\n                <li>Destroyed contracts can still receive ETH</li>\n            </ul>\n            <strong>Note:</strong> selfdestruct is deprecated (EIP-6049) and behavior may change\n        ",
+    "tags": [
+      "security",
+      "evm",
+      "difficulty-advanced"
+    ],
+    "order": 66
+  },
+  {
+    "title": "What is a griefing attack?",
+    "answer": "\n            <p>A <strong>griefing attack</strong> harms others at a cost to the attacker, without direct profit motive.</p>\n            <strong>Examples:</strong>\n            <ul>\n                <li>Always reverting when receiving ETH</li>\n                <li>Filling blocks to prevent others' transactions</li>\n                <li>Voting against all proposals</li>\n                <li>Front-running NFT purchases to cancel sales</li>\n            </ul>\n            <pre><code class=\"language-solidity\">// Griefing: attacker can block withdrawals\ncontract Vulnerable {\n    address[] public winners;\n    \n    function distributeWinnings() external {\n        for (uint i = 0; i < winners.length; i++) {\n            // Attacker adds contract that reverts\n            payable(winners[i]).transfer(prize);\n        }\n    }\n}</code></pre>\n            <strong>Mitigations:</strong>\n            <ul>\n                <li>Pull over push patterns</li>\n                <li>Don't rely on external call success</li>\n                <li>Economic incentives against griefing</li>\n            </ul>\n        ",
+    "tags": [
+      "security",
+      "vulnerabilities",
+      "difficulty-advanced"
+    ],
+    "order": 67
+  },
+  {
+    "title": "What is a time manipulation attack?",
+    "answer": "\n            <p><strong>Time manipulation</strong> exploits contracts that rely on block.timestamp for critical logic.</p>\n            <strong>Vulnerable pattern:</strong>\n            <pre><code class=\"language-solidity\">// VULNERABLE - randomness from timestamp\nfunction roll() external payable {\n    require(msg.value == 1 ether);\n    if (block.timestamp % 2 == 0) {\n        payable(msg.sender).transfer(2 ether);\n    }\n}\n\n// VULNERABLE - short time window\nfunction claim() external {\n    require(block.timestamp == deadline); // Miners can manipulate\n    _claim();\n}</code></pre>\n            <strong>Miner manipulation:</strong>\n            <ul>\n                <li>Can adjust timestamp within ~15 second range</li>\n                <li>Can choose not to include transactions</li>\n            </ul>\n            <strong>Best practices:</strong>\n            <ul>\n                <li>Use >= or <= for time comparisons</li>\n                <li>Don't use timestamp for randomness</li>\n                <li>Use block numbers for longer durations</li>\n            </ul>\n        ",
+    "tags": [
+      "security",
+      "vulnerabilities",
+      "difficulty-advanced"
+    ],
+    "order": 68
+  },
+  {
+    "title": "What is the difference between view, pure, and state-changing functions?",
+    "answer": "\n            <p>Function modifiers indicate what state a function can access or modify.</p>\n            <strong>Comparison:</strong>\n            <table>\n                <tr><th>Modifier</th><th>Read State</th><th>Modify State</th><th>Gas Cost</th></tr>\n                <tr><td>view</td><td>Yes</td><td>No</td><td>Free (if external call)</td></tr>\n                <tr><td>pure</td><td>No</td><td>No</td><td>Free (if external call)</td></tr>\n                <tr><td>none</td><td>Yes</td><td>Yes</td><td>Costs gas</td></tr>\n            </table>\n            <pre><code class=\"language-solidity\">// View - reads storage\nfunction getBalance(address user) external view returns (uint256) {\n    return balances[user];\n}\n\n// Pure - no state access\nfunction calculateFee(uint256 amount) external pure returns (uint256) {\n    return amount * 3 / 100;\n}\n\n// State-changing\nfunction transfer(address to, uint256 amount) external {\n    balances[msg.sender] -= amount;\n    balances[to] += amount;\n}</code></pre>\n            <strong>Security note:</strong> Marking incorrectly won't save gas but may confuse auditors\n        ",
+    "tags": [
+      "security",
+      "solidity",
+      "difficulty-advanced"
+    ],
+    "order": 69
+  },
+  {
+    "title": "What is uninitialized storage pointer vulnerability?",
+    "answer": "\n            <p>An <strong>uninitialized storage pointer</strong> can point to unexpected storage slots, allowing overwrites.</p>\n            <strong>Vulnerable pattern (pre-0.5.0):</strong>\n            <pre><code class=\"language-solidity\">contract Vulnerable {\n    address public owner;\n    \n    function addUser(string memory name) public {\n        User user; // Uninitialized storage pointer!\n        user.name = name; // Overwrites slot 0 (owner)!\n    }\n}</code></pre>\n            <strong>Why it happens:</strong>\n            <ul>\n                <li>Local storage variables default to slot 0</li>\n                <li>Compiler doesn't warn (older versions)</li>\n                <li>Can overwrite critical state</li>\n            </ul>\n            <strong>Modern solution:</strong>\n            <ul>\n                <li>Solidity 0.5.0+ requires explicit memory/storage</li>\n                <li>Always specify data location</li>\n                <li>Initialize variables properly</li>\n            </ul>\n        ",
+    "tags": [
+      "security",
+      "vulnerabilities",
+      "difficulty-advanced"
+    ],
+    "order": 70
+  }
+]

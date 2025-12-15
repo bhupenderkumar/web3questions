@@ -32,27 +32,27 @@
                     <div class="nav-item active" data-section="basic">
                         <span class="nav-icon">📗</span>
                         <span class="nav-label">Basic</span>
-                        <span class="nav-badge" id="basicProgress">0/32</span>
+                        <span class="nav-badge" id="basicProgress">0/99</span>
                     </div>
                     <div class="nav-item" data-section="intermediate">
                         <span class="nav-icon">📘</span>
                         <span class="nav-label">Intermediate</span>
-                        <span class="nav-badge" id="intermediateProgress">0/42</span>
+                        <span class="nav-badge" id="intermediateProgress">0/55</span>
                     </div>
                     <div class="nav-item" data-section="advanced">
                         <span class="nav-icon">📕</span>
                         <span class="nav-label">Advanced</span>
-                        <span class="nav-badge" id="advancedProgress">0/36</span>
+                        <span class="nav-badge" id="advancedProgress">0/71</span>
                     </div>
                     <div class="nav-item" data-section="projects">
                         <span class="nav-icon">🚀</span>
                         <span class="nav-label">Projects</span>
-                        <span class="nav-badge" id="projectsProgress">0/16</span>
+                        <span class="nav-badge" id="projectsProgress">0/50</span>
                     </div>
                     <div class="nav-item" data-section="rust">
                         <span class="nav-icon">🦀</span>
-                        <span class="nav-label">Rust Tutorial</span>
-                        <span class="nav-badge" id="rustProgress">0/52</span>
+                        <span class="nav-label">Rust & Web3</span>
+                        <span class="nav-badge" id="rustProgress">0/55</span>
                     </div>
                 </div>
 
@@ -80,6 +80,9 @@
 
         <!-- Main Content -->
         <main class="main-content" id="mainContent">
+            <!-- Debug Info -->
+            <div id="debugInfo" style="background: #333; padding: 10px; margin: 10px; border-radius: 5px; font-family: monospace; font-size: 12px;"></div>
+            
             <!-- Search Results (hidden by default) -->
             <section class="content-section" id="searchResults" style="display: none;">
                 <div class="section-header">
@@ -92,8 +95,11 @@
             <!-- Basic Section -->
             <section class="content-section" id="basicSection">
                 <div class="section-header">
-                    <h1>📗 Basic Web3 Concepts</h1>
-                    <p class="section-subtitle">Master the foundational concepts of blockchain and Web3 technology</p>
+                    <div class="section-header-top">
+                        <h1>📗 Basic Web3 Concepts</h1>
+                        <button class="expand-all-btn" data-section="basicQuestions">Expand All</button>
+                    </div>
+                    <p class="section-subtitle">Master the foundational concepts of blockchain and Web3 technology (99 questions)</p>
                     <div class="section-progress">
                         <div class="progress-bar">
                             <div class="progress-fill" id="basicProgressBar" style="width: 0%"></div>
@@ -107,8 +113,11 @@
             <!-- Intermediate Section -->
             <section class="content-section" id="intermediateSection" style="display: none;">
                 <div class="section-header">
-                    <h1>📘 Intermediate Concepts</h1>
-                    <p class="section-subtitle">Deep dive into smart contracts, DeFi, and Web3 development</p>
+                    <div class="section-header-top">
+                        <h1>📘 Intermediate Concepts</h1>
+                        <button class="expand-all-btn" data-section="intermediateQuestions">Expand All</button>
+                    </div>
+                    <p class="section-subtitle">Deep dive into smart contracts, DeFi, and Web3 development (55 questions)</p>
                     <div class="section-progress">
                         <div class="progress-bar">
                             <div class="progress-fill" id="intermediateProgressBar" style="width: 0%"></div>
@@ -122,8 +131,11 @@
             <!-- Advanced Section -->
             <section class="content-section" id="advancedSection" style="display: none;">
                 <div class="section-header">
-                    <h1>📕 Advanced Topics</h1>
-                    <p class="section-subtitle">Expert-level questions on Layer 2, MEV, security, and more</p>
+                    <div class="section-header-top">
+                        <h1>📕 Advanced Topics</h1>
+                        <button class="expand-all-btn" data-section="advancedQuestions">Expand All</button>
+                    </div>
+                    <p class="section-subtitle">Expert-level questions on Layer 2, MEV, security, and more (71 questions)</p>
                     <div class="section-progress">
                         <div class="progress-bar">
                             <div class="progress-fill" id="advancedProgressBar" style="width: 0%"></div>
@@ -137,8 +149,11 @@
             <!-- Projects Section -->
             <section class="content-section" id="projectsSection" style="display: none;">
                 <div class="section-header">
-                    <h1>🚀 Portfolio Projects</h1>
-                    <p class="section-subtitle">Build real-world Web3 applications to showcase your skills</p>
+                    <div class="section-header-top">
+                        <h1>🚀 Portfolio Projects</h1>
+                        <button class="expand-all-btn" data-section="projectsList">Expand All</button>
+                    </div>
+                    <p class="section-subtitle">Build real-world Web3 applications to showcase your skills (50 projects)</p>
                     <div class="section-progress">
                         <div class="progress-bar">
                             <div class="progress-fill" id="projectsProgressBar" style="width: 0%"></div>
@@ -146,14 +161,17 @@
                         <span class="progress-text" id="projectsProgressText">0% Complete</span>
                     </div>
                 </div>
-                <div class="projects-grid" id="projectsList"></div>
+                <div class="questions-list" id="projectsList"></div>
             </section>
 
             <!-- Rust Tutorial Section -->
             <section class="content-section" id="rustSection" style="display: none;">
                 <div class="section-header">
-                    <h1>🦀 Rust for Web3</h1>
-                    <p class="section-subtitle">Complete Rust tutorial for blockchain development with Substrate & Solana</p>
+                    <div class="section-header-top">
+                        <h1>🦀 Rust for Web3</h1>
+                        <button class="expand-all-btn" data-section="rustQuestions">Expand All</button>
+                    </div>
+                    <p class="section-subtitle">Complete Rust tutorial for blockchain development with Substrate, Solana, NEAR & CosmWasm (55 questions)</p>
                     <div class="section-progress">
                         <div class="progress-bar">
                             <div class="progress-fill" id="rustProgressBar" style="width: 0%"></div>
@@ -161,13 +179,16 @@
                         <span class="progress-text" id="rustProgressText">0% Complete</span>
                     </div>
                 </div>
-                <div class="rust-modules" id="rustModules"></div>
+                <div class="questions-list" id="rustQuestions"></div>
             </section>
 
             <!-- Bookmarks Section -->
             <section class="content-section" id="bookmarksSection" style="display: none;">
                 <div class="section-header">
-                    <h1>⭐ Bookmarked Items</h1>
+                    <div class="section-header-top">
+                        <h1>⭐ Bookmarked Items</h1>
+                        <button class="expand-all-btn" data-section="bookmarksList">Expand All</button>
+                    </div>
                     <p class="section-subtitle">Your saved questions and projects for quick reference</p>
                 </div>
                 <div class="questions-list" id="bookmarksList"></div>
@@ -184,8 +205,37 @@
         </main>
     </div>
 
-    <script src="data.js"></script>
+    <!-- Load Basic Questions (6 files) -->
+    <!-- <script src="data/basic/fundamentals.js"></script> -->
+    <!-- <script src="data/basic/cryptocurrency.js"></script> -->
+    <!-- <script src="data/basic/wallets.js"></script> -->
+    <!-- <script src="data/basic/transactions.js"></script> -->
+    <!-- <script src="data/basic/consensus.js"></script> -->
+    <!-- <script src="data/basic/web3-intro.js"></script> -->
+    
+    <!-- Load Advanced Questions (5 files) -->
+    <!-- <script src="data/advanced/security.js"></script> -->
+    <!-- <script src="data/advanced/defi-advanced.js"></script> -->
+    <!-- <script src="data/advanced/layer2-scaling.js"></script> -->
+    <!-- <script src="data/advanced/cryptography-zk.js"></script> -->
+    <!-- <script src="data/advanced/evm-internals.js"></script> -->
+    
+    <!-- Load Rust Questions (5 files) -->
+    <!-- <script src="data/rust/basics.js"></script> -->
+    <!-- <script src="data/rust/substrate.js"></script> -->
+    <!-- <script src="data/rust/solana.js"></script> -->
+    <!-- <script src="data/rust/near.js"></script> -->
+    <!-- <script src="data/rust/cosmwasm.js"></script> -->
+    
+    <!-- Load Intermediate and Projects (single files) -->
+    <!-- <script src="data/intermediate.js"></script> -->
+    <!-- <script src="data/projects.js"></script> -->
+    
+    <!-- Main data aggregator and app -->
+    <!-- <script src="data.js"></script> -->
+    <script src="api-client.js"></script>
     <script src="app.js"></script>
+    
     <script>
         document.getElementById('themeToggle').addEventListener('click', () => {
             document.body.classList.toggle('light-mode');

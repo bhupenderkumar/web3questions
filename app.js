@@ -1,4 +1,6 @@
-document.addEventListener('DOMContentLoaded', () => {
+// Ensure api-client.js is loaded and window.web3Api is available
+(async function() {
+    // Wait a tick to ensure all scripts have executed
     const mainContent = document.getElementById('mainContent');
     const sidebar = document.getElementById('sidebar');
     const sidebarToggle = document.getElementById('sidebarToggle');
@@ -30,7 +32,54 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // --- Rendering ---
+    let web3Data = {
+        basic: [],
+        intermediate: [],
+        advanced: [],
+        projects: [],
+        rust: []
+    };
+
+    // Fetch all categories and questions from backend
+    async function fetchAllData() {
+        try {
+            const categories = await window.web3Api.getCategories();
+            // categories: [{ id, name, label }]
+            for (const cat of categories) {
+                // Use category name as key (basic, intermediate, etc.)
+                try {
+                    const questions = await window.web3Api.getQuestionsByCategory(cat.name);
+                    web3Data[cat.name] = questions;
+                } catch (err) {
+                    console.error('Failed to fetch questions for', cat.name, err);
+                    web3Data[cat.name] = [];
+                }
+            }
+        } catch (err) {
+            console.error('Failed to fetch categories', err);
+        }
+    }
+
     const renderAll = () => {
+        console.log('=== renderAll called ===');
+        console.log('web3Data:', web3Data);
+        console.log('Basic questions:', web3Data.basic?.length);
+        console.log('Projects:', web3Data.projects?.length);
+        console.log('Rust:', web3Data.rust?.length);
+
+        // Show debug info on page
+        const debugEl = document.getElementById('debugInfo');
+        if (debugEl) {
+            debugEl.innerHTML = `
+                <strong>Data Loaded (from backend):</strong>
+                Basic: ${web3Data.basic?.length || 0} |
+                Intermediate: ${web3Data.intermediate?.length || 0} |
+                Advanced: ${web3Data.advanced?.length || 0} |
+                Projects: ${web3Data.projects?.length || 0} |
+                Rust: ${web3Data.rust?.length || 0}
+            `;
+        }
+
         renderSection('basic', web3Data.basic, document.getElementById('basicQuestions'));
         renderSection('intermediate', web3Data.intermediate, document.getElementById('intermediateQuestions'));
         renderSection('advanced', web3Data.advanced, document.getElementById('advancedQuestions'));
@@ -102,50 +151,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const renderProjects = () => {
         const container = document.getElementById('projectsList');
+        console.log('Rendering projects:', web3Data.projects.length, 'container:', container);
+        if (!container) {
+            console.error('projectsList container not found!');
+            return;
+        }
         container.innerHTML = '';
-        web3Data.projects.forEach(project => {
-            const card = document.createElement('div');
-            card.className = `project-card ${state.completed.has(project.id) ? 'completed' : ''}`;
-            card.dataset.id = project.id;
-            card.innerHTML = `
-                <div class="project-header">
-                    <div class="project-icon">${project.icon}</div>
-                    <h3 class="project-title">${project.title}</h3>
-                    <p class="project-description">${project.description}</p>
-                    <div class="project-meta">
-                        <div class="project-difficulty ${project.difficulty.toLowerCase()}">
-                            <span>${project.difficulty}</span>
-                        </div>
-                        <div class="project-tech">
-                            ${project.tech.map(t => `<span class="tech-tag">${t}</span>`).join('')}
-                        </div>
-                    </div>
-                </div>
-                 <div class="project-details">
-                    <div class="detail-section">
-                        <h4 class="detail-title">Core Features</h4>
-                        <ul class="feature-list">
-                            ${project.features.map(f => `<li>${f}</li>`).join('')}
-                        </ul>
-                    </div>
-                </div>
-                <div class="project-actions">
-                     <button class="project-btn">View Details</button>
-                     <button class="action-btn complete-btn ${state.completed.has(project.id) ? 'completed' : ''}" title="Mark as complete">✔️</button>
-                </div>
-            `;
-            card.querySelector('.project-header').addEventListener('click', () => card.classList.toggle('expanded'));
-            card.querySelector('.project-btn').addEventListener('click', () => card.classList.toggle('expanded'));
-            card.querySelector('.complete-btn').addEventListener('click', (e) => {
-                e.stopPropagation();
-                toggleCompleted(project.id);
-            });
+        web3Data.projects.forEach((item, index) => {
+            const questionId = `projects-${index}`;
+            const card = createQuestionCard(item, questionId);
             container.appendChild(card);
         });
     };
 
     const renderRustTutorial = () => {
-        // Implementation for Rust tutorial rendering
+        const container = document.getElementById('rustQuestions');
+        console.log('Rendering rust:', web3Data.rust.length, 'container:', container);
+        if (!container) {
+            console.error('rustQuestions container not found!');
+            return;
+        }
+        container.innerHTML = '';
+        web3Data.rust.forEach((item, index) => {
+            const questionId = `rust-${index}`;
+            const card = createQuestionCard(item, questionId);
+            container.appendChild(card);
+        });
     };
 
     const updateProgress = () => {
@@ -296,7 +327,32 @@ document.addEventListener('DOMContentLoaded', () => {
         navigateTo('searchResults');
     };
 
+    // --- Expand All Functionality ---
+    const expandAllButtons = document.querySelectorAll('.expand-all-btn');
+    expandAllButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const sectionId = btn.dataset.section;
+            const container = document.getElementById(sectionId);
+            if (!container) return;
+
+            const cards = container.querySelectorAll('.question-card');
+            const isExpanded = btn.classList.contains('collapse');
+
+            cards.forEach(card => {
+                if (isExpanded) {
+                    card.classList.remove('expanded');
+                } else {
+                    card.classList.add('expanded');
+                }
+            });
+
+            btn.classList.toggle('collapse', !isExpanded);
+            btn.textContent = isExpanded ? 'Expand All' : 'Collapse All';
+        });
+    });
+
     // --- Init ---
+    await fetchAllData();
     renderAll();
     hljs.highlightAll();
-});
+})();

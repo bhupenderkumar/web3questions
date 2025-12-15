@@ -1,0 +1,28 @@
+{
+  "name": "web3questions-backend",
+  "version": "1.0.0",
+  "description": "Backend API for Web3 Interview Questions",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:seed": "node prisma/seed.js",
+    "db:migrate": "prisma migrate dev",
+    "db:studio": "prisma studio",
+    "frontend": "cd .. && python3 -m http.server 8000",
+    "dev:all": "concurrently \"npm run dev\" \"npm run frontend\""
+  },
+  "dependencies": {
+    "@prisma/client": "^5.7.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2",
+    "prisma": "^5.7.0",
+    "concurrently": "^8.2.2"
+  }
+}
