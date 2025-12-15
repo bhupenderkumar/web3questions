@@ -1,4 +1,5 @@
-(function() {
+// Ensure api-client.js is loaded and window.web3Api is available
+(async function() {
     // Wait a tick to ensure all scripts have executed
     const mainContent = document.getElementById('mainContent');
     const sidebar = document.getElementById('sidebar');
@@ -31,18 +32,46 @@
     };
 
     // --- Rendering ---
+    let web3Data = {
+        basic: [],
+        intermediate: [],
+        advanced: [],
+        projects: [],
+        rust: []
+    };
+
+    // Fetch all categories and questions from backend
+    async function fetchAllData() {
+        try {
+            const categories = await window.web3Api.getCategories();
+            // categories: [{ id, name, label }]
+            for (const cat of categories) {
+                // Use category name as key (basic, intermediate, etc.)
+                try {
+                    const questions = await window.web3Api.getQuestionsByCategory(cat.name);
+                    web3Data[cat.name] = questions;
+                } catch (err) {
+                    console.error('Failed to fetch questions for', cat.name, err);
+                    web3Data[cat.name] = [];
+                }
+            }
+        } catch (err) {
+            console.error('Failed to fetch categories', err);
+        }
+    }
+
     const renderAll = () => {
         console.log('=== renderAll called ===');
         console.log('web3Data:', web3Data);
         console.log('Basic questions:', web3Data.basic?.length);
         console.log('Projects:', web3Data.projects?.length);
         console.log('Rust:', web3Data.rust?.length);
-        
+
         // Show debug info on page
         const debugEl = document.getElementById('debugInfo');
         if (debugEl) {
             debugEl.innerHTML = `
-                <strong>Data Loaded:</strong>
+                <strong>Data Loaded (from backend):</strong>
                 Basic: ${web3Data.basic?.length || 0} |
                 Intermediate: ${web3Data.intermediate?.length || 0} |
                 Advanced: ${web3Data.advanced?.length || 0} |
@@ -50,7 +79,7 @@
                 Rust: ${web3Data.rust?.length || 0}
             `;
         }
-        
+
         renderSection('basic', web3Data.basic, document.getElementById('basicQuestions'));
         renderSection('intermediate', web3Data.intermediate, document.getElementById('intermediateQuestions'));
         renderSection('advanced', web3Data.advanced, document.getElementById('advancedQuestions'));
@@ -323,6 +352,7 @@
     });
 
     // --- Init ---
+    await fetchAllData();
     renderAll();
     hljs.highlightAll();
 })();
