@@ -1,7 +1,7 @@
 // API Client for Web3 Questions Backend
 // This file can be used instead of the static data files
 
-const API_BASE_URL = 'http://localhost:3001/api';
+const API_BASE_URL = `${window.location.protocol}//${window.location.hostname}:3001/api`;
 
 // Generate or get session ID for tracking progress
 const getSessionId = () => {
