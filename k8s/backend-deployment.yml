@@ -30,7 +30,7 @@ spec:
       volumes:
       - name: backend-volume
         hostPath:
-          path: /Users/bhupender.kumar/projects/web3question/backend
+          path: ./backend
 ---
 apiVersion: v1
 kind: Service

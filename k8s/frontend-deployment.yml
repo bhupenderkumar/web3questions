@@ -26,7 +26,7 @@ spec:
       volumes:
       - name: frontend-volume
         hostPath:
-          path: /Users/bhupender.kumar/projects/web3question
+          path: ./
 ---
 apiVersion: v1
 kind: Service
